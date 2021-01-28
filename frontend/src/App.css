@@ -1,0 +1,94 @@
+.header {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+#magic::after {
+  content: '';
+  position: absolute;
+  height: 700px;
+  width: 1000px;
+  transform: rotateZ(135deg);
+  top: auto;
+  bottom: 20%;
+  left: 45%;
+  z-index: -10;
+  color: #02042b;
+  background: #f4f4f4;
+  border-radius: 10px 500px 300px 500px;
+  box-shadow: 5px 5px 50px #cacaca;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.carpic {
+  width: inherit;
+}
+
+.navlink {
+  display: flex;
+  list-style: none;
+}
+.brand {
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.navlink > li {
+  padding: 0px 10px;
+}
+
+.navlink a {
+  text-decoration: none;
+  color: black;
+}
+
+.banner_left {
+  margin-top: 125px;
+}
+
+.banner_left p {
+  margin: 10px 0px;
+}
+.btn-action {
+  border: none;
+  padding: 10px 30px;
+  background-color: yellow;
+  font-size: 18px;
+  border-radius: 50px;
+  margin: 10px 0;
+}
+.text-center {
+  text-align: center;
+}
+.card {
+  min-height: 280px;
+  box-shadow: 5px 5px 30px rgb(204, 204, 204);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card img {
+  height: 90px;
+}
+.card h5 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.card p {
+  font-size: 0.8rem;
+}
+
+.card:hover {
+  background-color: #fff8f8;
+  scale: 1.08;
+  transform: translateY(5%);
+  transition: transform cubic-bezier(0.45, 0.05, 0.55, 0.95) 500ms;
+  cursor: pointer;
+}
