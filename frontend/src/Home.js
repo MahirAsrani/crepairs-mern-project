@@ -8,7 +8,7 @@ import car2 from './assets/art.png';
 
 function Home() {
   return (
-    <div>
+    <div className="">
       <section id="magic">
         <div className="container">
           <div className="row banner">

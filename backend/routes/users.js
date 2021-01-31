@@ -11,9 +11,11 @@ const isAdmin = (req, res, next) => {
       if (err) throw err;
       if (doc.isAdmin) {
         next();
-      } else res.send('only admin can peform this');
+      } else {
+        res.status(404).send('only admin can peform this');
+      }
     });
-  }
+  } else res.status(500).send('Login required');
 };
 
 router.post('/deleteuser', isAdmin, async (req, res) => {
@@ -27,6 +29,14 @@ router.post('/deleteuser', isAdmin, async (req, res) => {
 
 router.get('/all', isAdmin, async (req, res) => {
   await User.find({}, (err, data) => {
+    if (err) throw err;
+    if (data) res.send(data);
+  });
+});
+
+// get own data
+router.get('/', async (req, res) => {
+  await User.findById(toID(req.user.id), (err, data) => {
     if (err) throw err;
     if (data) res.send(data);
   });
