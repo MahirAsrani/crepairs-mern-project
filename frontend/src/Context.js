@@ -6,6 +6,7 @@ export const myContext = createContext();
 function Context(props) {
   const [user, setUser] = useState(null);
   const [auth, setAuth] = useState(false);
+  const [isheader, setHeader] = useState(true);
 
   useEffect(() => {
     if (auth === false) setUser(null);
@@ -16,7 +17,7 @@ function Context(props) {
   }, [auth]);
 
   return (
-    <myContext.Provider value={{ user, auth, setAuth }}>
+    <myContext.Provider value={{ user, auth, setAuth, isheader, setHeader }}>
       {props.children}
     </myContext.Provider>
   );

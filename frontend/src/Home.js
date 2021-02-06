@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import carImg from './assets/car.png';
 import './App.css';
 import wash from './assets/car-wash.svg';
 import repair from './assets/car-repair.svg';
 import mtnce from './assets/maintenance.svg';
 import car2 from './assets/art.png';
+import { Link } from 'react-router-dom';
+import { myContext } from './Context';
 
 function Home() {
+  const { setHeader } = useContext(myContext);
+  setHeader(true);
+
   return (
     <div className="">
       <section id="magic">
@@ -48,21 +53,23 @@ function Home() {
                       <h5>Repair</h5>
                       <img src={repair} alt="" />
                       <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit?
+                        Carry out mechanical repairs like AC, Accessory
+                        Installation , remove dents etc..
                       </p>
                     </div>
                   </div>
 
                   <div className="col-md-4">
-                    <div className="card mt-4">
-                      <h5>Car Spa</h5>
-                      <img src={wash} alt="" />
-                      <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit?
-                      </p>
-                    </div>
+                    <Link to="/services/car-spa" className="nodecor">
+                      <div className="card mt-4">
+                        <h5>Car Spa</h5>
+                        <img src={wash} alt="" />
+                        <p>
+                          One stop solution for all your cleaning needs and
+                          offer a variety of services.
+                        </p>
+                      </div>
+                    </Link>
                   </div>
 
                   <div className="col-md-4">
@@ -70,8 +77,8 @@ function Home() {
                       <h5>Maintenance</h5>
                       <img src={mtnce} alt="" />
                       <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit?
+                        Provide comprehensive check-ups and periodic plans for
+                        your car.
                       </p>
                     </div>
                   </div>

@@ -5,61 +5,72 @@ import Login from './Login';
 import Dashboard from './pages/Dashboard';
 import { myContext } from './Context';
 import { useContext } from 'react';
+import Wash from './pages/Wash';
+import ScrollToTop from './Scrolltotop';
 
-function App() {
-  const { user, auth } = useContext(myContext);
+function App(props) {
+  const { user, auth, isheader } = useContext(myContext);
   console.log(user, auth);
 
   return (
     <Router>
-      <nav className="header">
-        <div className="nav container">
-          <div className="navbar-header">
-            <a className="brand" href="/">
-              Crepairs
-            </a>
-          </div>
-          <div className="menu">
-            <ul className="navlink">
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/">Services</Link>
-              </li>
-            </ul>
-            {user ? (
-              <Link className="login-btn" to="/dashboard">
-                {user.name}
-              </Link>
-            ) : (
-              <Link className="login-btn" to="/signin">
-                Sign in
-              </Link>
-            )}
-          </div>
-        </div>
-      </nav>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/about" component={About} />
+      <ScrollToTop>
+        {isheader ? <Header user={user} /> : null}
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/about" component={About} />
+          <Route path="/services/car-spa" component={Wash} />
 
-        {auth ? (
-          <>
-            <Route path="/dashboard" component={Dashboard} />
-          </>
-        ) : (
-          <>
-            <Route path="/signin" component={Login} />
-          </>
-        )}
-      </Switch>
+          {auth ? (
+            <>
+              <Route path="/dashboard" component={Dashboard} />
+            </>
+          ) : (
+            <>
+              <Route path="/signin" component={Login} />
+            </>
+          )}
+        </Switch>
+      </ScrollToTop>
     </Router>
   );
 }
+
+const Header = ({ user }) => {
+  return (
+    <nav className="header">
+      <div className="nav container">
+        <div className="navbar-header">
+          <Link className="brand" to="/">
+            Crepairs
+          </Link>
+        </div>
+        <div className="menu">
+          <ul className="navlink">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/">Services</Link>
+            </li>
+          </ul>
+          {user ? (
+            <Link className="login-btn" to="/dashboard">
+              {user.name}
+            </Link>
+          ) : (
+            <Link className="login-btn" to="/signin">
+              Sign in
+            </Link>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+};
 
 function About() {
   return <h2>about ka page</h2>;

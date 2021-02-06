@@ -10,7 +10,6 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  console.log(req.body);
   User.findOne({ email: req.body.email }, async (err, doc) => {
     if (err) throw err;
     if (doc) res.send('already exists');
@@ -25,10 +24,6 @@ router.post('/register', (req, res) => {
       res.send('user created');
     }
   });
-});
-
-router.get('/', (req, res) => {
-  console.log(req.body);
 });
 
 router.get('/logout', (req, res) => {

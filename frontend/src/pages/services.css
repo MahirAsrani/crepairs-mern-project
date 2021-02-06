@@ -1,0 +1,207 @@
+.container {
+  max-width: 1200px;
+}
+.service_nav {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.6px solid #59b4f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.active .circle,
+.active .circle > i {
+  background-color: #59b4f5;
+  color: white;
+  font-size: 1.2rem;
+}
+.step_menu {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  max-width: 500px;
+  margin: 5px auto;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 75px;
+}
+.line {
+  height: 2px;
+  background-color: #59b4f5;
+  width: 50%;
+  margin-top: 43px;
+  border-radius: 50px;
+}
+.gg-check {
+  transform: scale(1.5);
+}
+
+/* dropdown select */
+select {
+  max-width: 400px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  height: 44px;
+  background: url(../assets/dropdown.png) no-repeat right #e4f4ff;
+  -webkit-appearance: none;
+  background-position-x: 370px;
+  cursor: pointer;
+  margin: 5px 0px;
+  font-size: 15px;
+  color: #2f2f2f;
+}
+/* dropdown select end */
+.plansGrid {
+  justify-content: space-around;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.area-top {
+  margin: 30px 0px;
+}
+.left_area {
+  display: flex;
+  flex-direction: column;
+  padding-left: 60px;
+}
+.left_area label {
+  margin-top: 20px;
+}
+.left_area h2 {
+  font-weight: 600;
+  color: #2f2f2f;
+}
+.center {
+  text-align: center;
+}
+.plans {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(90deg, #2c8fd6, #2c8dd4);
+  min-height: 240px;
+  border-radius: 15px;
+  color: #efefef;
+  padding: 20px;
+  justify-content: space-around;
+}
+.plans .features {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 25px 0px;
+}
+.plans .features > .col-6 {
+  display: flex;
+  justify-content: space-around;
+  margin: 4px 0px;
+  padding: 0;
+}
+.plans .price {
+  display: flex;
+  justify-content: space-between;
+}
+.plans .price > h5,
+.price > p {
+  font-size: 20px;
+  font-weight: 400;
+}
+.plans .time {
+  background-color: #247cbb;
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.plans.active {
+  background: linear-gradient(#256b9d, #26638f);
+}
+.plans.active > .time {
+  background-color: #195580;
+}
+
+.plans:hover {
+  background: linear-gradient(#256b9d, #26638f);
+  cursor: pointer;
+}
+.plans:hover > .time {
+  background-color: #195580;
+}
+
+.wtICON {
+  display: flex;
+}
+.wtICON > i {
+  margin-right: 10px;
+  align-self: center;
+}
+.sFoot {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin: 20px;
+}
+.sFoot .prev {
+  font-size: 14px;
+  color: #525252;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0 10px;
+}
+.sFoot .prev.disable {
+  color: #8d8d8d;
+  cursor: default !important;
+}
+.sFoot .Continue {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+  background: #2d8ed5;
+  padding: 10px 20px;
+  min-width: 150px;
+  border: none;
+  border-radius: 5px;
+  margin: 0 15px;
+  cursor: pointer;
+  box-shadow: 0px 5px 20px #2c8dd4;
+}
+.sFoot .Continue:hover {
+  background: #247cbb;
+}
+
+.step1,
+.step2,
+.step3 {
+  min-height: 480px;
+}
+
+.animate-enter {
+  opacity: 0;
+  transform: scale(0.8);
+}
+.animate-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 1000ms;
+}
+.animate-exit {
+  opacity: 1;
+}
+.animate-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 500ms, transform 500ms;
+}

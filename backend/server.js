@@ -8,6 +8,7 @@ const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const user = require('./models/user');
+const fileUpload = require('express-fileupload');
 
 //----------------------------------------- END OF IMPORTS---------------------------------------------------
 
@@ -24,6 +25,9 @@ app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 app.use(cookieParser('secret'));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(fileUpload({ createParentPath: true }));
+
+app.use('/uploads', express.static('uploads'));
 
 // passport
 passport.use(
@@ -65,6 +69,7 @@ passport.deserializeUser((id, cb) => {
 app.use('/api/auth/', require('./routes/auth'));
 app.use('/api/user/', require('./routes/users'));
 app.use('/api/book/', require('./routes/bookings'));
+app.use('/api/cars/', require('./routes/cars'));
 
 //----------------------------------------- END OF ROUTES---------------------------------------------------
 const PORT = process.env.PORT || 5000;
