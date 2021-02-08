@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
 import Home from './Home';
-import Login from './Login';
+import Login, { ForgotPassword, NewPassword } from './Login';
 import Dashboard from './pages/Dashboard';
 import { myContext } from './Context';
 import { useContext } from 'react';
@@ -27,7 +27,13 @@ function App(props) {
             </>
           ) : (
             <>
-              <Route path="/signin" component={Login} />
+              <Route exact path="/signin" component={Login} />
+              <Route exact path="/signin/reset" component={ForgotPassword} />
+              <Route
+                exact
+                path="/signin/createnew/:resetToken"
+                component={NewPassword}
+              />
             </>
           )}
         </Switch>
@@ -46,7 +52,7 @@ const Header = ({ user }) => {
           </Link>
         </div>
         <div className="menu">
-          <ul className="navlink">
+          <ul className="navlink mb-0">
             <li>
               <Link to="/">Home</Link>
             </li>

@@ -13,7 +13,7 @@ function Wash() {
 
   const [form, setForm] = useState({
     vehicleBrand: null,
-    vehicleType: 'Hatchback', //
+    vehicleType: 'Hatchback',
     plan: null,
   });
 
@@ -29,14 +29,14 @@ function Wash() {
       Name: 'Express 2',
       Price: 400,
       features: [{ name: '1' }, { name: '2' }, { name: '3' }, { name: '4' }],
-      Duration: '1 hr',
+      Duration: '1.5 hr',
     },
 
     {
       Name: 'Express 3',
       Price: 400,
       features: [{ name: '1ss' }, { name: '2' }, { name: '3' }, { name: '4' }],
-      Duration: '1 hr',
+      Duration: '2 hr',
     },
   ];
 
@@ -183,14 +183,14 @@ function Wash() {
         {step === 2 && (
           <CSSTransition in={animate} timeout={1000} classNames="animate">
             <div className="step2">
-              <h1>step 2 bitch</h1>
+              <h1>step 2 </h1>
             </div>
           </CSSTransition>
         )}
         {step === 3 && (
           <CSSTransition in={animate} timeout={1000} classNames="animate">
             <div className="step3">
-              <h1>step 3 bitchesss</h1>
+              <h1>step 3 </h1>
             </div>
           </CSSTransition>
         )}

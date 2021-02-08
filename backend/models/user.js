@@ -23,15 +23,15 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
   },
   phone: { type: String },
-  Address: [
-    {
-      Building: { type: String },
-      Street: { type: String },
-      City: { type: String },
-      Pincode: { type: String },
-      Country: { type: String },
-    },
-  ],
+  Address: {
+    Building: { type: String },
+    Street: { type: String },
+    City: { type: String },
+    Pincode: { type: String },
+    Country: { type: String },
+  },
+  resetToken: { type: String },
+  resetTime: { type: String },
 });
 
 module.exports = mongoose.model('User', userSchema);

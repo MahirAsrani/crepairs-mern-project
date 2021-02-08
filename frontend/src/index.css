@@ -12,3 +12,7 @@ body {
 .nodecor {
   text-decoration: none;
 }
+
+.spinner-border {
+  margin: 0px 10px;
+}
