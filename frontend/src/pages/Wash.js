@@ -15,28 +15,44 @@ function Wash() {
     vehicleBrand: null,
     vehicleType: 'Hatchback',
     plan: null,
+    paymentMethod: null,
   });
 
   const plans = [
     {
       Name: 'Express',
       Price: 200,
-      features: [{ name: 'abc' }, { name: '2' }, { name: '3' }, { name: '4' }],
+      features: [
+        { name: 'Exterior' },
+        { name: 'Basic Interior' },
+        { name: 'Antirust Treatment' },
+      ],
       Duration: '1 hr',
     },
 
     {
       Name: 'Express 2',
       Price: 400,
-      features: [{ name: '1' }, { name: '2' }, { name: '3' }, { name: '4' }],
+      features: [
+        { name: 'Exterior' },
+        { name: 'Full Interior' },
+        { name: 'Antirust Treatment' },
+        { name: 'Polish' },
+      ],
       Duration: '1.5 hr',
     },
 
     {
-      Name: 'Express 3',
-      Price: 400,
-      features: [{ name: '1ss' }, { name: '2' }, { name: '3' }, { name: '4' }],
-      Duration: '2 hr',
+      Name: 'Premium',
+      Price: 1400,
+      features: [
+        { name: 'Exterior' },
+        { name: 'Full Interior' },
+        { name: 'Antirust Treatment' },
+        { name: 'Ceramic Coating' },
+        { name: 'Tyre Polishing' },
+      ],
+      Duration: '2.5 hr',
     },
   ];
 
@@ -160,9 +176,11 @@ function Wash() {
                       </div>
                       <div className="features">
                         {data.features.map((d) => (
-                          <div className="col-6">
-                            <i class="gg-check"></i>
-                            <p>{d.name}</p>
+                          <div className="col-12">
+                            <div className="d-flex">
+                              <i class="gg-check"></i>
+                              <p>{d.name}</p>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -183,14 +201,222 @@ function Wash() {
         {step === 2 && (
           <CSSTransition in={animate} timeout={1000} classNames="animate">
             <div className="step2">
-              <h1>step 2 </h1>
+              <div className="row">
+                <div className="col-md-8 align-self-center">
+                  <h4 style={{ fontWeight: 600 }}> Appointment </h4>
+                  <div className="row mt-3">
+                    <div className="col-md-6">
+                      <label> Date </label>
+                      <input type="date" className="form-control appt" />
+                    </div>
+                    <div className="col-md-6">
+                      <label> Time </label>
+                      <input type="time" className="form-control appt" />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-4 center">
+                  <img
+                    src={
+                      require(`../assets/CarType/${form.vehicleType}.jpg`)
+                        .default
+                    }
+                    alt="car"
+                    height="150px"
+                  />
+                </div>
+              </div>
+
+              <div className="row p-3">
+                <div className="col-8 UserInfo px-5 py-4">
+                  <h5 className="mb-3">User Information</h5>
+                  <div className="row">
+                    <div className="col-md-6">
+                      Full Name
+                      <input
+                        type="text"
+                        placeholder="Enter Your Name"
+                        className="form-control"
+                        maxLength="20"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      Phone Number
+                      <input
+                        type="text"
+                        placeholder="+91"
+                        maxLength="15"
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row mt-3">
+                    <div className="col-12">Address</div>
+                    <div className="col-md-8 mb-3">
+                      <input
+                        type="text"
+                        placeholder="Appartment Name / Floor No / House No "
+                        maxLength="100"
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="col-md-4 mb-3">
+                      <input
+                        type="text"
+                        placeholder="Street"
+                        maxLength="50"
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <input
+                        type="text"
+                        placeholder="City"
+                        maxLength="50"
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <input
+                        type="number"
+                        placeholder="Pincode"
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <input
+                        type="text"
+                        value="India"
+                        maxLength="30"
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-4 PlanDet py-4 px-5">
+                  <h4>Plan details</h4>
+                </div>
+              </div>
             </div>
           </CSSTransition>
         )}
         {step === 3 && (
           <CSSTransition in={animate} timeout={1000} classNames="animate">
             <div className="step3">
-              <h1>step 3 </h1>
+              <div className="row">
+                <div className="col-12 my-3">
+                  <h4 style={{ fontWeight: 600 }}>Summary</h4>
+                </div>
+                <div className="col-md-8">
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="card shadow p-4">
+                        <h5>Personal Details</h5>
+                        <div className="row details">
+                          <div className="col-md-3">
+                            <p>Name</p>
+                            <h6> lila lila</h6>
+                          </div>
+                          <div className="col-md-3">
+                            <p>Phone no</p>
+                            <h6>9878 555 55</h6>
+                          </div>
+                          <div className="col-md-6">
+                            <p>Email</p>
+                            <h6>mahir.asrani2@domain.com</h6>
+                          </div>
+                          <div className="col-12 mt-3">
+                            <p>Address</p>
+                            <h6>H-95, Sarita Vihar, Delhi - 110031, INDIA</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-12">
+                      <div className="card shadow p-4 mt-3">
+                        <h5>Plan & Booking Details</h5>
+                        <div className="row details">
+                          <div className="col-4 mt-2">
+                            <p>Plans</p>
+                            <h6>Express</h6>
+                          </div>
+                          <div className="col-4 mt-2">
+                            <p>Car Brand</p>
+                            <h6>Audi</h6>
+                          </div>
+                          <div className="col-4 mt-2">
+                            <p>Car Type</p>
+                            <h6>Sedan</h6>
+                          </div>
+
+                          <div className="col-4 mt-2">
+                            <p>Date</p>
+                            <h6>2 August 2021</h6>
+                          </div>
+                          <div className="col-4 mt-2">
+                            <p>Time</p>
+                            <h6>8:00am</h6>
+                          </div>
+                          <div className="col-4 mt-2">
+                            <p>Duration</p>
+                            <h6>1 hr</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="card shadow p-4">
+                        <h4>Price Breakdown</h4>
+                        <div className="px-3 mt-2">
+                          <div className="d-flex justify-content-between">
+                            <p>price</p>
+                            <h6>Rs 400</h6>
+                          </div>
+                          <div className="d-flex justify-content-between">
+                            <p>Delivery charge</p>
+                            <h6>Free</h6>
+                          </div>
+                          <div className="d-flex justify-content-between final">
+                            <p>Total</p>
+                            <h5>Rs 400</h5>
+                          </div>
+                        </div>
+                        <hr />
+                        <h5>Payment Method</h5>
+
+                        <div className="px-3">
+                          <div className="cusRadio">
+                            <input
+                              class="m-auto"
+                              type="radio"
+                              value="onDelivery"
+                              name="pay"
+                              id="COD"
+                            />
+                            <label htmlFor="COD">Pay on delivery</label>
+                          </div>
+                          <div className="cusRadio">
+                            <input
+                              class="m-auto"
+                              type="radio"
+                              value="Online"
+                              name="pay"
+                              id="OP"
+                            />
+                            <label htmlFor="OP">Online Payment</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </CSSTransition>
         )}
@@ -203,7 +429,7 @@ function Wash() {
           </p>
 
           <button className="Continue" onClick={() => handleContinue()}>
-            {step !== 3 ? 'Continue' : 'Pay Now'}
+            {step !== 3 ? 'Continue' : 'Checkout'}
           </button>
         </div>
       </div>

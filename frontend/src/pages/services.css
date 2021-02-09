@@ -37,6 +37,9 @@
   align-items: center;
   min-width: 75px;
 }
+.step p {
+  margin: 2px;
+}
 .line {
   height: 2px;
   background-color: #59b4f5;
@@ -117,6 +120,7 @@ select {
 .price > p {
   font-size: 20px;
   font-weight: 400;
+  color: #fff;
 }
 .plans .time {
   background-color: #247cbb;
@@ -124,6 +128,10 @@ select {
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
+}
+
+.plans p {
+  margin: 0;
 }
 
 .plans.active {
@@ -150,7 +158,7 @@ select {
 }
 .sFoot {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   margin: 20px;
 }
@@ -204,4 +212,61 @@ select {
   opacity: 0;
   transform: scale(0.9);
   transition: opacity 500ms, transform 500ms;
+}
+
+.details p {
+  margin: 0;
+}
+
+.cusRadio {
+  display: flex;
+  align-content: center;
+  background: #fdfdfd;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  padding: 5px 20px;
+  margin: 10px 0px;
+}
+
+.cusRadio > label {
+  font-size: 1rem;
+  margin-left: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.cusRadio.selected {
+  background-color: #e9f6ff;
+  border: 2px solid #2d8ed5;
+  box-shadow: 0px 0px 10px #c3daff;
+}
+.cusRadio:hover {
+  border: 1px solid #2d8ed5;
+  cursor: pointer;
+}
+
+.final > p,
+.final > h5 {
+  color: #145888;
+  font-weight: 600;
+}
+
+h5,
+h4 {
+  color: #013962;
+}
+.UserInfo {
+  background: #e4f4ff;
+  border-radius: 10px 0 0 10px;
+}
+.PlanDet {
+  background: #2c8fd6;
+  border-radius: 0 10px 10px 0;
+  color: whitesmoke;
+}
+.PlanDet > h4 {
+  color: whitesmoke;
+}
+.appt {
+  background: #e4f4ff;
 }

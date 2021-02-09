@@ -80,7 +80,7 @@ const Login = () => {
 export const ForgotPassword = () => {
   const [email, setemail] = useState('');
   const history = useHistory();
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   const Submit = (e) => {
     e.preventDefault();
@@ -152,7 +152,7 @@ export const NewPassword = ({ match }) => {
         .then(() => {
           setLoading(false);
           toast.success('Successfully Changed');
-          history.push('/login');
+          history.push('/signin');
         })
         .catch((er) => toast.error(er.response.data));
     } else {

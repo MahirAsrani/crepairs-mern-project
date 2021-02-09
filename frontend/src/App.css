@@ -94,7 +94,7 @@
 .text-center {
   text-align: center;
 }
-.card {
+.homerow .card {
   min-height: 280px;
   box-shadow: 5px 5px 30px rgb(204, 204, 204);
   padding: 30px 20px;
@@ -102,20 +102,20 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.card img {
+.homerow .card img {
   height: 90px;
 }
-.card h5 {
+.homerow .card h5 {
   font-size: 1.2rem;
   font-weight: 600;
   color: #242424;
 }
-.card p {
+.homerow .card p {
   font-size: 0.8rem;
   color: #242424;
 }
 
-.card:hover {
+.homerow .card:hover {
   background-color: #fff8f8;
   scale: 1.08;
   transform: translateY(5%);
@@ -132,6 +132,7 @@
 
 .login-btn:hover {
   background: #040851;
+  color: white;
 }
 
 h3 {

@@ -18,11 +18,12 @@ function Home() {
         <div className="container">
           <div className="row banner">
             <div className="col-md-6 banner_left">
-              <h1>Crepairs provide doorstep mechanic services in india</h1>
+              <h1>Hands that understand automobile very well..</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Pharetra magna ac placerat vestibulum lectus mauris ultrices.
+                We provide the joy of the best ride. We provide car related
+                services to the users at their doorstep that includes car
+                repair, car spa and car maintenance with the help of our well
+                trained mechanics.
               </p>
               <button className="btn btn-action">Let's Repair</button>
             </div>
@@ -34,13 +35,16 @@ function Home() {
       </section>
 
       <div className="container">
-        <div className="row my-5">
+        <div className="row my-5 homerow">
           <div className="col-12 text-center">
             <h3>How can we help</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              <br /> sed do eiusmod tempor incididunt ut labore et dolore magna
-              aliqua.
+              We provide fast and efficient car related services to our
+              customers. It saves the time of our customers
+              <br /> as they don’t have to visit the workshop but the customers
+              can select services and <br />
+              take an appointment then our trained mechanics will visit their
+              place.
             </p>
             <div className="row my-3">
               <div className="col-md-4">
