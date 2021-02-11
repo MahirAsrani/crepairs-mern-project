@@ -7,6 +7,7 @@ import mtnce from './assets/maintenance.svg';
 import car2 from './assets/art.png';
 import { Link } from 'react-router-dom';
 import { myContext } from './Context';
+import * as Scroll from 'react-scroll';
 
 function Home() {
   const { setHeader } = useContext(myContext);
@@ -25,7 +26,10 @@ function Home() {
                 repair, car spa and car maintenance with the help of our well
                 trained mechanics.
               </p>
-              <button className="btn btn-action">Let's Repair</button>
+
+              <Scroll.Link to="services" smooth duration={500}>
+                <button className="btn btn-action">Let's Repair</button>
+              </Scroll.Link>
             </div>
             <div className="col-md-6">
               <img src={carImg} alt="" className="carpic" />
@@ -50,7 +54,7 @@ function Home() {
               <div className="col-md-4">
                 <img src={car2} alt="" style={{ width: 350 }} />
               </div>
-              <div className="col-md-8">
+              <div className="col-md-8" id="services">
                 <div className="row mt-4">
                   <div className="col-md-4">
                     <div className="card">

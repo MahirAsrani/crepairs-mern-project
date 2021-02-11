@@ -7,6 +7,7 @@ import { myContext } from './Context';
 import { useContext } from 'react';
 import Wash from './pages/Wash';
 import ScrollToTop from './Scrolltotop';
+import * as Scroll from 'react-scroll';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
@@ -57,10 +58,14 @@ const Header = ({ user }) => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <Scroll.Link to="services" smooth duration={500}>
+                About
+              </Scroll.Link>
             </li>
             <li>
-              <Link to="/">Services</Link>
+              <Scroll.Link to="services" smooth duration={500}>
+                Services
+              </Scroll.Link>
             </li>
           </ul>
           {user ? (

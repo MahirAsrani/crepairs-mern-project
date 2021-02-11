@@ -67,6 +67,7 @@
 .navlink a {
   text-decoration: none;
   color: black;
+  cursor: pointer;
 }
 
 .banner_left {

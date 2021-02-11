@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { myContext } from '../Context';
 import './services.css';
 import { CSSTransition } from 'react-transition-group';
+import { toast } from 'react-toastify';
 
 function Wash() {
   const { user, auth, setHeader } = useContext(myContext);
@@ -15,7 +16,18 @@ function Wash() {
     vehicleBrand: null,
     vehicleType: 'Hatchback',
     plan: null,
-    paymentMethod: null,
+    duration: null,
+    date: null,
+    time: null,
+    fullName: null,
+    phoneNo: null,
+    email: null,
+    houseNo: null,
+    street: null,
+    city: null,
+    pincode: null,
+    country: 'INDIA',
+    paymentMethod: 'onDelivery',
   });
 
   const plans = [
@@ -73,8 +85,8 @@ function Wash() {
     }
   };
 
-  const handlePlanSelect = (name) => {
-    setForm({ ...form, plan: name });
+  const handlePlanSelect = (name, dur) => {
+    setForm({ ...form, plan: name, duration: dur });
   };
 
   return (
@@ -168,7 +180,7 @@ function Wash() {
                       className={
                         data.Name === form.plan ? 'plans active' : 'plans'
                       }
-                      onClick={() => handlePlanSelect(data.Name)}
+                      onClick={() => handlePlanSelect(data.Name, data.Duration)}
                     >
                       <div className="price">
                         <h5>{data.Name}</h5>
@@ -207,11 +219,25 @@ function Wash() {
                   <div className="row mt-3">
                     <div className="col-md-6">
                       <label> Date </label>
-                      <input type="date" className="form-control appt" />
+                      <input
+                        type="date"
+                        className="form-control appt"
+                        value={form.date}
+                        onChange={(e) =>
+                          setForm({ ...form, date: e.target.value })
+                        }
+                      />
                     </div>
                     <div className="col-md-6">
                       <label> Time </label>
-                      <input type="time" className="form-control appt" />
+                      <input
+                        type="time"
+                        className="form-control appt"
+                        value={form.time}
+                        onChange={(e) =>
+                          setForm({ ...form, time: e.target.value })
+                        }
+                      />
                     </div>
                   </div>
                 </div>
@@ -231,22 +257,42 @@ function Wash() {
                 <div className="col-8 UserInfo px-5 py-4">
                   <h5 className="mb-3">User Information</h5>
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                       Full Name
                       <input
                         type="text"
                         placeholder="Enter Your Name"
                         className="form-control"
                         maxLength="20"
+                        value={form.fullName}
+                        onChange={(e) =>
+                          setForm({ ...form, fullName: e.target.value })
+                        }
                       />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-3">
                       Phone Number
                       <input
                         type="text"
                         placeholder="+91"
                         maxLength="15"
                         className="form-control"
+                        value={form.phoneNo}
+                        onChange={(e) =>
+                          setForm({ ...form, phoneNo: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="col-md-5">
+                      Email
+                      <input
+                        type="email"
+                        placeholder="ex@domain.com"
+                        className="form-control"
+                        value={form.email}
+                        onChange={(e) =>
+                          setForm({ ...form, email: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -259,6 +305,10 @@ function Wash() {
                         placeholder="Appartment Name / Floor No / House No "
                         maxLength="100"
                         className="form-control"
+                        value={form.houseNo}
+                        onChange={(e) =>
+                          setForm({ ...form, houseNo: e.target.value })
+                        }
                       />
                     </div>
                     <div className="col-md-4 mb-3">
@@ -267,6 +317,10 @@ function Wash() {
                         placeholder="Street"
                         maxLength="50"
                         className="form-control"
+                        value={form.street}
+                        onChange={(e) =>
+                          setForm({ ...form, street: e.target.value })
+                        }
                       />
                     </div>
                     <div className="col-md-6 mb-3">
@@ -275,13 +329,21 @@ function Wash() {
                         placeholder="City"
                         maxLength="50"
                         className="form-control"
+                        value={form.city}
+                        onChange={(e) =>
+                          setForm({ ...form, city: e.target.value })
+                        }
                       />
                     </div>
                     <div className="col-md-3 mb-3">
                       <input
-                        type="number"
+                        type="text"
                         placeholder="Pincode"
                         className="form-control"
+                        value={form.pincode}
+                        onChange={(e) =>
+                          setForm({ ...form, pincode: e.target.value })
+                        }
                       />
                     </div>
                     <div className="col-md-3 mb-3">
@@ -290,12 +352,41 @@ function Wash() {
                         value="India"
                         maxLength="30"
                         className="form-control"
+                        disabled
                       />
                     </div>
                   </div>
                 </div>
-                <div className="col-4 PlanDet py-4 px-5">
-                  <h4>Plan details</h4>
+                <div className="col-4 PlanDet plansGrid p-4">
+                  {plans.map((p) =>
+                    p.Name === form.plan ? (
+                      <>
+                        <div className="plans noplans">
+                          <div className="price">
+                            <h5>{p.Name}</h5>
+                            <p>Rs. {p.Price} </p>
+                          </div>
+                          <div className="features">
+                            {p.features.map((d) => (
+                              <div className="col-6">
+                                <div className="d-flex">
+                                  <i class="gg-check"></i>
+                                  <p>{d.name}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="time">
+                            <div className="wtICON">
+                              <i class="gg-alarm"></i>
+                              <p>Duration</p>
+                            </div>
+                            <p>{p.Duration}</p>
+                          </div>
+                        </div>
+                      </>
+                    ) : null
+                  )}
                 </div>
               </div>
             </div>
@@ -316,19 +407,22 @@ function Wash() {
                         <div className="row details">
                           <div className="col-md-3">
                             <p>Name</p>
-                            <h6> lila lila</h6>
+                            <h6> {form.fullName} </h6>
                           </div>
                           <div className="col-md-3">
                             <p>Phone no</p>
-                            <h6>9878 555 55</h6>
+                            <h6>{form.phoneNo}</h6>
                           </div>
                           <div className="col-md-6">
                             <p>Email</p>
-                            <h6>mahir.asrani2@domain.com</h6>
+                            <h6>{form.email}</h6>
                           </div>
                           <div className="col-12 mt-3">
                             <p>Address</p>
-                            <h6>H-95, Sarita Vihar, Delhi - 110031, INDIA</h6>
+                            <h6>
+                              {form.houseNo}, {form.street}, {form.city},{' '}
+                              {form.pincode}, {form.country}
+                            </h6>
                           </div>
                         </div>
                       </div>
@@ -340,28 +434,28 @@ function Wash() {
                         <div className="row details">
                           <div className="col-4 mt-2">
                             <p>Plans</p>
-                            <h6>Express</h6>
+                            <h6>{form.plan}</h6>
                           </div>
                           <div className="col-4 mt-2">
                             <p>Car Brand</p>
-                            <h6>Audi</h6>
+                            <h6>{form.vehicleBrand}</h6>
                           </div>
                           <div className="col-4 mt-2">
                             <p>Car Type</p>
-                            <h6>Sedan</h6>
+                            <h6>{form.vehicleType}</h6>
                           </div>
 
                           <div className="col-4 mt-2">
                             <p>Date</p>
-                            <h6>2 August 2021</h6>
+                            <h6>{form.date}</h6>
                           </div>
                           <div className="col-4 mt-2">
                             <p>Time</p>
-                            <h6>8:00am</h6>
+                            <h6>{form.time}</h6>
                           </div>
                           <div className="col-4 mt-2">
                             <p>Duration</p>
-                            <h6>1 hr</h6>
+                            <h6>{form.duration}</h6>
                           </div>
                         </div>
                       </div>
@@ -398,6 +492,17 @@ function Wash() {
                               value="onDelivery"
                               name="pay"
                               id="COD"
+                              onClick={(e) =>
+                                setForm({
+                                  ...form,
+                                  paymentMethod: e.target.value,
+                                })
+                              }
+                              checked={
+                                form.paymentMethod === 'onDelivery'
+                                  ? true
+                                  : false
+                              }
                             />
                             <label htmlFor="COD">Pay on delivery</label>
                           </div>
@@ -408,6 +513,15 @@ function Wash() {
                               value="Online"
                               name="pay"
                               id="OP"
+                              onClick={(e) =>
+                                setForm({
+                                  ...form,
+                                  paymentMethod: e.target.value,
+                                })
+                              }
+                              checked={
+                                form.paymentMethod === 'Online' ? true : false
+                              }
                             />
                             <label htmlFor="OP">Online Payment</label>
                           </div>

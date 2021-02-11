@@ -134,11 +134,15 @@ select {
   margin: 0;
 }
 
-.plans.active {
-  background: linear-gradient(#256b9d, #26638f);
+.plans.active,
+.plans.active:hover {
+  /* background: linear-gradient(#256b9d, #26638f); */
+  background: linear-gradient(#133146, #072942);
 }
-.plans.active > .time {
-  background-color: #195580;
+.plans.active > .time,
+.plans.active:hover > .time {
+  /* background-color: #195580; */
+  background-color: #062033;
 }
 
 .plans:hover {
@@ -147,6 +151,26 @@ select {
 }
 .plans:hover > .time {
   background-color: #195580;
+}
+.plans.noplans:hover {
+  background: linear-gradient(90deg, #2c8fd6, #2c8dd4) !important;
+  cursor: default;
+}
+.noplans:hover .time {
+  background-color: #247cbb;
+}
+.noplans {
+  margin: 0px;
+  padding: 0px;
+}
+.noplans .features {
+  margin: 0px;
+  display: flex;
+  justify-content: flex-start;
+}
+.noplans .features > .col-6 {
+  justify-content: flex-start;
+  font-size: 0.9rem;
 }
 
 .wtICON {
