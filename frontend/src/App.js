@@ -1,13 +1,22 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+} from 'react-router-dom';
 import './App.css';
 import Home from './Home';
 import Login, { ForgotPassword, NewPassword } from './Login';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard/Dashboard';
 import { myContext } from './Context';
 import { useContext } from 'react';
 import Wash from './pages/Wash';
 import ScrollToTop from './Scrolltotop';
 import * as Scroll from 'react-scroll';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import Profile from './pages/Profile';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
@@ -25,6 +34,7 @@ function App(props) {
           {auth ? (
             <>
               <Route path="/dashboard" component={Dashboard} />
+              <Route path="/profile" component={Profile} />
             </>
           ) : (
             <>
@@ -44,6 +54,19 @@ function App(props) {
 }
 
 const Header = ({ user }) => {
+  const history = useHistory();
+  const { setAuth } = useContext(myContext);
+
+  function logout() {
+    axios
+      .get('/api/auth/logout', {}, { withCredentials: true })
+      .then(() => {
+        setAuth(false);
+        toast.info('Success logout');
+        history.push('/');
+      })
+      .catch((er) => console.log(er));
+  }
   return (
     <nav className="header">
       <div className="nav container">
@@ -69,9 +92,49 @@ const Header = ({ user }) => {
             </li>
           </ul>
           {user ? (
-            <Link className="login-btn" to="/dashboard">
-              {user.name}
-            </Link>
+            <div className="userwithDrop">
+              <div className="userbadge">
+                <div className="d-flex">
+                  <div className="col myuser text-right px-2">
+                    <h6> {user.name}</h6>
+                    <p> {user.isAdmin ? 'Admin' : 'Customer'}</p>
+                  </div>
+                  <img
+                    src={require('./assets/dp.png').default}
+                    alt="profile"
+                    className="rounded"
+                    height="35px"
+                  />
+                </div>
+              </div>
+              <div className="user-dropdown">
+                <ul className="drop-li">
+                  <li>
+                    <Link to="/profile">
+                      <i className="far fa-user"></i>
+                      <span> Profile</span>
+                    </Link>
+                  </li>
+                  {user.isAdmin ? (
+                    <li>
+                      <Link to="/dashboard">
+                        <i className="far fa-clipboard-list-check"></i>
+                        <span> Dashboard</span>
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <i className="far fa-clipboard-list-check"></i>
+                      <span> My Bookings </span>
+                    </li>
+                  )}
+                  <li onClick={() => logout()}>
+                    <i className="far fa-sign-out-alt"></i>
+                    <span> Logout</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           ) : (
             <Link className="login-btn" to="/signin">
               Sign in

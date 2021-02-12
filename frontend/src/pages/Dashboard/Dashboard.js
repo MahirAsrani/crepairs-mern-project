@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
-import { myContext } from '../Context';
+import { myContext } from '../../Context';
 import { toast } from 'react-toastify';
 import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Wash from './Wash';
+import Wash from '../Wash';
 import './dash.css';
 import AdminScreen from './AdminScreen';
+import { ManageCars } from './ManageCars';
+import { ManageUsers } from './ManageUsers';
 
 function Dashboard() {
   let { path, url } = useRouteMatch();
@@ -15,22 +17,15 @@ function Dashboard() {
   setHeader(false);
   console.log(user);
 
-  function logout() {
-    axios
-      .get('/api/auth/logout', {}, { withCredentials: true })
-      .then(() => {
-        setAuth(false);
-        toast.info('Success logout');
-        history.push('/');
-      })
-      .catch((er) => console.log(er));
-  }
   if (user) {
     return (
       <div>
         <div className="d-flex">
           <div className="sidebar dark">
-            <div className="logo">CREPAIRS</div>
+            <Link to="/">
+              <div className="logo ">CREPAIRS</div>
+            </Link>
+
             <div className="dashnav">
               <ul>
                 <NavLink to={`${url}`} exact activeClassName="active">
@@ -56,7 +51,7 @@ function Dashboard() {
                     </li>
                   </NavLink>
                 )}
-                <li onClick={() => logout()}>
+                <li>
                   <i class="fal fa-sign-out-alt"></i>
                   <span>logout</span>
                 </li>
@@ -66,14 +61,28 @@ function Dashboard() {
 
           <header className="sidetop">
             <div className="content">
-              <h5> Hello, {user.name}</h5>
+              <div className="userbadge">
+                <img
+                  src={require('../../assets/dp.png').default}
+                  alt="profile"
+                  className="rounded"
+                  height="40px"
+                />
+                <h6> {user.name}</h6>
+              </div>
             </div>
           </header>
 
           <div className="content-wrap">
             <Switch>
               <Route exact path={`${path}`} component={Dash} />
-              <Route path={`${path}/admin`} component={AdminScreen} />
+              <Route exact path={`${path}/admin`} component={AdminScreen} />
+              <Route exact path={`${path}/admin/cars`} component={ManageCars} />
+              <Route
+                exact
+                path={`${path}/admin/users`}
+                component={ManageUsers}
+              />
             </Switch>
           </div>
         </div>

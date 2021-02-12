@@ -1,19 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { myContext } from '../Context';
 import './services.css';
 import { CSSTransition } from 'react-transition-group';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 function Wash() {
-  const { user, auth, setHeader } = useContext(myContext);
+  const { user, setAuth, auth, setHeader } = useContext(myContext);
+  const history = useHistory();
+
   setHeader(false);
 
   const [step, setStep] = useState(1);
   const [animate, setAnimate] = useState(false);
 
   const [form, setForm] = useState({
-    vehicleBrand: null,
+    vehicleBrand: 'audi',
     vehicleType: 'Hatchback',
     plan: null,
     duration: null,
@@ -74,8 +77,43 @@ function Wash() {
 
   const handleContinue = () => {
     if (step !== 3) {
-      setAnimate(false);
-      setStep((e) => e + 1);
+      switch (step) {
+        case 1:
+          if (
+            form.vehicleBrand === null ||
+            form.vehicleType === null ||
+            form.plan === null
+          )
+            toast.error('Please fill all fields');
+          else {
+            setAnimate(false);
+            setStep((e) => e + 1);
+          }
+          break;
+
+        case 2:
+          if (
+            form.date === null ||
+            form.time === null ||
+            form.fullName === null ||
+            form.email === null ||
+            form.phoneNo === null ||
+            form.houseNo === null ||
+            form.street === null ||
+            form.pincode === null ||
+            form.city === null ||
+            form.country === null
+          )
+            toast.error('Please fill all fields');
+          else {
+            setAnimate(false);
+            setStep((e) => e + 1);
+          }
+          break;
+
+        default:
+          break;
+      }
     }
   };
   const handlePrevious = () => {
@@ -88,6 +126,17 @@ function Wash() {
   const handlePlanSelect = (name, dur) => {
     setForm({ ...form, plan: name, duration: dur });
   };
+
+  function logout() {
+    axios
+      .get('/api/auth/logout', {}, { withCredentials: true })
+      .then(() => {
+        setAuth(false);
+        toast.info('Success logout');
+        history.push('/');
+      })
+      .catch((er) => console.log(er));
+  }
 
   return (
     <div>
@@ -122,9 +171,49 @@ function Wash() {
 
         <div className="auth">
           {user ? (
-            <Link className="login-btn" to="/dashboard">
-              {user.name}
-            </Link>
+            <div className="userwithDrop">
+              <div className="userbadge">
+                <div className="d-flex">
+                  <div className="col myuser text-right px-2">
+                    <h6> {user.name}</h6>
+                    <p> {user.isAdmin ? 'Admin' : 'Customer'}</p>
+                  </div>
+                  <img
+                    src={require('../assets/dp.png').default}
+                    alt="profile"
+                    className="rounded"
+                    height="35px"
+                  />
+                </div>
+              </div>
+              <div className="user-dropdown">
+                <ul className="drop-li">
+                  <li>
+                    <Link to="/profile">
+                      <i className="far fa-user"></i>
+                      <span> Profile</span>
+                    </Link>
+                  </li>
+                  {user.isAdmin ? (
+                    <li>
+                      <Link to="/dashboard">
+                        <i className="far fa-clipboard-list-check"></i>
+                        <span> Dashboard</span>
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <i className="far fa-clipboard-list-check"></i>
+                      <span> My Bookings </span>
+                    </li>
+                  )}
+                  <li onClick={() => logout()}>
+                    <i className="far fa-sign-out-alt"></i>
+                    <span> Logout</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           ) : (
             <Link className="login-btn" to="/signin">
               Sign in
