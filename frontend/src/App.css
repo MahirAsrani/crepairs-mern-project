@@ -248,7 +248,6 @@ label {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin: 5px;
   cursor: pointer;
 }
 .userbadge .myuser > h6,

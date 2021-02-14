@@ -10,14 +10,27 @@ function Context(props) {
 
   useEffect(() => {
     if (auth === false) setUser(null);
+    fetchuseragain();
+  }, [auth]);
+
+  const fetchuseragain = () => {
     axios.get('/api/user', { withCredentials: true }).then((u) => {
       setUser(u.data);
       setAuth(true);
     });
-  }, [auth]);
+  };
 
   return (
-    <myContext.Provider value={{ user, auth, setAuth, isheader, setHeader }}>
+    <myContext.Provider
+      value={{
+        user,
+        auth,
+        refresh: fetchuseragain,
+        setAuth,
+        isheader,
+        setHeader,
+      }}
+    >
       {props.children}
     </myContext.Provider>
   );

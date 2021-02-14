@@ -15,7 +15,17 @@ function Dashboard() {
   const history = useHistory();
   const { user, auth, setAuth, setHeader } = useContext(myContext);
   setHeader(false);
-  console.log(user);
+
+  function logout() {
+    axios
+      .get('/api/auth/logout', {}, { withCredentials: true })
+      .then(() => {
+        setAuth(false);
+        toast.info('Success logout');
+        history.push('/');
+      })
+      .catch((er) => console.log(er));
+  }
 
   if (user) {
     return (
@@ -61,14 +71,52 @@ function Dashboard() {
 
           <header className="sidetop">
             <div className="content">
-              <div className="userbadge">
-                <img
-                  src={require('../../assets/dp.png').default}
-                  alt="profile"
-                  className="rounded"
-                  height="40px"
-                />
-                <h6> {user.name}</h6>
+              <div className="userwithDrop">
+                <div className="userbadge">
+                  <div className="d-flex">
+                    <div className="col myuser text-right px-2">
+                      <h6> {user.name}</h6>
+                      <p> {user.isAdmin ? 'Admin' : 'Customer'}</p>
+                    </div>
+                    <img
+                      src={
+                        (user.profileImg && user.profileImg) ||
+                        require('../../assets/dp.png').default
+                      }
+                      alt="profile"
+                      className="rounded-circle"
+                      height="35px"
+                      width="35px"
+                    />
+                  </div>
+                </div>
+                <div className="user-dropdown">
+                  <ul className="drop-li">
+                    <li>
+                      <Link to="/profile">
+                        <i className="far fa-user"></i>
+                        <span> Profile</span>
+                      </Link>
+                    </li>
+                    {user.isAdmin ? (
+                      <li>
+                        <Link to="/dashboard">
+                          <i className="far fa-clipboard-list-check"></i>
+                          <span> Dashboard</span>
+                        </Link>
+                      </li>
+                    ) : (
+                      <li>
+                        <i className="far fa-clipboard-list-check"></i>
+                        <span> My Bookings </span>
+                      </li>
+                    )}
+                    <li onClick={() => logout()}>
+                      <i className="far fa-sign-out-alt"></i>
+                      <span> Logout</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </header>

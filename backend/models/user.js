@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+  profileImg: {
+    type: String,
+  },
   name: {
     type: String,
     required: true,
@@ -22,13 +25,13 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  phone: { type: String },
-  Address: {
-    Building: { type: String },
-    Street: { type: String },
-    City: { type: String },
-    Pincode: { type: String },
-    Country: { type: String },
+  phone: { type: String, default: null },
+  address: {
+    houseNo: { type: String, default: null },
+    locality: { type: String, default: null },
+    city: { type: String, default: null },
+    pincode: { type: String, default: null },
+    country: { type: String, default: 'INDIA' },
   },
   resetToken: { type: String },
   resetTime: { type: String },

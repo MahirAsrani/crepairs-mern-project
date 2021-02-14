@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const User = require('../models/user');
 const toID = mongoose.Types.ObjectId;
+const path = require('path');
+const { nanoid } = require('nanoid');
+const { unlinkSync } = require('fs');
 
 const isAdmin = (req, res, next) => {
   const { user } = req;
@@ -58,13 +61,77 @@ router.patch('/edit/:id', isAdmin, async (req, res) => {
 // edit own account
 router.patch('/edit', async (req, res) => {
   try {
+    const {
+      fullName,
+      phone,
+      email,
+      houseNo,
+      locality,
+      city,
+      pincode,
+      country,
+    } = req.body.form;
+
     const id = toID(req.user.id);
-    const { name, email } = req.body;
-    await User.findByIdAndUpdate(id, { name, email });
+    await User.findByIdAndUpdate(id, {
+      name: fullName,
+      phone,
+      address: {
+        houseNo,
+        locality,
+        city,
+        pincode,
+        country,
+      },
+    });
     res.send('success');
-    console.log('updated!');
   } catch (error) {
     console.log(error);
+    res.status(400).send('error');
+  }
+});
+
+router.post('/setdp', async (req, res) => {
+  try {
+    const id = toID(req.user.id);
+    const myPic = req.files.pic;
+    await User.findById(id, async (err, doc) => {
+      if (err) res.status(400).send(err);
+      if (!myPic) res.status(400).send('Select picture first');
+      if (doc) {
+        let newFile;
+        if (myPic) {
+          const extName = path.extname(myPic.name); //.png
+          const baseName = path.basename(myPic.name, extName); // xx.
+          // Use the mv() method to place the file somewhere on your server
+          newFile = baseName + nanoid(5) + extName; // xx randomint .png
+          myPic.mv('./uploads/media/' + newFile);
+          doc.profileImg = `http://localhost:5000/uploads/media/${newFile}`;
+          doc.save();
+          res.send('Uploaded');
+        }
+      }
+    });
+  } catch (error) {
+    console.log('no file found or not loggedin');
+  }
+});
+
+router.post('/rmvdp', async (req, res) => {
+  try {
+    const image = req.body.img;
+    User.findOne({ profileImg: image }, (err, doc) => {
+      if (err) throw err;
+      if (doc) {
+        var IMGpath = image.replace('http://localhost:5000/', './');
+        doc.profileImg = null;
+        doc.save();
+        unlinkSync(IMGpath);
+        res.send('Deleted');
+      }
+    });
+  } catch (error) {
+    res.status(400).send('error');
   }
 });
 

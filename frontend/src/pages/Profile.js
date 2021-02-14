@@ -1,20 +1,69 @@
+import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { myContext } from '../Context';
 import './profile.css';
 
 function Profile() {
-  const { user, auth, isheader } = useContext(myContext);
+  const { user, auth, setHeader, refresh } = useContext(myContext);
+  setHeader(true);
+  function updateProfile() {
+    axios
+      .patch('/api/user/edit', { form }, { withCredentials: true })
+      .then((done) => toast.success('Updated'))
+      .catch((err) => toast.error('Error'));
+  }
+  const [dp, setdp] = useState({
+    file: null,
+    temp: null,
+  });
 
   const [form, setForm] = useState({
     fullName: user.name,
-    phoneNo: user.phone,
     email: user.email,
-    houseNo: null,
-    street: null,
-    city: null,
-    pincode: null,
+    phone: user.phone,
+    houseNo: user.address ? user.address.houseNo : null,
+    locality: user.address ? user.address.locality : null,
+    city: user.address ? user.address.city : null,
+    pincode: user.address ? user.address.pincode : null,
     country: 'INDIA',
   });
+
+  function imageRemove() {
+    if (dp.file || dp.temp) {
+      setdp({ temp: null, file: null });
+    }
+    if (user.profileImg && dp.file === null) {
+      axios
+        .post(
+          '/api/user/rmvdp',
+          { img: user.profileImg },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          refresh();
+          setdp({ temp: null, file: null });
+          toast.success('Image removed');
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+
+  function imageupload() {
+    const data = new FormData();
+    data.append('pic', dp.file);
+    if (dp.file) {
+      axios
+        .post('/api/user/setdp', data, { withCredentials: true })
+        .then((res) => {
+          refresh();
+          URL.revokeObjectURL(dp.temp);
+          setdp({ ...dp, file: null });
+          toast.success('Image updated');
+        })
+        .catch((err) => console.log(err));
+    } else toast.warning('Please select an image first');
+  }
 
   return (
     <div className="bg-light">
@@ -32,15 +81,48 @@ function Profile() {
               <div className="col-12">
                 <div className="row">
                   <div className="col-3">
-                    <img
-                      src={require('../assets/dp.png').default}
-                      alt="pic"
-                      height="100px"
-                    />
+                    <div className="profile_pic">
+                      <img
+                        src={
+                          (dp.temp && dp.temp) ||
+                          (user.profileImg && user.profileImg) ||
+                          require('../assets/dp.png').default
+                        }
+                        alt="pic"
+                        className="rounded-circle"
+                        height="100px"
+                        width="100px"
+                      />
+                      <label htmlFor="dp" className="selectPic">
+                        <i class="fal fa-camera-alt"></i>
+                      </label>
+                      <input
+                        type="file"
+                        name="profile"
+                        id="dp"
+                        accept="image/*"
+                        onChange={(e) => {
+                          setdp({
+                            temp: URL.createObjectURL(e.target.files[0]),
+                            file: e.target.files[0],
+                          });
+                        }}
+                      />
+                    </div>
                   </div>
                   <div className="col-9 mt-auto mb-3">
-                    <button className="btn profile-btn upload">Upload</button>
-                    <button className="btn profile-btn">Remove</button>
+                    <button
+                      className="btn profile-btn upload"
+                      onClick={() => imageupload()}
+                    >
+                      Upload
+                    </button>
+                    <button
+                      className="btn profile-btn"
+                      onClick={() => imageRemove()}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
               </div>
@@ -63,6 +145,7 @@ function Profile() {
                   className="form-control"
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   value={form.email}
+                  disabled
                 />
               </div>
               <div className="col-6">
@@ -70,14 +153,79 @@ function Profile() {
                 <input
                   type="text"
                   className="form-control"
-                  onChange={(e) =>
-                    setForm({ ...form, phoneNo: e.target.value })
-                  }
-                  value={form.phoneNo}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  value={form.phone}
                 />
               </div>
+
+              <div className="col-12">
+                <hr className="hr-custom my-4" />
+                <div className="row mt-3">
+                  <div className="col-12">Address</div>
+                  <div className="col-md-12 mb-3">
+                    <input
+                      type="text"
+                      placeholder="House No  / Floor No / Appartment Name"
+                      maxLength="100"
+                      className="form-control"
+                      value={form.houseNo}
+                      onChange={(e) =>
+                        setForm({ ...form, houseNo: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-5 mb-3">
+                    <input
+                      type="text"
+                      placeholder="Locality"
+                      maxLength="50"
+                      className="form-control"
+                      value={form.locality}
+                      onChange={(e) =>
+                        setForm({ ...form, locality: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-4 mb-3">
+                    <input
+                      type="text"
+                      placeholder="City"
+                      maxLength="50"
+                      className="form-control"
+                      value={form.city}
+                      onChange={(e) =>
+                        setForm({ ...form, city: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-3 mb-3">
+                    <input
+                      type="text"
+                      placeholder="Pincode"
+                      className="form-control"
+                      value={form.pincode}
+                      onChange={(e) =>
+                        setForm({ ...form, pincode: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-12 mb-3">
+                    <input
+                      type="text"
+                      value="India"
+                      maxLength="30"
+                      className="form-control"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
               <div className="col-12 text-right mt-4">
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  onClick={() => updateProfile()}
+                >
                   Save Changes
                 </button>
               </div>

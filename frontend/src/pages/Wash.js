@@ -9,7 +9,6 @@ import axios from 'axios';
 function Wash() {
   const { user, setAuth, auth, setHeader } = useContext(myContext);
   const history = useHistory();
-
   setHeader(false);
 
   const [step, setStep] = useState(1);
@@ -19,16 +18,18 @@ function Wash() {
     vehicleBrand: 'audi',
     vehicleType: 'Hatchback',
     plan: null,
+    price: null,
     duration: null,
     date: null,
     time: null,
-    fullName: null,
-    phoneNo: null,
-    email: null,
-    houseNo: null,
-    street: null,
-    city: null,
-    pincode: null,
+    fullName: user ? user.name : null,
+    phoneNo: user ? user.phone : null,
+    email: user ? user.email : null,
+
+    houseNo: user ? user.address && user.address.houseNo : null,
+    locality: user ? user.address && user.address.locality : null,
+    city: user ? user.address && user.address.city : null,
+    pincode: user ? user.address && user.address.pincode : null,
     country: 'INDIA',
     paymentMethod: 'onDelivery',
   });
@@ -36,7 +37,7 @@ function Wash() {
   const plans = [
     {
       Name: 'Express',
-      Price: 200,
+      Price: 400,
       features: [
         { name: 'Exterior' },
         { name: 'Basic Interior' },
@@ -47,7 +48,7 @@ function Wash() {
 
     {
       Name: 'Express 2',
-      Price: 400,
+      Price: 800,
       features: [
         { name: 'Exterior' },
         { name: 'Full Interior' },
@@ -99,7 +100,7 @@ function Wash() {
             form.email === null ||
             form.phoneNo === null ||
             form.houseNo === null ||
-            form.street === null ||
+            form.locality === null ||
             form.pincode === null ||
             form.city === null ||
             form.country === null
@@ -123,8 +124,8 @@ function Wash() {
     }
   };
 
-  const handlePlanSelect = (name, dur) => {
-    setForm({ ...form, plan: name, duration: dur });
+  const handlePlanSelect = (name, dur, price) => {
+    setForm({ ...form, plan: name, duration: dur, price: price });
   };
 
   function logout() {
@@ -179,10 +180,14 @@ function Wash() {
                     <p> {user.isAdmin ? 'Admin' : 'Customer'}</p>
                   </div>
                   <img
-                    src={require('../assets/dp.png').default}
+                    src={
+                      (user.profileImg && user.profileImg) ||
+                      require('../assets/dp.png').default
+                    }
                     alt="profile"
-                    className="rounded"
+                    className="rounded-circle"
                     height="35px"
+                    width="35px"
                   />
                 </div>
               </div>
@@ -269,7 +274,9 @@ function Wash() {
                       className={
                         data.Name === form.plan ? 'plans active' : 'plans'
                       }
-                      onClick={() => handlePlanSelect(data.Name, data.Duration)}
+                      onClick={() =>
+                        handlePlanSelect(data.Name, data.Duration, data.Price)
+                      }
                     >
                       <div className="price">
                         <h5>{data.Name}</h5>
@@ -311,6 +318,7 @@ function Wash() {
                       <input
                         type="date"
                         className="form-control appt"
+                        min={new Date().toISOString().split('T')[0]}
                         value={form.date}
                         onChange={(e) =>
                           setForm({ ...form, date: e.target.value })
@@ -354,9 +362,11 @@ function Wash() {
                         className="form-control"
                         maxLength="20"
                         value={form.fullName}
+                        onMouseLeave={(e) => e.target.checkValidity()}
                         onChange={(e) =>
                           setForm({ ...form, fullName: e.target.value })
                         }
+                        required
                       />
                     </div>
                     <div className="col-md-3">
@@ -391,7 +401,7 @@ function Wash() {
                     <div className="col-md-8 mb-3">
                       <input
                         type="text"
-                        placeholder="Appartment Name / Floor No / House No "
+                        placeholder="House No  / Floor No / Appartment Name"
                         maxLength="100"
                         className="form-control"
                         value={form.houseNo}
@@ -403,12 +413,12 @@ function Wash() {
                     <div className="col-md-4 mb-3">
                       <input
                         type="text"
-                        placeholder="Street"
+                        placeholder="Locality"
                         maxLength="50"
                         className="form-control"
-                        value={form.street}
+                        value={form.locality}
                         onChange={(e) =>
-                          setForm({ ...form, street: e.target.value })
+                          setForm({ ...form, locality: e.target.value })
                         }
                       />
                     </div>
@@ -509,7 +519,7 @@ function Wash() {
                           <div className="col-12 mt-3">
                             <p>Address</p>
                             <h6>
-                              {form.houseNo}, {form.street}, {form.city},{' '}
+                              {form.houseNo}, {form.locality}, {form.city},{' '}
                               {form.pincode}, {form.country}
                             </h6>
                           </div>
@@ -559,7 +569,7 @@ function Wash() {
                         <div className="px-3 mt-2">
                           <div className="d-flex justify-content-between">
                             <p>price</p>
-                            <h6>Rs 400</h6>
+                            <h6>Rs {form.price}</h6>
                           </div>
                           <div className="d-flex justify-content-between">
                             <p>Delivery charge</p>
@@ -567,7 +577,7 @@ function Wash() {
                           </div>
                           <div className="d-flex justify-content-between final">
                             <p>Total</p>
-                            <h5>Rs 400</h5>
+                            <h5>Rs {form.price}</h5>
                           </div>
                         </div>
                         <hr />

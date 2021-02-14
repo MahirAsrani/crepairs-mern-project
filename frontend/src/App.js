@@ -20,7 +20,6 @@ import Profile from './pages/Profile';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
-  console.log(user, auth);
 
   return (
     <Router>
@@ -100,10 +99,14 @@ const Header = ({ user }) => {
                     <p> {user.isAdmin ? 'Admin' : 'Customer'}</p>
                   </div>
                   <img
-                    src={require('./assets/dp.png').default}
+                    src={
+                      (user.profileImg && user.profileImg) ||
+                      require('./assets/dp.png').default
+                    }
                     alt="profile"
-                    className="rounded"
+                    className="rounded-circle"
                     height="35px"
+                    width="35px"
                   />
                 </div>
               </div>
@@ -118,7 +121,7 @@ const Header = ({ user }) => {
                   {user.isAdmin ? (
                     <li>
                       <Link to="/dashboard">
-                        <i className="far fa-clipboard-list-check"></i>
+                        <i className="far fa-toolbox"></i>
                         <span> Dashboard</span>
                       </Link>
                     </li>
