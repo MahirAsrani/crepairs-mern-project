@@ -16,8 +16,8 @@ import ScrollToTop from './Scrolltotop';
 import * as Scroll from 'react-scroll';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Profile from './pages/Profile';
 import { Success } from './pages/Success';
+import User from './pages/User';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
@@ -35,7 +35,7 @@ function App(props) {
           {auth ? (
             <>
               <Route path="/dashboard" component={Dashboard} />
-              <Route path="/profile" component={Profile} />
+              <Route path="/user" component={User} />
             </>
           ) : (
             <>

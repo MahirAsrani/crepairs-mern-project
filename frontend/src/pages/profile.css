@@ -34,7 +34,7 @@
   color: #858585;
   cursor: pointer;
 }
-.profile_menu li.active,
+.profile_menu a.active > li,
 .profile_menu li:hover {
   background: #b5daec;
   border-radius: 50px;

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { myContext } from '../Context';
 import './profile.css';
@@ -66,171 +67,145 @@ function Profile() {
   }
 
   return (
-    <div className="bg-light">
-      <div className="container">
-        <div className="row py-5">
-          <div className="col-md-3 profile_menu">
-            <ul>
-              <li className="active">Profile</li>
-              <li>Bookings</li>
-              <li>Password</li>
-            </ul>
-          </div>
-          <div className="col-md-6 shadow card profilecard p-5">
-            <div className="row">
-              <div className="col-12">
-                <div className="row">
-                  <div className="col-3">
-                    <div className="profile_pic">
-                      <img
-                        src={
-                          (dp.temp && dp.temp) ||
-                          (user.profileImg && user.profileImg) ||
-                          require('../assets/dp.png').default
-                        }
-                        alt="pic"
-                        className="rounded-circle"
-                        height="100px"
-                        width="100px"
-                      />
-                      <label htmlFor="dp" className="selectPic">
-                        <i class="fal fa-camera-alt"></i>
-                      </label>
-                      <input
-                        type="file"
-                        name="profile"
-                        id="dp"
-                        accept="image/*"
-                        onChange={(e) => {
-                          setdp({
-                            temp: URL.createObjectURL(e.target.files[0]),
-                            file: e.target.files[0],
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-9 mt-auto mb-3">
-                    <button
-                      className="btn profile-btn upload"
-                      onClick={() => imageupload()}
-                    >
-                      Upload
-                    </button>
-                    <button
-                      className="btn profile-btn"
-                      onClick={() => imageRemove()}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <hr className="hr-custom my-4" />
-              <div className="col-12 mb-3">
-                <h6>Full Name</h6>
-                <input
-                  type="text"
-                  className="form-control"
-                  onChange={(e) =>
-                    setForm({ ...form, fullName: e.target.value })
+    <div className="col-md-6 shadow card profilecard p-5">
+      <div className="row">
+        <div className="col-12">
+          <div className="row">
+            <div className="col-3">
+              <div className="profile_pic">
+                <img
+                  src={
+                    (dp.temp && dp.temp) ||
+                    (user.profileImg && user.profileImg) ||
+                    require('../assets/dp.png').default
                   }
-                  value={form.fullName}
+                  alt="pic"
+                  className="rounded-circle"
+                  height="100px"
+                  width="100px"
                 />
-              </div>
-              <div className="col-6">
-                <h6>Email</h6>
+                <label htmlFor="dp" className="selectPic">
+                  <i class="fal fa-camera-alt"></i>
+                </label>
                 <input
-                  type="email"
-                  className="form-control"
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  value={form.email}
-                  disabled
+                  type="file"
+                  name="profile"
+                  id="dp"
+                  accept="image/*"
+                  onChange={(e) => {
+                    setdp({
+                      temp: URL.createObjectURL(e.target.files[0]),
+                      file: e.target.files[0],
+                    });
+                  }}
                 />
-              </div>
-              <div className="col-6">
-                <h6>Phone No</h6>
-                <input
-                  type="text"
-                  className="form-control"
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  value={form.phone}
-                />
-              </div>
-
-              <div className="col-12">
-                <hr className="hr-custom my-4" />
-                <div className="row mt-3">
-                  <div className="col-12">Address</div>
-                  <div className="col-md-12 mb-3">
-                    <input
-                      type="text"
-                      placeholder="House No  / Floor No / Appartment Name"
-                      maxLength="100"
-                      className="form-control"
-                      value={form.houseNo}
-                      onChange={(e) =>
-                        setForm({ ...form, houseNo: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-5 mb-3">
-                    <input
-                      type="text"
-                      placeholder="Locality"
-                      maxLength="50"
-                      className="form-control"
-                      value={form.locality}
-                      onChange={(e) =>
-                        setForm({ ...form, locality: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4 mb-3">
-                    <input
-                      type="text"
-                      placeholder="City"
-                      maxLength="50"
-                      className="form-control"
-                      value={form.city}
-                      onChange={(e) =>
-                        setForm({ ...form, city: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-3 mb-3">
-                    <input
-                      type="text"
-                      placeholder="Pincode"
-                      className="form-control"
-                      value={form.pincode}
-                      onChange={(e) =>
-                        setForm({ ...form, pincode: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-12 mb-3">
-                    <input
-                      type="text"
-                      value="India"
-                      maxLength="30"
-                      className="form-control"
-                      disabled
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 text-right mt-4">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  onClick={() => updateProfile()}
-                >
-                  Save Changes
-                </button>
               </div>
             </div>
+            <div className="col-9 mt-auto mb-3">
+              <button
+                className="btn profile-btn upload"
+                onClick={() => imageupload()}
+              >
+                Upload
+              </button>
+              <button className="btn profile-btn" onClick={() => imageRemove()}>
+                Remove
+              </button>
+            </div>
           </div>
+        </div>
+        <hr className="hr-custom my-4" />
+        <div className="col-12 mb-3">
+          <h6>Full Name</h6>
+          <input
+            type="text"
+            className="form-control"
+            onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+            value={form.fullName}
+          />
+        </div>
+        <div className="col-6">
+          <h6>Email</h6>
+          <input
+            type="email"
+            className="form-control"
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            value={form.email}
+            disabled
+          />
+        </div>
+        <div className="col-6">
+          <h6>Phone No</h6>
+          <input
+            type="text"
+            className="form-control"
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            value={form.phone}
+          />
+        </div>
+
+        <div className="col-12">
+          <hr className="hr-custom my-4" />
+          <div className="row mt-3">
+            <div className="col-12">Address</div>
+            <div className="col-md-12 mb-3">
+              <input
+                type="text"
+                placeholder="House No  / Floor No / Appartment Name"
+                maxLength="100"
+                className="form-control"
+                value={form.houseNo}
+                onChange={(e) => setForm({ ...form, houseNo: e.target.value })}
+              />
+            </div>
+            <div className="col-md-5 mb-3">
+              <input
+                type="text"
+                placeholder="Locality"
+                maxLength="50"
+                className="form-control"
+                value={form.locality}
+                onChange={(e) => setForm({ ...form, locality: e.target.value })}
+              />
+            </div>
+            <div className="col-md-4 mb-3">
+              <input
+                type="text"
+                placeholder="City"
+                maxLength="50"
+                className="form-control"
+                value={form.city}
+                onChange={(e) => setForm({ ...form, city: e.target.value })}
+              />
+            </div>
+            <div className="col-md-3 mb-3">
+              <input
+                type="text"
+                placeholder="Pincode"
+                className="form-control"
+                value={form.pincode}
+                onChange={(e) => setForm({ ...form, pincode: e.target.value })}
+              />
+            </div>
+            <div className="col-md-12 mb-3">
+              <input
+                type="text"
+                value="India"
+                maxLength="30"
+                className="form-control"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+        <div className="col-12 text-right mt-4">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={() => updateProfile()}
+          >
+            Save Changes
+          </button>
         </div>
       </div>
     </div>
