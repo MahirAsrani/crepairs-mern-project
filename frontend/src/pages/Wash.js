@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 function Wash() {
-  const { user, setAuth, auth, setHeader } = useContext(myContext);
+  const { user, setAuth, auth, setHeader, refresh } = useContext(myContext);
   const history = useHistory();
   setHeader(false);
 
@@ -18,6 +18,7 @@ function Wash() {
     vehicleBrand: 'audi',
     vehicleType: 'Hatchback',
     plan: null,
+    serviceType: 'Car Spa',
     price: null,
     duration: null,
     date: null,
@@ -77,6 +78,12 @@ function Wash() {
   }, [step]);
 
   const handleContinue = () => {
+    if (step === 3) {
+      axios
+        .post('/api/book/add', form, { withCredentials: true })
+        .then((e) => history.push('/success'))
+        .catch((e) => console.log(e));
+    }
     if (step !== 3) {
       switch (step) {
         case 1:
@@ -436,7 +443,8 @@ function Wash() {
                     </div>
                     <div className="col-md-3 mb-3">
                       <input
-                        type="text"
+                        type="number"
+                        max={999999}
                         placeholder="Pincode"
                         className="form-control"
                         value={form.pincode}

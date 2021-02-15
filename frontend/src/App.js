@@ -17,6 +17,7 @@ import * as Scroll from 'react-scroll';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Profile from './pages/Profile';
+import { Success } from './pages/Success';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
@@ -29,6 +30,7 @@ function App(props) {
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route path="/services/car-spa" component={Wash} />
+          <Route path="/success" component={Success} />
 
           {auth ? (
             <>

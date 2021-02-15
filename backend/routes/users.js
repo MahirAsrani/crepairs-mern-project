@@ -5,7 +5,8 @@ const User = require('../models/user');
 const toID = mongoose.Types.ObjectId;
 const path = require('path');
 const { nanoid } = require('nanoid');
-const { unlinkSync } = require('fs');
+const { unlinkSync, statSync, accessSync, access, existsSync } = require('fs');
+const { constants } = require('buffer');
 
 const isAdmin = (req, res, next) => {
   const { user } = req;
@@ -118,21 +119,22 @@ router.post('/setdp', async (req, res) => {
 });
 
 router.post('/rmvdp', async (req, res) => {
-  try {
-    const image = req.body.img;
-    User.findOne({ profileImg: image }, (err, doc) => {
-      if (err) throw err;
-      if (doc) {
-        var IMGpath = image.replace('http://localhost:5000/', './');
-        doc.profileImg = null;
-        doc.save();
+  const image = req.body.img;
+  User.findOne({ profileImg: image }, (err, doc) => {
+    if (err) throw err;
+    if (doc) {
+      var IMGpath = image.replace('http://localhost:5000/', './');
+      doc.profileImg = null;
+      doc.save();
+      try {
+        accessSync(IMGpath);
         unlinkSync(IMGpath);
-        res.send('Deleted');
+        res.send('Removed');
+      } catch (error) {
+        res.send('Removed');
       }
-    });
-  } catch (error) {
-    res.status(400).send('error');
-  }
+    }
+  });
 });
 
 module.exports = router;

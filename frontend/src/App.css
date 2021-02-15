@@ -304,3 +304,28 @@ label {
 }
 
 /* avatar menu end */
+
+/* Success Page */
+#success {
+  background: aliceblue;
+  min-height: calc(100vh - 50px);
+}
+#success .card {
+  margin-top: 50px;
+  padding: 30px 20px;
+}
+
+#success .woho {
+  font-size: 3rem;
+  font-weight: 800;
+  text-shadow: 0px 0px 10px #f9f5f54d;
+  color: #303030;
+}
+
+#success h2 {
+  font-weight: 800;
+  text-shadow: 0px 0px 10px #f9f5f54d;
+  color: #303030;
+}
+
+/* Success Page END*/

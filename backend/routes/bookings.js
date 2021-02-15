@@ -43,11 +43,24 @@ router.post('/add', async (req, res) => {
     await User.findById(id, async (err, doc) => {
       if (err) throw err;
       if (doc) {
+        console.log(req.body);
         const newBooking = new Booking({
-          service: 'null',
-          scheduleDate: '10 Dec 2020',
-          scheduleTime: '11:52pm',
-          price: '500',
+          service: {
+            serviceType: req.body.serviceType,
+            plan: req.body.plan,
+          },
+          vehicle: {
+            name: req.body.vehicle && req.body.vehicle,
+            brand: req.body.vehicleBrand,
+            vehicleType: req.body.vehicleType,
+          },
+          scheduleDate: req.body.date,
+          scheduleTime: req.body.time,
+          location: req.body.country,
+          payment: {
+            amount: req.body.price,
+            mode: req.body.paymentMethod,
+          },
           user_id: id,
         });
         await newBooking.save();
