@@ -7,6 +7,7 @@ const path = require('path');
 const { nanoid } = require('nanoid');
 const { unlinkSync, statSync, accessSync, access, existsSync } = require('fs');
 const { constants } = require('buffer');
+const bcrypt = require('bcryptjs');
 
 const isAdmin = (req, res, next) => {
   const { user } = req;
@@ -135,6 +136,29 @@ router.post('/rmvdp', async (req, res) => {
       }
     }
   });
+});
+
+router.post('/changepass', async (req, res) => {
+  const id = toID(req.user.id);
+  let oldpass = req.body.pass.current;
+  let newpass = req.body.pass.new;
+  try {
+    User.findById(id, async (err, doc) => {
+      if (err) throw err;
+      if (!doc) res.status(400).send('not found');
+      if (doc) {
+        let compared = await bcrypt.compare(oldpass, doc.password);
+        if (compared) {
+          const newEncrypted = await bcrypt.hash(newpass, 10);
+          doc.password = newEncrypted;
+          doc.save();
+          res.send('done');
+        } else res.status(400).send('old password not match');
+      }
+    });
+  } catch (err) {
+    res.status(400).send('login required');
+  }
 });
 
 module.exports = router;

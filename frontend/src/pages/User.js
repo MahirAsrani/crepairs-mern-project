@@ -1,7 +1,14 @@
 import React from 'react';
-import { Link, NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
+import {
+  Link,
+  NavLink,
+  Redirect,
+  Route,
+  Switch,
+  useRouteMatch,
+} from 'react-router-dom';
 import Booking from './Booking';
-import Profile from './Profile';
+import Profile, { Cpassword } from './Profile';
 import './profile.css';
 
 function User() {
@@ -9,6 +16,7 @@ function User() {
 
   return (
     <div className="bg-light">
+      <div className="backgrad"></div>
       <div className="container">
         <div className="row py-5">
           <div className="col-md-3 profile_menu">
@@ -29,7 +37,11 @@ function User() {
           <Switch>
             <Route exact path={`${path}/profile`} component={Profile} />
             <Route exact path={`${path}/booking`} component={Booking} />
-            <Route exact path={`${path}/changepassword`} component={Profile} />
+            <Route
+              exact
+              path={`${path}/changepassword`}
+              component={Cpassword}
+            />
           </Switch>
           {/* Comp switch */}
         </div>

@@ -23,6 +23,22 @@
   background-color: 0px 0px 10px rgb(170, 169, 169) !important;
   min-height: calc(100vh - 50px);
 }
+.bg-graid {
+  background: linear-gradient(#3168bd 20%, #f7f7f7 0%) !important;
+  min-height: calc(100vh - 50px);
+}
+
+.backgrad {
+  top: 0;
+  right: 0;
+  position: absolute;
+  background: linear-gradient(#3e85a4, #37599b);
+  min-height: 300px;
+  z-index: 0;
+  display: flex;
+  flex-direction: revert;
+  width: 100%;
+}
 
 .profile_menu li {
   min-width: 180px;
@@ -31,7 +47,7 @@
   margin: 10px 0;
   padding: 5px 20px;
   border-radius: 50px;
-  color: #858585;
+  color: #eee;
   cursor: pointer;
 }
 .profile_menu a.active > li,
@@ -72,4 +88,118 @@
 }
 #dp {
   display: none;
+}
+
+/* Booking Card Style */
+.iconset {
+  display: flex;
+}
+.iconset i {
+  margin: 0px 5px;
+}
+.iconset p {
+  margin-right: 15px;
+  margin-bottom: 0px;
+}
+
+.iconset h6 {
+  margin: 0;
+}
+hr.light {
+  margin: 2px;
+  border: 1px solid #b7b6b6;
+  width: 100%;
+}
+.minfo {
+  color: #104dc1;
+  padding: 10px 10px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.icon {
+  justify-content: end;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  margin: auto;
+}
+
+.icon > img {
+  width: 80px;
+  background: #e6faff;
+  padding: 10px;
+  box-shadow: 0px 0px 5px #080e1340;
+  border-radius: 5px;
+}
+
+.bookfoot p {
+  color: #303030;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+/* Booking Card Style END */
+
+/* book card new */
+.booking_card {
+  background: #f0f1f4;
+  border: 1px solid #dbd2d2;
+  border-radius: 5px;
+  margin: 0;
+}
+.booking_card .d-col {
+  display: flex;
+  flex-direction: column;
+  margin-right: 2rem;
+}
+
+.booking_card .irow > i {
+  align-self: center;
+}
+
+.booking_card .irow > p {
+  margin-left: 5px;
+  margin-right: 20px;
+  font-size: 1rem;
+}
+
+.booking_card .icon_contain {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.booking_card span.title {
+  color: #321177;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.booking_card p {
+  color: #303030;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.buttonView {
+  color: #fff;
+  font-size: 1rem;
+  padding: 2px 35px;
+  font-weight: 400;
+  background-color: #41479b;
+  margin: 5px;
+}
+.buttonView:hover {
+  color: white;
+  background: #333aa1;
+}
+
+.booking_card hr.light {
+  border: 1px solid rgb(210, 210, 210);
+  margin: 5px 0;
+}
+
+.booking_card .price {
+  font-size: 1.1rem;
 }

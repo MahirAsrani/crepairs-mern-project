@@ -93,7 +93,7 @@ function Dashboard() {
                 <div className="user-dropdown">
                   <ul className="drop-li">
                     <li>
-                      <Link to="/profile">
+                      <Link to="/user/profile">
                         <i className="far fa-user"></i>
                         <span> Profile</span>
                       </Link>

@@ -213,3 +213,70 @@ function Profile() {
 }
 
 export default Profile;
+
+export const Cpassword = () => {
+  const { user, auth, setHeader, refresh } = useContext(myContext);
+
+  const [pass, setpass] = useState({
+    current: null,
+    new: null,
+    confirm: null,
+  });
+
+  function changepass() {
+    if (pass.new === pass.confirm) {
+      axios
+        .post('/api/user/changepass', { pass }, { withCredentials: true })
+        .then(() => {
+          toast.success('password changed');
+          setpass({ current: null, new: null, confirm: null });
+        })
+        .catch((err) => console.log(err));
+    } else toast.error('password does not match');
+  }
+
+  return (
+    <div className="col-md-6 shadow card profilecard p-5">
+      <h3>Change Password</h3>
+      <div className="row mt-3">
+        <div className="col-12 mb-3">
+          <h6>Current Password</h6>
+          <input
+            type="password"
+            className="form-control"
+            value={pass.current}
+            onChange={(p) => setpass({ ...pass, current: p.target.value })}
+          />
+        </div>
+        <div className="col-6">
+          <h6>New password</h6>
+          <input
+            type="password"
+            className="form-control"
+            value={pass.new}
+            onChange={(p) => setpass({ ...pass, new: p.target.value })}
+          />
+        </div>
+        <div className="col-6">
+          <h6>Confirm Password</h6>
+          <input
+            type="password"
+            className="form-control"
+            value={pass.confirm}
+            onChange={(p) => setpass({ ...pass, confirm: p.target.value })}
+          />
+        </div>
+
+        <div className="col-12 text-right mt-4">
+          <button
+            onClick={() => changepass()}
+            type="submit"
+            className="btn btn-primary"
+          >
+            Change password
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

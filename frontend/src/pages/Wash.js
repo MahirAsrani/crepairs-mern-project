@@ -201,7 +201,7 @@ function Wash() {
               <div className="user-dropdown">
                 <ul className="drop-li">
                   <li>
-                    <Link to="/profile">
+                    <Link to="/user/profile">
                       <i className="far fa-user"></i>
                       <span> Profile</span>
                     </Link>
@@ -215,8 +215,10 @@ function Wash() {
                     </li>
                   ) : (
                     <li>
-                      <i className="far fa-clipboard-list-check"></i>
-                      <span> My Bookings </span>
+                      <Link to="/user/booking">
+                        <i className="far fa-clipboard-list-check"></i>
+                        <span> My Bookings </span>
+                      </Link>
                     </li>
                   )}
                   <li onClick={() => logout()}>

@@ -96,5 +96,4 @@ router.post('/reset/', (req, res) => {
     res.send(error);
   }
 });
-
 module.exports = router;

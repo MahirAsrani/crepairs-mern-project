@@ -24,7 +24,7 @@ export const Success = () => {
             {done && (
               <>
                 <span className="woho">Woo Hoo!</span>
-                <h2>Booking Successful</h2>
+                <h2>Your pickup is confirmed</h2>
                 <Link to="">View Status</Link>
               </>
             )}

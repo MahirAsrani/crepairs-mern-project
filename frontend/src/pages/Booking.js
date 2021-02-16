@@ -17,32 +17,46 @@ function Booking() {
   }, []);
 
   return (
-    <div className="col-md-6 shadow card p-5">
-      <h3>Your Booking</h3>
+    <div className="col-12 col-md-8 shadow profilecard  card p-5">
+      <h3>Your Bookings</h3>
       <div className="row">
+        {/*  MINE*/}
         {data &&
           data.map((d) => (
             <>
-              <div className="col-12 card p-3 my-2 shadow">
-                <div className="row">
-                  <div className="col-12 d-flex justify-content-between">
-                    <h6>Service : {d.service.serviceType}</h6>
-                    <h6>Car Type : {d.vehicle.vehicleType} </h6>
+              <div className="col-12 col-lg-6 my-3">
+                <div className="row booking_card p-2">
+                  <div className="col-12">
+                    <div className="row">
+                      <div className="col-6">
+                        <span className="title">Service</span>
+                        <p>{d.service.serviceType}</p>
+                      </div>
+                      <div className="col-6">
+                        <span className="title">Plan</span>
+                        <p>{d.service.plan}</p>
+                      </div>
+                      <div className="col-12 my-1">
+                        <span className="title">Scheduled Date & Time</span>
+                        <div className="d-flex irow">
+                          <i class="far fa-calendar-alt"></i>
+                          <p>{new Date(d.scheduleDate).toDateString()}</p>
+                          <i class="fal fa-clock"></i>
+                          <p>{d.scheduleTime}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="col-12 d-flex justify-content-between">
-                    <h6>Plan : {d.service.plan}</h6>
-                    <h6>Price: {d.payment.amount}</h6>
-                  </div>
-                  <div className="col-12 d-flex justify-content-between">
-                    <p>
-                      Pickup date : {new Date(d.scheduleDate).toDateString()}{' '}
-                    </p>
-                    <p> Scheduled Time :{d.scheduleTime} </p>
+                  <hr className="light" />
+                  <div className="col-12 d-flex justify-content-between align-items-center">
+                    <p className="price"> Rs. {d.payment.amount}</p>
+                    <div className="btn buttonView">View</div>
                   </div>
                 </div>
               </div>
             </>
           ))}
+        {/*  MINE END*/}
       </div>
     </div>
   );
