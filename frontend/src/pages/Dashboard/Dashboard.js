@@ -6,9 +6,9 @@ import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Wash from '../Wash';
 import './dash.css';
-import AdminScreen from './AdminScreen';
 import { ManageCars } from './ManageCars';
 import { ManageUsers } from './ManageUsers';
+import CarList from './CarList';
 
 function Dashboard() {
   let { path, url } = useRouteMatch();
@@ -45,26 +45,33 @@ function Dashboard() {
                   </li>
                 </NavLink>
 
-                <li>
-                  <i class="fal fa-calendar-alt"></i>
-                  <span>Bookings</span>
-                </li>
-                <li>
-                  <i class="fal fa-cog"></i>
-                  <span>Settings</span>
-                </li>
-                {user.isAdmin && (
-                  <NavLink to={`${url}/admin`} activeClassName="active">
-                    <li>
-                      <i class="fal fa-user-shield"></i>
-                      <span>Admin</span>
-                    </li>
-                  </NavLink>
-                )}
-                <li>
-                  <i class="fal fa-sign-out-alt"></i>
-                  <span>logout</span>
-                </li>
+                <NavLink to={`${url}/bookings`} exact activeClassName="active">
+                  <li>
+                    <i class="fal fa-calendar-alt"></i>
+                    <span>Bookings</span>
+                  </li>
+                </NavLink>
+
+                <NavLink to={`${url}/payments`} exact activeClassName="active">
+                  <li>
+                    <i class="fal fa-rupee-sign"></i>
+                    <span>Payments</span>
+                  </li>
+                </NavLink>
+
+                <NavLink to={`${url}/cars`} exact activeClassName="active">
+                  <li>
+                    <i class="fal fa-car "></i>
+                    <span>Vehicles</span>
+                  </li>
+                </NavLink>
+
+                <NavLink to={`${url}/users`} activeClassName="active">
+                  <li>
+                    <i class="fal fa-user-shield"></i>
+                    <span>Users</span>
+                  </li>
+                </NavLink>
               </ul>
             </div>
           </div>
@@ -111,7 +118,7 @@ function Dashboard() {
                         <span> My Bookings </span>
                       </li>
                     )}
-                    <li onClick={() => logout()}>
+                    <li>
                       <i className="far fa-sign-out-alt"></i>
                       <span> Logout</span>
                     </li>
@@ -124,13 +131,9 @@ function Dashboard() {
           <div className="content-wrap">
             <Switch>
               <Route exact path={`${path}`} component={Dash} />
-              <Route exact path={`${path}/admin`} component={AdminScreen} />
-              <Route exact path={`${path}/admin/cars`} component={ManageCars} />
-              <Route
-                exact
-                path={`${path}/admin/users`}
-                component={ManageUsers}
-              />
+              <Route exact path={`${path}/cars`} component={ManageCars} />
+              <Route exact path={`${path}/cars/audi`} component={CarList} />
+              <Route exact path={`${path}/users`} component={ManageUsers} />
             </Switch>
           </div>
         </div>

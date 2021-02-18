@@ -138,7 +138,50 @@
 
 h3 {
   font-size: 2rem;
+  font-weight: 600;
   color: #040851;
+}
+
+.about {
+}
+
+.about .i-row > .icon {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 10px;
+  background: linear-gradient(#ea3c3c, #c81313);
+  border-radius: 12px;
+  width: 50px;
+  height: 50px;
+  color: white;
+  margin: 0 15px;
+}
+
+.about .i-row > h4 {
+  margin: 0;
+  padding: 0;
+  align-self: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.about p {
+  line-height: 35px;
+}
+.about .i-row {
+  display: flex;
+  flex-direction: row;
+  margin: 15px;
+}
+.about .col-4 {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.d-col {
+  display: flex;
+  flex-direction: column;
 }
 
 /* login page */

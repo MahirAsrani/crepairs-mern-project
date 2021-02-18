@@ -52,9 +52,9 @@
 }
 .profile_menu a.active > li,
 .profile_menu li:hover {
-  background: #b5daec;
+  background: #e3e3e3;
   border-radius: 50px;
-  color: #242424;
+  color: #39689e;
 }
 
 .profilecard {
@@ -142,7 +142,7 @@ hr.light {
 
 /* book card new */
 .booking_card {
-  background: #f0f1f4;
+  background: #f0f9fb;
   border: 1px solid #dbd2d2;
   border-radius: 5px;
   margin: 0;
@@ -170,14 +170,14 @@ hr.light {
 }
 
 .booking_card span.title {
-  color: #321177;
+  color: #666;
   font-size: 0.8rem;
   font-weight: 500;
 }
 
 .booking_card p {
   color: #303030;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
   margin: 0;
 }
@@ -187,12 +187,12 @@ hr.light {
   font-size: 1rem;
   padding: 2px 35px;
   font-weight: 400;
-  background-color: #41479b;
+  background-color: #2991b0;
   margin: 5px;
 }
 .buttonView:hover {
   color: white;
-  background: #333aa1;
+  background: #237f9b;
 }
 
 .booking_card hr.light {

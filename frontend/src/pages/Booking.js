@@ -20,7 +20,6 @@ function Booking() {
     <div className="col-12 col-md-8 shadow profilecard  card p-5">
       <h3>Your Bookings</h3>
       <div className="row">
-        {/*  MINE*/}
         {data &&
           data.map((d) => (
             <>

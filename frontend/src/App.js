@@ -83,7 +83,7 @@ const Header = ({ user }) => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Scroll.Link to="services" smooth duration={500}>
+              <Scroll.Link to="about" smooth duration={500}>
                 About
               </Scroll.Link>
             </li>

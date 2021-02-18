@@ -39,7 +39,7 @@ const Login = () => {
       <div className="login_left"></div>
       <div className="login_right">
         <div className="login_inside">
-          <h3>Get Started</h3>
+          <h3>Welcome back!</h3>
 
           <form onSubmit={submitlogin} className="form">
             <label>Email</label>

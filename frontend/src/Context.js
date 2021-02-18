@@ -14,10 +14,16 @@ function Context(props) {
   }, [auth]);
 
   const fetchuseragain = () => {
-    axios.get('/api/user', { withCredentials: true }).then((u) => {
-      setUser(u.data);
-      setAuth(true);
-    });
+    axios
+      .get('/api/user', { withCredentials: true })
+      .then((u) => {
+        setUser(u.data);
+        setAuth(true);
+      })
+      .catch((err) => {
+        setUser(null);
+        setAuth(false);
+      });
   };
 
   return (

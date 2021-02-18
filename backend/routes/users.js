@@ -41,10 +41,14 @@ router.get('/all', isAdmin, async (req, res) => {
 
 // get own data
 router.get('/', async (req, res) => {
-  await User.findById(toID(req.user.id), (err, data) => {
-    if (err) throw err;
-    if (data) res.send(data);
-  });
+  try {
+    await User.findById(toID(req.user.id), (err, data) => {
+      if (err) throw err;
+      if (data) res.send(data);
+    });
+  } catch {
+    res.status(400).send('not loggedin');
+  }
 });
 
 // edit with full rights for admin

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { myContext } from '../Context';
 import './profile.css';
@@ -102,6 +102,7 @@ function Profile() {
               </div>
             </div>
             <div className="col-9 mt-auto mb-3">
+              <h4 className="ml-3">{user.name}</h4>
               <button
                 className="btn profile-btn upload"
                 onClick={() => imageupload()}
@@ -215,13 +216,24 @@ function Profile() {
 export default Profile;
 
 export const Cpassword = () => {
-  const { user, auth, setHeader, refresh } = useContext(myContext);
+  const { user, auth, setHeader, refresh, setAuth } = useContext(myContext);
+  const history = useHistory();
 
   const [pass, setpass] = useState({
     current: null,
     new: null,
     confirm: null,
   });
+
+  function logout() {
+    axios
+      .get('/api/auth/logout', {}, { withCredentials: true })
+      .then(() => {
+        setAuth(false);
+        history.push('/signin');
+      })
+      .catch((er) => console.log(er));
+  }
 
   function changepass() {
     if (pass.new === pass.confirm) {
@@ -230,8 +242,9 @@ export const Cpassword = () => {
         .then(() => {
           toast.success('password changed');
           setpass({ current: null, new: null, confirm: null });
+          logout();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toast.error('current password is incorrect'));
     } else toast.error('password does not match');
   }
 

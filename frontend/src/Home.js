@@ -38,23 +38,53 @@ function Home() {
         </div>
       </section>
 
+      <div className="container " id="about">
+        <div className="row about p-3 justify-content-center">
+          <div className="col-7 p-5">
+            <h3>Why Choose Crepairs ?</h3>
+            <p>
+              Crepairs is a car service platform where we provide repair, wash
+              services for all cars. We provide fast and efficient car related
+              services to our customers. It saves the time of our customers as
+              they don’t have to visit the workshop The customers can select
+              services and take an appointment then our trained mechanics will
+              visit their place.
+            </p>
+          </div>
+          <div className="col-4">
+            <div className="row d-col">
+              <div className="i-row">
+                <div className="icon">
+                  <i class="fal fa-tools fa-2x"></i>
+                </div>
+                <h4>100% Assured Service</h4>
+              </div>
+              <div className="i-row">
+                <div className="icon">
+                  <i class="fal fa-users fa-2x"></i>
+                </div>
+                <h4>Experienced workers</h4>
+              </div>
+              <div className="i-row">
+                <div className="icon">
+                  <i class="fal fa-car fa-2x"></i>
+                </div>
+                <h4>Free pick & drop</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="container">
         <div className="row my-5 homerow">
           <div className="col-12 text-center">
-            <h3>How can we help</h3>
-            <p>
-              We provide fast and efficient car related services to our
-              customers. It saves the time of our customers
-              <br /> as they don’t have to visit the workshop but the customers
-              can select services and <br />
-              take an appointment then our trained mechanics will visit their
-              place.
-            </p>
             <div className="row my-3">
               <div className="col-md-4">
                 <img src={car2} alt="" style={{ width: 350 }} />
               </div>
               <div className="col-md-8" id="services">
+                <h3>Our Services</h3>
                 <div className="row mt-4">
                   <div className="col-md-4">
                     <div className="card">

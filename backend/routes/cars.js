@@ -59,26 +59,35 @@ router.post('/brand/add', async (req, res) => {
   }
 });
 
-router.patch('/add', async (req, res) => {
+router.post('/addbrand', async (req, res) => {
+  const brandName = req.body.name;
+  const myFile = req.files.brandIcon;
   try {
-    const id = toID(req.body.id);
-    const objModels = {
-      Name: '{ type: String }',
-      Image: 'url',
-    };
+    Vehicle.findOne({ brand: brandName }, async (err, doc) => {
+      if (err) throw err;
+      if (doc) res.status(400).send(brandName + ' already exists');
+      if (!doc) {
+        let newFile;
 
-    Vehicle.findByIdAndUpdate(
-      id,
-      { $push: { models: objModels } },
-      { new: true },
-      function (err, success) {
-        if (err) throw err;
-        console.log(success);
-        res.send('done');
+        if (myFile) {
+          const extName = path.extname(myFile.name);
+          const baseName = path.basename(myFile.name, extName);
+          // Use the mv() method to place the file somewhere on your server
+          newFile = baseName + nanoid(5) + extName;
+          myFile.mv('./uploads/media/brands/' + newFile);
+        }
+
+        const newBrand = new Vehicle({
+          brand: brandName,
+          brandImage: 'http://localhost:5000/uploads/media/brands/' + newFile,
+        });
+
+        await newBrand.save();
+        res.send('Brand Added');
       }
-    );
+    });
   } catch (error) {
-    res.send('error not loggedin' + error);
+    res.send('error' + error);
   }
 });
 
