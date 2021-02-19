@@ -11,11 +11,25 @@ function Wash() {
   const history = useHistory();
   setHeader(false);
 
+  const [brands, setbrands] = useState(null);
+  useEffect(() => {
+    fetchbrands();
+  }, []);
+
+  function fetchbrands() {
+    axios
+      .get('/api/cars/', { withCredentials: true })
+      .then(({ data }) => {
+        setbrands(data);
+      })
+      .catch((err) => console.log(err));
+  }
+
   const [step, setStep] = useState(1);
   const [animate, setAnimate] = useState(false);
 
   const [form, setForm] = useState({
-    vehicleBrand: 'audi',
+    vehicleBrand: 'Other',
     vehicleType: 'Hatchback',
     plan: null,
     serviceType: 'Car Spa',
@@ -245,10 +259,15 @@ function Wash() {
                   <h2>Car Information</h2>
 
                   <label>Vehicle Brand</label>
-                  <select>
-                    <option>Audi</option>
-                    <option>Bmw</option>
-                    <option>Kia</option>
+
+                  <select
+                    value={form.vehicleBrand}
+                    onChange={(e) =>
+                      setForm({ ...form, vehicleBrand: e.target.value })
+                    }
+                  >
+                    {brands && brands.map((b) => <option>{b.brand}</option>)}
+                    <option>Other</option>
                   </select>
 
                   <label>Vehicle Type</label>

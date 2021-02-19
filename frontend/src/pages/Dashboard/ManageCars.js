@@ -16,13 +16,17 @@ export const ManageCars = () => {
   const [cars, setcars] = useState(null);
 
   useEffect(() => {
+    fetchbrands();
+  }, []);
+
+  function fetchbrands() {
     axios
       .get('/api/cars/', { withCredentials: true })
       .then(({ data }) => {
         setcars(data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }
 
   function addBrand(e) {
     e.preventDefault();
@@ -38,6 +42,7 @@ export const ManageCars = () => {
           name: null,
           image: null,
         });
+        fetchbrands();
       })
       .catch((e) => console.log('error'));
     setmodal(!modal);
@@ -55,7 +60,7 @@ export const ManageCars = () => {
           {cars &&
             cars.map((c) => (
               <div className="col-md-2">
-                <Link to={`${url}/audi`}>
+                <Link to={`${url}/${c._id}`}>
                   <div className="card ">
                     <img src={c.brandImage} alt="Brand" />
                   </div>

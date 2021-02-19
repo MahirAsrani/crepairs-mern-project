@@ -132,7 +132,7 @@ function Dashboard() {
             <Switch>
               <Route exact path={`${path}`} component={Dash} />
               <Route exact path={`${path}/cars`} component={ManageCars} />
-              <Route exact path={`${path}/cars/audi`} component={CarList} />
+              <Route exact path={`${path}/cars/:id`} component={CarList} />
               <Route exact path={`${path}/users`} component={ManageUsers} />
             </Switch>
           </div>

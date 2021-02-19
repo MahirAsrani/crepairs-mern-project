@@ -5,13 +5,13 @@ const vehicleSchema = new mongoose.Schema({
   brandImage: { type: String },
   models: [
     {
-      Name: { type: String },
+      Name: { type: String, required: true },
       Image: { type: String },
       periodicService: [
         {
           name: { type: String, required: true },
           price: { type: Number, required: true },
-          highlights: [{ opt: { type: String, required: true } }],
+          highlights: [{ type: String, required: true }],
           validity: { type: String, required: true },
         },
       ],

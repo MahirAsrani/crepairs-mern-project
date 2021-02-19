@@ -25,43 +25,52 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/brand/add', async (req, res) => {
+router.get('/model/:id', async (req, res) => {
+  const id = toID(req.params.id);
+  await Vehicle.findById(id, (err, data) => {
+    if (err) throw err;
+    if (data) res.send(data);
+  });
+});
+
+router.post('/model/:id', async (req, res) => {
+  let myFile;
+  if (req.files) myFile = req.files.modelImg;
+  const carModel = req.body.model;
   try {
-    const myFile = req.files.sampleFile;
-    const brand = req.body.brand;
-    if (!brand) throw res.status(400).send('brand name required');
-
-    await Vehicle.findOne({ brand: brand }, async (err, doc) => {
+    const id = toID(req.params.id);
+    if (!carModel) throw res.status(400).send('model is required');
+    await Vehicle.findById(id, async (err, doc) => {
       if (err) throw err;
-      if (doc) res.status(400).send(brand + ' already exists');
-      if (!doc) {
+      if (doc) {
         let newFile;
-
         if (myFile) {
           const extName = path.extname(myFile.name);
           const baseName = path.basename(myFile.name, extName);
           // Use the mv() method to place the file somewhere on your server
           newFile = baseName + nanoid(5) + extName;
-          myFile.mv('./uploads/media/' + newFile);
+          myFile.mv('./uploads/media/cars/' + newFile);
         }
-
-        const newBrand = new Vehicle({
-          brand: brand,
-          brandImage: 'http://localhost:5000/uploads/media/' + newFile,
-        });
-
-        await newBrand.save();
-        res.send('Brand Added');
+        const car = {
+          Name: carModel,
+          ...(myFile && {
+            Image: `http://localhost:5000/uploads/media/cars/${newFile}`,
+          }),
+        };
+        doc.models.push(car);
+        await doc.save();
+        res.send('model Added');
       }
     });
   } catch (error) {
-    res.send('error not loggedin' + error);
+    res.send('no maker found for this id' + error);
   }
 });
 
 router.post('/addbrand', async (req, res) => {
   const brandName = req.body.name;
-  const myFile = req.files.brandIcon;
+  let myFile;
+  req.files && (myFile = req.files.brandIcon);
   try {
     Vehicle.findOne({ brand: brandName }, async (err, doc) => {
       if (err) throw err;
