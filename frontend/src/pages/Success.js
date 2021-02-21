@@ -5,7 +5,7 @@ import Lottie from 'lottie-react';
 import tick from '../assets/success-indicator.json';
 
 export const Success = () => {
-  const { user, setAuth, auth, setHeader, refresh } = useContext(myContext);
+  const { setHeader } = useContext(myContext);
   const history = useHistory();
   setHeader(true);
   const [done, setDone] = useState(false);
@@ -25,7 +25,7 @@ export const Success = () => {
               <>
                 <span className="woho">Woo Hoo!</span>
                 <h2>Your pickup is confirmed</h2>
-                <Link to="">View Status</Link>
+                <Link to="user/booking">View Status</Link>
               </>
             )}
           </div>

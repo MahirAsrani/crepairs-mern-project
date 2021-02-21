@@ -9,6 +9,7 @@ import './dash.css';
 import { ManageCars } from './ManageCars';
 import { ManageUsers } from './ManageUsers';
 import CarList from './CarList';
+import PaymentsList from './PaymentsList';
 
 function Dashboard() {
   let { path, url } = useRouteMatch();
@@ -131,6 +132,7 @@ function Dashboard() {
           <div className="content-wrap">
             <Switch>
               <Route exact path={`${path}`} component={Dash} />
+              <Route exact path={`${path}/payments`} component={PaymentsList} />
               <Route exact path={`${path}/cars`} component={ManageCars} />
               <Route exact path={`${path}/cars/:id`} component={CarList} />
               <Route exact path={`${path}/users`} component={ManageUsers} />

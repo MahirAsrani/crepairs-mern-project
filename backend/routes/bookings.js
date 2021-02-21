@@ -1,9 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { nanoid } = require('nanoid');
 const Booking = require('../models/booking');
 const router = express.Router();
 const User = require('../models/user');
 const toID = mongoose.Types.ObjectId;
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
 
 const isAdmin = (req, res, next) => {
   const { user } = req;
@@ -30,6 +33,7 @@ router.get('/:id', async (req, res) => {
   const id = req.params.id;
   await Booking.find({ user_id: toID(id) })
     .populate('user_id')
+    .sort({ bookedOn: -1 })
     .exec((err, data) => {
       if (err) throw err;
       if (data) res.send(data);
@@ -43,7 +47,24 @@ router.post('/add', async (req, res) => {
     await User.findById(id, async (err, doc) => {
       if (err) throw err;
       if (doc) {
+        let isPaid = false;
         console.log(req.body);
+        console.log(isPaid);
+
+        if (req.body.paymentMethod === 'Online') {
+          let expectedSignature = crypto
+            .createHmac('sha256', 'mPXvcK4LTbamGbBqGEP9wA0N')
+            .update(
+              req.body.razorpay_order_id + '|' + req.body.razorpay_payment_id
+            )
+            .digest('hex');
+          console.log('sig' + req.body.razorpay_signature);
+          console.log('sig' + expectedSignature);
+
+          if (expectedSignature === req.body.razorpay_signature) isPaid = true;
+          else res.status(400).send('Payment verification failed');
+        }
+
         const newBooking = new Booking({
           service: {
             serviceType: req.body.serviceType,
@@ -60,6 +81,7 @@ router.post('/add', async (req, res) => {
           payment: {
             amount: req.body.price,
             mode: req.body.paymentMethod,
+            Paid: isPaid ? true : false,
           },
           user_id: id,
         });
@@ -69,6 +91,36 @@ router.post('/add', async (req, res) => {
     });
   } catch (error) {
     res.send('error not loggedin' + error);
+  }
+});
+
+const razorpay = new Razorpay({
+  key_id: 'rzp_test_G4UmS4waS0JFhP',
+  key_secret: 'mPXvcK4LTbamGbBqGEP9wA0N',
+});
+
+router.post('/razorpay', async (req, res) => {
+  const payment_capture = 1;
+  const amount = req.body.amount;
+  const currency = 'INR';
+
+  const options = {
+    amount: amount * 100,
+    currency,
+    receipt: nanoid(10),
+    payment_capture,
+  };
+
+  try {
+    const response = await razorpay.orders.create(options);
+    console.log(response);
+    res.send({
+      id: response.id,
+      currency: response.currency,
+      amount: response.amount,
+    });
+  } catch (error) {
+    console.log(error);
   }
 });
 

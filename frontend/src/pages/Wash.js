@@ -5,16 +5,30 @@ import './services.css';
 import { CSSTransition } from 'react-transition-group';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { keys } from './Razorpay/keys';
 
 function Wash() {
-  const { user, setAuth, auth, setHeader, refresh } = useContext(myContext);
+  const { user, setAuth, auth, setHeader } = useContext(myContext);
   const history = useHistory();
   setHeader(false);
 
   const [brands, setbrands] = useState(null);
   useEffect(() => {
     fetchbrands();
-  }, []);
+    if (user) {
+      setForm((f) => ({
+        ...f,
+        fullName: user ? user.name : null,
+        phoneNo: user ? user.phone : null,
+        email: user ? user.email : null,
+
+        houseNo: user ? user.address && user.address.houseNo : null,
+        locality: user ? user.address && user.address.locality : null,
+        city: user ? user.address && user.address.city : null,
+        pincode: user ? user.address && user.address.pincode : null,
+      }));
+    }
+  }, [user]);
 
   function fetchbrands() {
     axios
@@ -47,6 +61,13 @@ function Wash() {
     pincode: user ? user.address && user.address.pincode : null,
     country: 'INDIA',
     paymentMethod: 'onDelivery',
+
+    razorpay: {
+      razorpay_payment_id: null,
+      razorpay_order_id: null,
+      razorpay_signature: null,
+      loading: true,
+    },
   });
 
   const plans = [
@@ -93,10 +114,15 @@ function Wash() {
 
   const handleContinue = () => {
     if (step === 3) {
-      axios
-        .post('/api/book/add', form, { withCredentials: true })
-        .then((e) => history.push('/success'))
-        .catch((e) => console.log(e));
+      if (form.paymentMethod === 'Online') {
+        displayRazorpay();
+      } else
+        axios
+          .post('/api/book/add', form, { withCredentials: true })
+          .then((e) => {
+            history.push('/success');
+          })
+          .catch((e) => console.log(e));
     }
     if (step !== 3) {
       switch (step) {
@@ -144,6 +170,72 @@ function Wash() {
       setStep((e) => e - 1);
     }
   };
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  }
+
+  async function onlineCompleted(response) {
+    const {
+      razorpay_payment_id,
+      razorpay_order_id,
+      razorpay_signature,
+    } = response;
+
+    axios
+      .post(
+        '/api/book/add',
+        { ...form, razorpay_payment_id, razorpay_order_id, razorpay_signature },
+        { withCredentials: true }
+      )
+      .then((e) => {
+        history.push('/success');
+      })
+      .catch((e) => console.log(e));
+  }
+
+  async function displayRazorpay() {
+    const res = await loadScript(
+      'https://checkout.razorpay.com/v1/checkout.js'
+    );
+    if (!res) {
+      alert('Razorpay SDK Failed to load are you online ?');
+      return;
+    }
+
+    const data = await axios
+      .post('/api/book/razorpay', { amount: form.price })
+      .then((d) => d.data);
+
+    const options = {
+      key: keys.keyId,
+      currency: 'INR',
+      amount: (form.price * 100).toString(),
+      order_id: data.id,
+      name: 'crepairs',
+      description: 'Thank you for nothing.',
+      handler: (response) => {
+        onlineCompleted(response);
+      },
+      prefill: {
+        name: form.fullName,
+        email: form.email,
+        contact: form.phoneNo,
+      },
+    };
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  }
 
   const handlePlanSelect = (name, dur, price) => {
     setForm({ ...form, plan: name, duration: dur, price: price });
@@ -402,7 +494,7 @@ function Wash() {
                       <input
                         type="text"
                         placeholder="+91"
-                        maxLength="15"
+                        maxLength="10"
                         className="form-control"
                         value={form.phoneNo}
                         onChange={(e) =>
