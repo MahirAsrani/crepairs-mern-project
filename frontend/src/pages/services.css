@@ -85,7 +85,7 @@ select {
 }
 .left_area h2 {
   font-weight: 600;
-  color: #2f2f2f;
+  color: #484848;
 }
 .center {
   text-align: center;
@@ -294,3 +294,63 @@ h4 {
 .appt {
   background: #e4f4ff;
 }
+/* car repair */
+
+#repair .step1,
+.step2,
+.step3 {
+  min-height: 450px;
+}
+
+#repair select {
+  background-color: #ffd772;
+}
+#repair .active .circle,
+#repair .active .circle > i {
+  background-color: #ffd772;
+  color: #646464;
+}
+#repair .circle {
+  border: 1.6px solid #ddac36;
+}
+#repair .line {
+  background-color: #cacaca;
+}
+#repair .sFoot .Continue {
+  font-size: 18px;
+  color: #363636;
+  background: linear-gradient(#ffd440, #ffb900);
+  box-shadow: 0px 5px 20px #ffd772;
+}
+#repair .opt {
+  display: flex;
+  justify-content: space-around;
+  max-width: 1100px;
+  margin: auto;
+}
+#repair .opt img {
+  max-height: 60px;
+  max-width: 60px;
+  margin-bottom: 10px;
+}
+#repair .opt .card {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px 10px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 15px #00000025;
+  cursor: pointer;
+}
+#repair .opt .card > p {
+  padding: 0;
+  margin: 0;
+}
+
+#repair .opt .card:hover,
+#repair .opt .card.active {
+  background: #e3e3e3;
+  scale: 1.08;
+}
+
+/* car repair end */ ;

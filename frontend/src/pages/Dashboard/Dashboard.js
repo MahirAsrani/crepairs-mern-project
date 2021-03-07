@@ -115,11 +115,13 @@ function Dashboard() {
                       </li>
                     ) : (
                       <li>
-                        <i className="far fa-clipboard-list-check"></i>
-                        <span> My Bookings </span>
+                        <Link to="/user/booking">
+                          <i className="far fa-clipboard-list-check"></i>
+                          <span> My Bookings </span>
+                        </Link>
                       </li>
                     )}
-                    <li>
+                    <li onClick={() => logout()}>
                       <i className="far fa-sign-out-alt"></i>
                       <span> Logout</span>
                     </li>

@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import Home from './Home';
-import Login, { ForgotPassword, NewPassword } from './Login';
+import Login, { ForgotPassword, NewPassword, RegisterPage } from './Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import { myContext } from './Context';
 import { useContext } from 'react';
@@ -19,6 +19,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Success } from './pages/Success';
 import User from './pages/User';
+import { Repair } from './pages/Repair';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
@@ -31,6 +32,7 @@ function App(props) {
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route path="/services/car-spa" component={Wash} />
+          <Route path="/services/repair" component={Repair} />
           <Route path="/success" component={Success} />
 
           {auth ? (
@@ -41,6 +43,7 @@ function App(props) {
           ) : (
             <>
               <Route exact path="/signin" component={Login} />
+              <Route exact path="/signup" component={RegisterPage} />
               <Route exact path="/signin/reset" component={ForgotPassword} />
               <Route
                 exact

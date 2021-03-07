@@ -87,14 +87,16 @@ function Home() {
                 <h3>Our Services</h3>
                 <div className="row mt-4">
                   <div className="col-md-4">
-                    <div className="card">
-                      <h5>Repair</h5>
-                      <img src={repair} alt="" />
-                      <p>
-                        Carry out mechanical repairs like AC, Accessory
-                        Installation , remove dents etc..
-                      </p>
-                    </div>
+                    <Link to="/services/repair">
+                      <div className="card">
+                        <h5>Repair</h5>
+                        <img src={repair} alt="" />
+                        <p>
+                          Carry out mechanical repairs like AC, Accessory
+                          Installation , remove dents etc..
+                        </p>
+                      </div>
+                    </Link>
                   </div>
 
                   <div className="col-md-4">

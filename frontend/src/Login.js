@@ -69,7 +69,7 @@ const Login = () => {
           </form>
 
           <p className="info">
-            Don't have an account, <Link to="/">Sign up</Link>
+            Don't have an account, <Link to="/signup">Sign up</Link>
           </p>
         </div>
       </div>
@@ -204,6 +204,92 @@ export const NewPassword = ({ match }) => {
               </p>
             </form>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const RegisterPage = () => {
+  const [email, setemail] = useState('');
+  const [pass, setpass] = useState('');
+  const [pass2, setpass2] = useState('');
+  const [fullname, setfullname] = useState('');
+  const history = useHistory();
+
+  function reg(e) {
+    e.preventDefault();
+    if (pass === pass2)
+      axios
+        .post(
+          '/api/auth/register',
+          {
+            name: fullname,
+            email: email,
+            password: pass,
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          toast.success('Registered');
+          history.push('/signin');
+        })
+        .catch((er) => toast.error('Email already in use'));
+    else toast.error('password does not match');
+  }
+
+  return (
+    <div className="login_parent">
+      <div className="login_left"></div>
+      <div className="login_right">
+        <div className="login_inside">
+          <h3>Register !</h3>
+
+          <form onSubmit={reg} className="form">
+            <label>Full Name</label>
+            <input
+              onChange={(e) => setfullname(e.target.value)}
+              value={fullname}
+              className="textfield"
+              type="text"
+              placeholder="John Doe"
+              required
+            />
+            <label>Email</label>
+            <input
+              onChange={(e) => setemail(e.target.value)}
+              value={email}
+              className="textfield"
+              type="email"
+              placeholder="xyz@email.com"
+              required
+            />
+            <label>Password</label>
+            <input
+              className="textfield"
+              onChange={(e) => setpass(e.target.value)}
+              value={pass}
+              type="password"
+              placeholder="******"
+              required
+            />
+            <label>Confirm Password</label>
+            <input
+              className="textfield"
+              onChange={(e) => setpass2(e.target.value)}
+              value={pass2}
+              type="password"
+              placeholder="******"
+              required
+            />
+            <button type="submit">
+              Sign up <i className="gg-arrow-right"></i>
+            </button>
+          </form>
+
+          <p className="info">
+            Already have an account, <Link to="/signin">Sign in</Link>
+          </p>
         </div>
       </div>
     </div>

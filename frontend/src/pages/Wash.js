@@ -497,7 +497,9 @@ function Wash() {
                         maxLength="10"
                         className="form-control"
                         value={form.phoneNo}
+                        pattern="[0-9]*"
                         onChange={(e) =>
+                          e.target.validity.valid &&
                           setForm({ ...form, phoneNo: e.target.value })
                         }
                       />
@@ -556,14 +558,19 @@ function Wash() {
                     </div>
                     <div className="col-md-3 mb-3">
                       <input
-                        type="number"
-                        max={999999}
+                        type="text"
                         placeholder="Pincode"
                         className="form-control"
+                        pattern="[0-9]*"
+                        maxLength="6"
                         value={form.pincode}
-                        onChange={(e) =>
-                          setForm({ ...form, pincode: e.target.value })
-                        }
+                        onChange={(e) => {
+                          e.target.validity.valid &&
+                            setForm({
+                              ...form,
+                              pincode: e.target.value,
+                            });
+                        }}
                       />
                     </div>
                     <div className="col-md-3 mb-3">

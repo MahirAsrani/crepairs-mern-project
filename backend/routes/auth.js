@@ -14,7 +14,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 router.post('/register', (req, res) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
     if (err) throw err;
-    if (doc) res.send('already exists');
+    if (doc) res.status(400).send('email already exists');
     if (!doc) {
       const encryptedPass = await bcrypt.hash(req.body.password, 10);
       const newUser = new User({
