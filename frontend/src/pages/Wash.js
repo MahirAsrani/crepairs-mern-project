@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { keys } from './Razorpay/keys';
 
+import TimePicker from 'react-bootstrap-time-picker';
+
 function Wash() {
   const { user, setAuth, auth, setHeader } = useContext(myContext);
   const history = useHistory();
@@ -447,12 +449,24 @@ function Wash() {
                     </div>
                     <div className="col-md-6">
                       <label> Time </label>
-                      <input
-                        type="time"
-                        className="form-control appt"
+                      <TimePicker
+                        className="appt"
+                        start={
+                          form.date &&
+                          new Date().toISOString().split('T')[0] ===
+                            new Date(form.date).toISOString().split('T')[0]
+                            ? `${
+                                new Date().getMinutes() > 50
+                                  ? new Date().getHours() + 2
+                                  : new Date().getHours() + 1
+                              }:00`
+                            : '06:00'
+                        }
+                        end="22:00"
+                        step={60}
                         value={form.time}
-                        onChange={(e) =>
-                          setForm({ ...form, time: e.target.value })
+                        onChange={(t) =>
+                          setForm({ ...form, time: `${t / 3600}:00` })
                         }
                       />
                     </div>
