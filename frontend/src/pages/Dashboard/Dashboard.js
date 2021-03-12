@@ -10,6 +10,8 @@ import { ManageCars } from './ManageCars';
 import { ManageUsers } from './ManageUsers';
 import CarList from './CarList';
 import PaymentsList from './PaymentsList';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 function Dashboard() {
   let { path, url } = useRouteMatch();
@@ -166,7 +168,88 @@ function Dashboard() {
 }
 
 const Dash = () => {
-  return <h3>Dash home</h3>;
+  const [booking, setbooking] = useState();
+  const [today, settoday] = useState();
+  useEffect(() => {
+    axios
+      .get('/api/book', { withCredentials: true })
+      .then((e) => setbooking(e.data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    if (booking) {
+      let today = booking.filter(
+        (e) =>
+          new Date(e.scheduleDate).toISOString().split('T')[0] ===
+          new Date().toISOString().split('T')[0]
+      );
+      settoday(today.length);
+    }
+  }, [booking]);
+
+  console.log(booking);
+
+  return (
+    <div className="dash-home container">
+      <div className="row topnotify">
+        <div className="col-md-3">
+          <div className="card c1">
+            <div className="cicon">
+              <i class="fal fa-bell-plus fa-2x"></i>
+            </div>
+            <div className="ctext">
+              <span>{today && today}</span>
+              <h6>Pickups Today</h6>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-3">
+          <div className="card c2">
+            <div className="cicon">
+              <i class="fal fa-conveyor-belt fa-2x"></i>
+            </div>
+            <div className="ctext">
+              <span>{booking && booking.length}</span>
+              <h6>Total Bookings</h6>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-3">
+          <div className="card c4">
+            <div className="cicon">
+              <i class="fal fa-calendar-check fa-2x"></i>
+            </div>
+            <div className="ctext">
+              <span>
+                {booking && booking.filter((b) => b.completed === false).length}
+              </span>
+              <h6>Pending</h6>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-3">
+          <div className="card c3">
+            <div className="cicon">
+              <i class="fal fa-rupee-sign fa-2x"></i>
+            </div>
+            <div className="ctext">
+              <span>
+                {booking &&
+                  booking
+                    .map((i) => i.payment.Paid === true && i.payment.amount)
+                    .reduce((prev, next) => prev + next)}
+              </span>
+              <h6>Total Earnings</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;

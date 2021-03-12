@@ -148,9 +148,11 @@ function Wash() {
             form.fullName === null ||
             form.email === null ||
             form.phoneNo === null ||
+            form.phoneNo.length !== 10 ||
             form.houseNo === null ||
             form.locality === null ||
             form.pincode === null ||
+            form.pincode.length !== 6 ||
             form.city === null ||
             form.country === null
           )

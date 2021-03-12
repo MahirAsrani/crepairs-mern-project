@@ -131,3 +131,47 @@ header.sidetop {
 }
 
 /* car list end*/
+
+/* dashboard */
+.dash-home .topnotify .card {
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  flex-direction: row;
+  border: none;
+}
+.dash-home .topnotify .cicon {
+  display: flex;
+  flex: 0.3;
+  justify-content: center;
+  align-items: center;
+}
+.dash-home .topnotify .ctext {
+  display: flex;
+  flex: 0.7;
+  flex-direction: column;
+}
+.dash-home .topnotify .ctext > span {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+.dash-home .topnotify .c1 {
+  background: linear-gradient(150deg, #3b3c37, #595958);
+  color: #eeeeee;
+}
+.dash-home .topnotify .c2 {
+  background: linear-gradient(150deg, #354f80, #914aaa);
+  color: #eeeeee;
+}
+.dash-home .topnotify .c3 {
+  background: linear-gradient(150deg, #7fd9af, #18b890);
+  color: #eeeeee;
+}
+.dash-home .topnotify .c4 {
+  background: linear-gradient(150deg, #d97f7f, #992121);
+  color: #eeeeee;
+}
+
+/* dashboard end */
