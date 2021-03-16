@@ -13,6 +13,7 @@ import PaymentsList from './PaymentsList';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Dbooking } from './Dbooking';
+import BookDetails from './BookDetails';
 
 function Dashboard() {
   let { path, url } = useRouteMatch();
@@ -138,6 +139,11 @@ function Dashboard() {
             <Switch>
               <Route exact path={`${path}`} component={Dash} />
               <Route exact path={`${path}/bookings`} component={Dbooking} />
+              <Route
+                exact
+                path={`${path}/bookings/:id`}
+                component={BookDetails}
+              />
               <Route exact path={`${path}/payments`} component={PaymentsList} />
               <Route exact path={`${path}/cars`} component={ManageCars} />
               <Route exact path={`${path}/cars/:id`} component={CarList} />

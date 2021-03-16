@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 export const Dbooking = () => {
+  let { path, url } = useRouteMatch();
   const [bookings, setbookings] = useState();
 
   useEffect(() => {
@@ -13,7 +15,7 @@ export const Dbooking = () => {
       .get('/api/book/', { withCredentials: true })
       .then(({ data }) => setbookings(data));
   }, []);
-  console.log(bookings);
+
   const columns = [
     {
       dataField: 'bookedOn',
@@ -55,7 +57,11 @@ export const Dbooking = () => {
     {
       dataField: '_id',
       text: 'View',
-      formatter: (d) => <button>View</button>,
+      formatter: (d) => (
+        <Link to={`${url}/${d}`}>
+          <button>View</button>
+        </Link>
+      ),
     },
   ];
   const style = {

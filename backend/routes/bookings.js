@@ -40,6 +40,17 @@ router.get('/:id', async (req, res) => {
     });
 });
 
+router.get('/find/:id', async (req, res) => {
+  const id = req.params.id;
+  await Booking.findById(toID(id))
+    .populate('user_id')
+    .sort({ bookedOn: -1 })
+    .exec((err, data) => {
+      if (err) throw err;
+      if (data) res.send(data);
+    });
+});
+
 router.post('/add', async (req, res) => {
   try {
     const id = toID(req.user.id);
