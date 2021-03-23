@@ -4,12 +4,15 @@ const bookingSchema = new mongoose.Schema({
   service: {
     serviceType: { type: String, required: true },
     plan: { type: String },
+    repair: { type: Array },
   },
   vehicle: {
     name: { type: String },
     brand: { type: String },
+    model: { type: String, default: '' },
     vehicleType: { type: String },
   },
+  descBox: { type: String },
   completed: { type: Boolean, default: false },
   approved: { type: Boolean, default: false },
   bookedOn: { type: Date, default: Date.now },

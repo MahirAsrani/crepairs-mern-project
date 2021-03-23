@@ -80,12 +80,15 @@ router.post('/add', async (req, res) => {
           service: {
             serviceType: req.body.serviceType,
             plan: req.body.plan,
+            repair: req.body.repair && req.body.repair,
           },
           vehicle: {
             name: req.body.vehicle && req.body.vehicle,
             brand: req.body.vehicleBrand,
             vehicleType: req.body.vehicleType,
+            model: req.body.vehicleModel && req.body.vehicleModel,
           },
+          descBox: req.body.descBox && req.body.descBox,
           scheduleDate: req.body.date,
           scheduleTime: req.body.time,
           location: `${req.body.houseNo}, ${req.body.locality}, ${req.body.city}, ${req.body.pincode}, ${req.body.country}`,

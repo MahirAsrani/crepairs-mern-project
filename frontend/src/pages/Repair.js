@@ -28,6 +28,7 @@ export const Repair = () => {
   const [convertedContent, setConvertedContent] = useState(null);
 
   const handleEditorChange = (state) => {
+    setForm((f) => ({ ...f, descBox: JSON.stringify(state) }));
     setEditorState(state);
     convertContentToHTML();
   };
@@ -78,7 +79,8 @@ export const Repair = () => {
     vehicleModel: null,
     vehicleImage: null,
     repair: [],
-    serviceType: 'Car Spa',
+    serviceType: 'Repair',
+    descBox: null,
     price: null,
     duration: null,
     date: null,
@@ -133,12 +135,12 @@ export const Repair = () => {
           if (
             form.vehicleBrand === null ||
             form.vehicleModel === null ||
-            form.repair[0] === null
+            form.repair.length === 0
           )
             toast.error('Please fill all fields');
           else {
             setAnimate(false);
-            setStep((e) => e + 1);
+            auth ? setStep((e) => e + 1) : history.push('/signin');
           }
           break;
 
@@ -651,10 +653,78 @@ export const Repair = () => {
         {step === 3 && (
           <CSSTransition in={animate} timeout={1000} classNames="animate">
             <>
-              <div
-                className="preview"
-                dangerouslySetInnerHTML={createMarkup(convertedContent)}
-              ></div>
+              <div className="row finalDisp mt-4" style={{ minHeight: 500 }}>
+                <div className="col-md-7 ">
+                  <div className="row">
+                    <div className="card d-flex w-100 flex-wrap p-3 flex-row">
+                      <div className="col-md-6">
+                        <span>Contact Name</span>
+                        <h5>{form.fullName}</h5>
+                      </div>
+                      <div className="col-md-6">
+                        <span>Contact No</span>
+                        <h5>{form.phoneNo}</h5>
+                      </div>
+                      <div className="col-md-6 mt-2">
+                        <span>Pickup Address</span>
+                        <h5>
+                          {form.houseNo}, {form.locality}, {form.city},{' '}
+                          {form.pincode}, {form.country}
+                        </h5>
+                      </div>
+                      <div className="col-md-6 mt-2">
+                        <span>Pickup Date & Time</span>
+                        <h5>
+                          {form.date}, {form.time}
+                        </h5>
+                      </div>
+                    </div>
+
+                    <div className="card d-flex w-100 flex-wrap p-3 flex-row my-3">
+                      <div className="col-12">
+                        <span className="d-block">Your Selected services</span>
+                        <div className="mx-2">
+                          {form.repair.map((d) => (
+                            <h5 className="d-inline mr-3">
+                              <i class="fas fa-check-circle text-success mr-1"></i>
+                              {d}
+                            </h5>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="col-12 mt-2">
+                        <span>Repair Information</span>
+                        <div
+                          className="mt-2 preview p-2 rounded border"
+                          style={{ background: 'rgb(255, 250, 221)' }}
+                          dangerouslySetInnerHTML={createMarkup(
+                            convertedContent
+                          )}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-5 carImage">
+                  {brands &&
+                    brands
+                      .filter((b) => {
+                        return b.brand === form.vehicleBrand;
+                      })
+                      .map(({ models }) =>
+                        models.map(
+                          (m) =>
+                            m.Name === form.vehicleModel && (
+                              <img src={m.Image} alt="car" width="auto" />
+                            )
+                        )
+                      )}
+                  <p className="my-3">
+                    {form.vehicleBrand} {form.vehicleModel}
+                  </p>
+                </div>
+              </div>
             </>
           </CSSTransition>
         )}
@@ -668,7 +738,7 @@ export const Repair = () => {
           </p>
 
           <button className="Continue" onClick={() => handleContinue()}>
-            {step !== 3 ? 'Continue' : 'Checkout'}
+            {step !== 3 ? 'Continue' : 'Confirm Booking'}
           </button>
         </div>
       </div>

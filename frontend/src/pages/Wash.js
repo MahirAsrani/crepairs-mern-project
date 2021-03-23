@@ -137,7 +137,7 @@ function Wash() {
             toast.error('Please fill all fields');
           else {
             setAnimate(false);
-            setStep((e) => e + 1);
+            auth ? setStep((e) => e + 1) : history.push('/signin');
           }
           break;
 

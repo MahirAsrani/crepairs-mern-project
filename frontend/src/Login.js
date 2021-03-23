@@ -9,8 +9,9 @@ const Login = () => {
   const [email, setemail] = useState('');
   const [pass, setpass] = useState('');
   const history = useHistory();
-  const { setAuth } = useContext(myContext);
+  const { setAuth, setHeader } = useContext(myContext);
 
+  setHeader(true);
   function submitlogin(e) {
     e.preventDefault();
     if (email === '' || pass === '') {

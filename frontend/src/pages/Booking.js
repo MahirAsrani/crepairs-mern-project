@@ -4,6 +4,8 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { myContext } from '../Context';
 import './profile.css';
+import { convertToHTML } from 'draft-convert';
+import DOMPurify from 'dompurify';
 
 function Booking() {
   let { path, url } = useRouteMatch();
@@ -34,8 +36,19 @@ function Booking() {
                         <p>{d.service.serviceType}</p>
                       </div>
                       <div className="col-6">
-                        <span className="title">Plan</span>
-                        <p>{d.service.plan}</p>
+                        {d.service.serviceType === 'Repair' ? (
+                          <>
+                            <span className="title">Car</span>
+                            <p>
+                              {d.vehicle.brand} {d.vehicle.model}
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <span className="title">Plan</span>
+                            <p>{d.service.plan}</p>
+                          </>
+                        )}
                       </div>
                       <div className="col-12 my-1">
                         <span className="title">Scheduled Date & Time</span>
@@ -50,7 +63,11 @@ function Booking() {
                   </div>
                   <hr className="light" />
                   <div className="col-12 d-flex justify-content-between align-items-center">
-                    <p className="price"> Rs. {d.payment.amount}</p>
+                    <p className="price">
+                      {d.service.serviceType === 'Repair'
+                        ? ''
+                        : `Rs. ${d.payment.amount}`}
+                    </p>
                     <Link className="btn buttonView" to={`${url}/${d._id}`}>
                       View
                     </Link>
@@ -74,7 +91,25 @@ export function ViewBooking({ match }) {
       .catch((e) => console.log(e));
   }, []);
 
-  console.log(data);
+  // wysiwyg
+  const [convertedContent, setConvertedContent] = useState(null);
+
+  const convertContentToHTML = () => {
+    let currentContentAsHTML = convertToHTML(
+      JSON.parse(data.desBox).getCurrentContent()
+    );
+    setConvertedContent(currentContentAsHTML);
+  };
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
+
+  data && data.desBox && convertContentToHTML();
+
+  // wysiwyg END
 
   return (
     <div className="col-12 col-md-8 shadow profilecard  card p-5">
@@ -99,8 +134,19 @@ export function ViewBooking({ match }) {
                       <p>{data.service.serviceType}</p>
                     </div>
                     <div className="col-3">
-                      <span className="title">Plan</span>
-                      <p>{data.service.plan}</p>
+                      {data.service.serviceType === 'Repair' ? (
+                        <>
+                          <span className="title">Car</span>
+                          <p>
+                            {data.vehicle.brand} {data.vehicle.model}
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <span className="title">Plan</span>
+                          <p>{data.service.plan}</p>
+                        </>
+                      )}
                     </div>
                     <div className="col-6">
                       <span className="title">Scheduled Date & Time</span>
@@ -116,8 +162,19 @@ export function ViewBooking({ match }) {
                       <p>{data.vehicle.brand}</p>
                     </div>
                     <div className="col-3">
-                      <span className="title">Vehicle Type</span>
-                      <p>{data.vehicle.vehicleType}</p>
+                      {data.service.serviceType === 'Repair' ? (
+                        <>
+                          <span className="title">Services Opted</span>
+                          {data.service.repair.map((r) => (
+                            <p>{r}, </p>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          <span className="title">Vehicle Type</span>
+                          <p>{data.vehicle.vehicleType}</p>
+                        </>
+                      )}
                     </div>
                     {data.vehicle.name && (
                       <div className="col-3">
@@ -147,6 +204,25 @@ export function ViewBooking({ match }) {
                     </div>
                   </div>
                 </div>
+                {data && data.service.serviceType === 'Repair' && (
+                  <>
+                    <div className="col-12">
+                      <hr />
+                      <div className="row">
+                        <div className="col-12 mt-2">
+                          <h6>Description</h6>
+                        </div>
+                        <div
+                          className="preview"
+                          dangerouslySetInnerHTML={createMarkup(
+                            convertedContent
+                          )}
+                        ></div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
                 <div className="col-12">
                   <hr />
                   <div className="row">
@@ -157,14 +233,28 @@ export function ViewBooking({ match }) {
                       <span className="title">Payment Mode</span>
                       <p>{data.payment.mode}</p>
                     </div>
-                    <div className="col-3">
-                      <span className="title">Payment Status</span>
-                      <p>{data.payment.Paid ? 'Paid' : 'Pending'}</p>
-                    </div>
-                    <div className="col-6">
-                      <span className="title">Amount</span>
-                      <p>Rs {data.payment.amount}</p>
-                    </div>
+                    {data.service.serviceType === 'Repair' ? (
+                      <>
+                        <div className="col-8">
+                          <span className="title">Note</span>
+                          <p>
+                            Estimated cost will be provided later by our
+                            mechanic
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="col-3">
+                          <span className="title">Payment Status</span>
+                          <p>{data.payment.Paid ? 'Paid' : 'Pending'}</p>
+                        </div>
+                        <div className="col-6">
+                          <span className="title">Amount</span>
+                          <p> Rs {data.payment.amount} </p>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
