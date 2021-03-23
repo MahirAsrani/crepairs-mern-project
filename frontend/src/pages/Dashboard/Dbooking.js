@@ -56,10 +56,10 @@ export const Dbooking = () => {
     },
     {
       dataField: '_id',
-      text: 'View',
+      text: 'Options',
       formatter: (d) => (
         <Link to={`${url}/${d}`}>
-          <button>View</button>
+          <button className="btn buttonView">View</button>
         </Link>
       ),
     },

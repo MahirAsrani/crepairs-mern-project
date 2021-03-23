@@ -88,7 +88,7 @@ router.post('/add', async (req, res) => {
           },
           scheduleDate: req.body.date,
           scheduleTime: req.body.time,
-          location: req.body.country,
+          location: `${req.body.houseNo}, ${req.body.locality}, ${req.body.city}, ${req.body.pincode}, ${req.body.country}`,
           payment: {
             amount: req.body.price,
             mode: req.body.paymentMethod,

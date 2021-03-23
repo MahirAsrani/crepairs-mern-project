@@ -7,7 +7,7 @@ import {
   Switch,
   useRouteMatch,
 } from 'react-router-dom';
-import Booking from './Booking';
+import Booking, { ViewBooking } from './Booking';
 import Profile, { Cpassword } from './Profile';
 import './profile.css';
 
@@ -37,6 +37,7 @@ function User() {
           <Switch>
             <Route exact path={`${path}/profile`} component={Profile} />
             <Route exact path={`${path}/booking`} component={Booking} />
+            <Route exact path={`${path}/booking/:id`} component={ViewBooking} />
             <Route
               exact
               path={`${path}/changepassword`}

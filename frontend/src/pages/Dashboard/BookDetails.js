@@ -43,13 +43,7 @@ function BookDetails({ match }) {
                           </div>
                           <div className="col-12 mt-3">
                             <p>Address</p>
-                            <h6>
-                              {bookings.user_id.address.houseNo},
-                              {bookings.user_id.address.locality},
-                              {bookings.user_id.address.city},
-                              {bookings.user_id.address.pincode},
-                              {bookings.user_id.address.country}
-                            </h6>
+                            <h6>{bookings.location}</h6>
                           </div>
                         </div>
                       </div>
@@ -125,7 +119,7 @@ function BookDetails({ match }) {
                   </div>
                 </div>
                 <div className="sFoot mx-0">
-                  <button className="Continue">Mark Booking Completed</button>
+                  <button className="Continue">Mark As Completed</button>
                 </div>
               </div>
             </>

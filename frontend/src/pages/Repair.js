@@ -7,12 +7,42 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { keys } from './Razorpay/keys';
 
+import { EditorState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import { convertToHTML } from 'draft-convert';
+import DOMPurify from 'dompurify';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import TimePicker from 'react-bootstrap-time-picker';
+
 export const Repair = () => {
   const { user, setAuth, auth, setHeader } = useContext(myContext);
   const history = useHistory();
   setHeader(false);
 
   const [brands, setbrands] = useState(null);
+
+  // wysiwyg
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [convertedContent, setConvertedContent] = useState(null);
+
+  const handleEditorChange = (state) => {
+    setEditorState(state);
+    convertContentToHTML();
+  };
+
+  const convertContentToHTML = () => {
+    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+    setConvertedContent(currentContentAsHTML);
+  };
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
+  // wysiwyg END
 
   useEffect(() => {
     fetchbrands();
@@ -45,7 +75,7 @@ export const Repair = () => {
 
   const [form, setForm] = useState({
     vehicleBrand: null,
-    vehicleModel: 'Hatchback',
+    vehicleModel: null,
     vehicleImage: null,
     repair: [],
     serviceType: 'Car Spa',
@@ -178,21 +208,21 @@ export const Repair = () => {
         </div>
         <div className="step_menu">
           <div className={step >= 1 ? 'step active' : 'step'}>
-            <p>Plans</p>
+            <p>Select</p>
             <div className="circle">
               {step > 1 ? <i className="gg-check"></i> : 1}
             </div>
           </div>
           <div className="line"></div>
           <div className={step >= 2 ? 'step active' : 'step'}>
-            <p>Schedule</p>
+            <p>Put Info</p>
             <div className="circle">
               {step > 2 ? <i className="gg-check"></i> : 2}
             </div>
           </div>
           <div className="line"></div>
           <div className={step >= 3 ? 'step active' : 'step '}>
-            <p>Payment</p>
+            <p>Book</p>
             <div className="circle">
               {step > 3 ? <i className="gg-check"></i> : 3}
             </div>
@@ -315,6 +345,22 @@ export const Repair = () => {
                             )
                         )
                       )}
+                  {(form.vehicleBrand == null || form.vehicleModel == null) && (
+                    <div
+                      style={{
+                        minHeight: 300,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <img
+                        src={require('../assets/8227.png').default}
+                        width="80%"
+                        alt=""
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -395,14 +441,221 @@ export const Repair = () => {
             </div>
           </CSSTransition>
         )}
-
         {step === 2 && (
           <CSSTransition in={animate} timeout={1000} classNames="animate">
-            <h1>
-              {form.repair.map((d) => (
-                <h3>{d}</h3>
-              ))}
-            </h1>
+            <div style={{ minHeight: 450 }}>
+              <div className="row mt-3">
+                <div className="col-8">
+                  <div className="">
+                    <h5>Write your problem / requirement below with details</h5>
+                    <Editor
+                      editorState={editorState}
+                      onEditorStateChange={handleEditorChange}
+                      wrapperClassName="wrapper-class"
+                      editorClassName="editor-class"
+                      toolbarClassName="toolbar-class"
+                      toolbar={{
+                        options: [
+                          'inline',
+                          'blockType',
+                          'fontSize',
+                          'list',
+                          'textAlign',
+                          'history',
+                        ],
+                        inline: {
+                          inDropdown: false,
+                          options: ['bold', 'italic', 'underline'],
+                        },
+
+                        list: { inDropdown: false },
+                        textAlign: { inDropdown: true },
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="col-4">
+                  <h5>Services Selected </h5>
+                  <ul class="list-group">
+                    {form.repair.map((d) => (
+                      <li class="list-group-item">
+                        <i class="fas fa-check-circle text-success mr-2"></i>
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="row mt-2 p-3">
+                <div className="col-8 UserInfo px-5 py-4">
+                  <h5 className="mb-3">User Information</h5>
+                  <div className="row">
+                    <div className="col-md-4">
+                      Full Name
+                      <input
+                        type="text"
+                        placeholder="Enter Your Name"
+                        className="form-control"
+                        maxLength="20"
+                        value={form.fullName}
+                        onMouseLeave={(e) => e.target.checkValidity()}
+                        onChange={(e) =>
+                          setForm({ ...form, fullName: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="col-md-3">
+                      Phone Number
+                      <input
+                        type="text"
+                        placeholder="+91"
+                        maxLength="10"
+                        className="form-control"
+                        value={form.phoneNo}
+                        pattern="[0-9]*"
+                        onChange={(e) =>
+                          e.target.validity.valid &&
+                          setForm({ ...form, phoneNo: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="col-md-5">
+                      Email
+                      <input
+                        type="email"
+                        placeholder="ex@domain.com"
+                        className="form-control"
+                        value={form.email}
+                        onChange={(e) =>
+                          setForm({ ...form, email: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row mt-3">
+                    <div className="col-12">Address</div>
+                    <div className="col-md-8 mb-3">
+                      <input
+                        type="text"
+                        placeholder="House No  / Floor No / Appartment Name"
+                        maxLength="100"
+                        className="form-control"
+                        value={form.houseNo}
+                        onChange={(e) =>
+                          setForm({ ...form, houseNo: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="col-md-4 mb-3">
+                      <input
+                        type="text"
+                        placeholder="Locality"
+                        maxLength="50"
+                        className="form-control"
+                        value={form.locality}
+                        onChange={(e) =>
+                          setForm({ ...form, locality: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <input
+                        type="text"
+                        placeholder="City"
+                        maxLength="50"
+                        className="form-control"
+                        value={form.city}
+                        onChange={(e) =>
+                          setForm({ ...form, city: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <input
+                        type="text"
+                        placeholder="Pincode"
+                        className="form-control"
+                        pattern="[0-9]*"
+                        maxLength="6"
+                        value={form.pincode}
+                        onChange={(e) => {
+                          e.target.validity.valid &&
+                            setForm({
+                              ...form,
+                              pincode: e.target.value,
+                            });
+                        }}
+                      />
+                    </div>
+                    <div className="col-md-3 mb-3">
+                      <input
+                        type="text"
+                        value="India"
+                        maxLength="30"
+                        className="form-control"
+                        disabled
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-4 DT p-4">
+                  <div className="col-md-12 align-self-center">
+                    <h4 style={{ fontWeight: 600 }}> Appointment </h4>
+                    <div className="row mt-3">
+                      <div className="col-md-12">
+                        <label> Date </label>
+                        <input
+                          type="date"
+                          className="form-control appt"
+                          min={new Date().toISOString().split('T')[0]}
+                          value={form.date}
+                          onChange={(e) =>
+                            setForm({ ...form, date: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-12">
+                        <label> Time </label>
+                        <TimePicker
+                          className="appt"
+                          start={
+                            form.date &&
+                            new Date().toISOString().split('T')[0] ===
+                              new Date(form.date).toISOString().split('T')[0]
+                              ? `${
+                                  new Date().getMinutes() > 50
+                                    ? new Date().getHours() + 2
+                                    : new Date().getHours() + 1
+                                }:00`
+                              : '06:00'
+                          }
+                          end="22:00"
+                          step={60}
+                          value={form.time}
+                          onChange={(t) =>
+                            setForm({ ...form, time: `${t / 3600}:00` })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CSSTransition>
+        )}
+
+        {step === 3 && (
+          <CSSTransition in={animate} timeout={1000} classNames="animate">
+            <>
+              <div
+                className="preview"
+                dangerouslySetInnerHTML={createMarkup(convertedContent)}
+              ></div>
+            </>
           </CSSTransition>
         )}
 

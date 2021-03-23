@@ -302,7 +302,8 @@ h4 {
   min-height: 450px;
 }
 
-#repair select {
+#repair select,
+#repair input {
   background-color: #ffd772;
 }
 #repair .active .circle,
@@ -353,4 +354,37 @@ h4 {
   scale: 1.08;
 }
 
+.wrapper-class {
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+.editor-class {
+  background-color: #fdfdfd;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+.toolbar-class {
+  border: 1px solid #ccc;
+}
+.public-DraftStyleDefault-ltr {
+  margin: 0 !important;
+}
+
+#repair .UserInfo {
+  background: #fef9c9;
+}
+#repair .UserInfo input {
+  background: #fffffd;
+}
+#repair .DT {
+  background: #ffdd88;
+  border-radius: 0px 10px 10px 0px;
+}
+
+#repair .DT select,
+#repair .DT input {
+  background: #fffffd;
+  border: 1px solid #737373;
+  color: #262626;
+}
 /* car repair end */ ;
