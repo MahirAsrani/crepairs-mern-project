@@ -91,23 +91,13 @@ export function ViewBooking({ match }) {
       .catch((e) => console.log(e));
   }, []);
 
-  // wysiwyg
-  const [convertedContent, setConvertedContent] = useState(null);
-
-  const convertContentToHTML = () => {
-    let currentContentAsHTML = convertToHTML(
-      JSON.parse(data.desBox).getCurrentContent()
-    );
-    setConvertedContent(currentContentAsHTML);
-  };
-
   const createMarkup = (html) => {
     return {
       __html: DOMPurify.sanitize(html),
     };
   };
 
-  data && data.desBox && convertContentToHTML();
+  // data && data.descBox && convertContentToHTML();
 
   // wysiwyg END
 
@@ -161,12 +151,12 @@ export function ViewBooking({ match }) {
                       <span className="title">Car Manufacturer</span>
                       <p>{data.vehicle.brand}</p>
                     </div>
-                    <div className="col-3">
+                    <div className="col-8">
                       {data.service.serviceType === 'Repair' ? (
                         <>
-                          <span className="title">Services Opted</span>
+                          <span className="title d-block">Services Opted</span>
                           {data.service.repair.map((r) => (
-                            <p>{r}, </p>
+                            <p className="d-inline mr-2">{r}, </p>
                           ))}
                         </>
                       ) : (
@@ -204,20 +194,20 @@ export function ViewBooking({ match }) {
                     </div>
                   </div>
                 </div>
-                {data && data.service.serviceType === 'Repair' && (
+                {data && data.service.serviceType === 'Repair' && data.descBox && (
                   <>
                     <div className="col-12">
                       <hr />
                       <div className="row">
                         <div className="col-12 mt-2">
                           <h6>Description</h6>
+                          <div
+                            className="preview"
+                            dangerouslySetInnerHTML={createMarkup(
+                              JSON.parse(data.descBox)
+                            )}
+                          ></div>
                         </div>
-                        <div
-                          className="preview"
-                          dangerouslySetInnerHTML={createMarkup(
-                            convertedContent
-                          )}
-                        ></div>
                       </div>
                     </div>
                   </>

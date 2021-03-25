@@ -113,14 +113,16 @@ function Home() {
                   </div>
 
                   <div className="col-md-4">
-                    <div className="card">
-                      <h5>Maintenance</h5>
-                      <img src={mtnce} alt="" />
-                      <p>
-                        Provide comprehensive check-ups and periodic plans for
-                        your car.
-                      </p>
-                    </div>
+                    <Link to="/services/maintenance">
+                      <div className="card">
+                        <h5>Maintenance</h5>
+                        <img src={mtnce} alt="" />
+                        <p>
+                          Provide comprehensive check-ups and periodic plans for
+                          your car.
+                        </p>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>

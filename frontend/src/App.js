@@ -20,6 +20,7 @@ import { toast } from 'react-toastify';
 import { Success } from './pages/Success';
 import User from './pages/User';
 import { Repair } from './pages/Repair';
+import Maintain from './pages/Maintain';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
@@ -33,6 +34,7 @@ function App(props) {
           <Route path="/about" component={About} />
           <Route path="/services/car-spa" component={Wash} />
           <Route path="/services/repair" component={Repair} />
+          <Route path="/services/maintenance" component={Maintain} />
           <Route path="/success" component={Success} />
 
           {auth ? (

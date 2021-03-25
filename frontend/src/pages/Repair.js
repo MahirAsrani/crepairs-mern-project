@@ -28,7 +28,6 @@ export const Repair = () => {
   const [convertedContent, setConvertedContent] = useState(null);
 
   const handleEditorChange = (state) => {
-    setForm((f) => ({ ...f, descBox: JSON.stringify(state) }));
     setEditorState(state);
     convertContentToHTML();
   };
@@ -36,7 +35,10 @@ export const Repair = () => {
   const convertContentToHTML = () => {
     let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
     setConvertedContent(currentContentAsHTML);
+    setForm((f) => ({ ...f, descBox: JSON.stringify(currentContentAsHTML) }));
   };
+
+  console.log(convertedContent);
 
   const createMarkup = (html) => {
     return {
