@@ -190,7 +190,7 @@ const Dash = () => {
       let today = booking.filter(
         (e) =>
           new Date(e.scheduleDate).toISOString().split('T')[0] ===
-          new Date().toISOString().split('T')[0]
+            new Date().toISOString().split('T')[0] && e.completed === false
       );
       settoday(today.length);
     }

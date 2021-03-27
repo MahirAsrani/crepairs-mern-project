@@ -9,6 +9,7 @@ const connectDB = () => {
       useCreateIndex: true,
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     })
     .then(() => console.log('DB Connected'))
     .catch((err) => {

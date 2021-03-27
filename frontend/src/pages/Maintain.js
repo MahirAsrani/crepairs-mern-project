@@ -15,11 +15,13 @@ function Maintain() {
   const [animate, setAnimate] = useState(false);
 
   const [form, setForm] = useState({
+    reg: '',
     vehicleBrand: null,
     vehicleModel: null,
     vehicleImage: null,
     repair: [],
-    serviceType: 'Maintain',
+    plan: null,
+    serviceType: 'Maintenance',
     descBox: null,
     price: null,
     duration: null,
@@ -88,7 +90,7 @@ function Maintain() {
   const handleContinue = () => {
     if (step === 3) {
       if (form.paymentMethod === 'Online') {
-        // displayRazorpay();
+        displayRazorpay();
       } else
         axios
           .post('/api/book/add', form, { withCredentials: true })
@@ -103,6 +105,7 @@ function Maintain() {
           if (
             form.vehicleBrand === null ||
             form.vehicleModel === null ||
+            form.reg.length < 9 ||
             form.plan === null
           )
             toast.error('Please fill all fields');
@@ -270,7 +273,7 @@ function Maintain() {
 
   return (
     <div>
-      <div id="maintain">
+      <div id="">
         <div className="service_nav">
           <div className="navbar-header">
             <Link className="brand" to="/">
@@ -363,7 +366,7 @@ function Maintain() {
             <CSSTransition in={animate} timeout={1000} classNames="animate">
               <div
                 className={
-                  form.vehicleModel === null
+                  form.vehicleModel == null || form.reg.length < 10
                     ? 'step1 d-flex align-items-center'
                     : 'step1'
                 }
@@ -372,8 +375,22 @@ function Maintain() {
                   <div className="col-md-5 left_area">
                     <h2>Car Information</h2>
 
-                    <label>Vehicle Brand</label>
+                    <label>Vehicle Registration Number </label>
+                    <input
+                      type="text"
+                      className="form-control appt"
+                      style={{ maxWidth: 400, height: 40 }}
+                      value={form.reg}
+                      placeholder="e.g. DL 12XY 6789"
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          reg: e.target.value.toLocaleUpperCase(),
+                        })
+                      }
+                    />
 
+                    <label>Vehicle Brand</label>
                     <select
                       value={form.vehicleBrand}
                       onChange={(e) =>
@@ -387,7 +404,6 @@ function Maintain() {
                     </select>
 
                     <label>Vehicle Model</label>
-
                     <select
                       value={form.vehicleModel}
                       onChange={(e) =>
@@ -410,6 +426,7 @@ function Maintain() {
                   </div>
                   <div className="col-md-7 center">
                     {brands &&
+                      form.reg.length >= 10 &&
                       brands
                         .filter((b) => {
                           return b.brand === form.vehicleBrand;
@@ -423,7 +440,8 @@ function Maintain() {
                           )
                         )}
                     {(form.vehicleBrand == null ||
-                      form.vehicleModel == null) && (
+                      form.vehicleModel == null ||
+                      form.reg.length < 10) && (
                       <div
                         style={{
                           minHeight: 300,
@@ -444,6 +462,7 @@ function Maintain() {
 
                 <div className="row plansGrid">
                   {form.vehicleModel !== null &&
+                    form.reg.length >= 10 &&
                     plans.map((data) => (
                       <div className="col-md-3">
                         <div
@@ -568,10 +587,11 @@ function Maintain() {
                           maxLength="20"
                           value={form.fullName}
                           onMouseLeave={(e) => e.target.checkValidity()}
+                          pattern="^[a-zA-Z_ ]*$"
                           onChange={(e) =>
+                            e.target.validity.valid &&
                             setForm({ ...form, fullName: e.target.value })
                           }
-                          required
                         />
                       </div>
                       <div className="col-md-3">
@@ -624,7 +644,9 @@ function Maintain() {
                           maxLength="50"
                           className="form-control"
                           value={form.locality}
+                          pattern="^[a-zA-Z_ ]*$"
                           onChange={(e) =>
+                            e.target.validity.valid &&
                             setForm({ ...form, locality: e.target.value })
                           }
                         />
@@ -636,7 +658,9 @@ function Maintain() {
                           maxLength="50"
                           className="form-control"
                           value={form.city}
+                          pattern="^[a-zA-Z_ ]*$"
                           onChange={(e) =>
+                            e.target.validity.valid &&
                             setForm({ ...form, city: e.target.value })
                           }
                         />
@@ -646,9 +670,9 @@ function Maintain() {
                           type="text"
                           placeholder="Pincode"
                           className="form-control"
-                          pattern="[0-9]*"
                           maxLength="6"
                           value={form.pincode}
+                          pattern="[0-9]*"
                           onChange={(e) => {
                             e.target.validity.valid &&
                               setForm({

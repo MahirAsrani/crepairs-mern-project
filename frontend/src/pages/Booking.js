@@ -159,6 +159,11 @@ export function ViewBooking({ match }) {
                             <p className="d-inline mr-2">{r}, </p>
                           ))}
                         </>
+                      ) : data.service.serviceType === 'Maintenance' ? (
+                        <>
+                          <span className="title">Vehicle Model</span>
+                          <p>{data.vehicle.model}</p>
+                        </>
                       ) : (
                         <>
                           <span className="title">Vehicle Type</span>
@@ -166,10 +171,10 @@ export function ViewBooking({ match }) {
                         </>
                       )}
                     </div>
-                    {data.vehicle.name && (
-                      <div className="col-3">
-                        <span className="title">Vehicle Model</span>
-                        <p>{data.vehicle.name}</p>
+                    {data.vehicle.reg && data.vehicle.reg.length > 9 && (
+                      <div className="col-4 mt-2">
+                        <span className="title">Vehicle No</span>
+                        <p>{data.vehicle.reg}</p>
                       </div>
                     )}
                   </div>

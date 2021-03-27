@@ -11,6 +11,7 @@ const bookingSchema = new mongoose.Schema({
     brand: { type: String },
     model: { type: String, default: '' },
     vehicleType: { type: String },
+    reg: { type: String },
   },
   descBox: { type: String },
   completed: { type: Boolean, default: false },

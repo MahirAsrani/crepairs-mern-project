@@ -77,6 +77,7 @@ export const Repair = () => {
   const [animate, setAnimate] = useState(false);
 
   const [form, setForm] = useState({
+    reg: '',
     vehicleBrand: null,
     vehicleModel: null,
     vehicleImage: null,
@@ -300,7 +301,6 @@ export const Repair = () => {
                   <h2>Car Information</h2>
 
                   <label>Vehicle Brand</label>
-
                   <select
                     value={form.vehicleBrand}
                     onChange={(e) =>
@@ -314,7 +314,6 @@ export const Repair = () => {
                   </select>
 
                   <label>Vehicle Model</label>
-
                   <select
                     value={form.vehicleModel}
                     onChange={(e) =>
@@ -504,10 +503,11 @@ export const Repair = () => {
                         maxLength="20"
                         value={form.fullName}
                         onMouseLeave={(e) => e.target.checkValidity()}
+                        pattern="^[a-zA-Z_ ]*$"
                         onChange={(e) =>
+                          e.target.validity.valid &&
                           setForm({ ...form, fullName: e.target.value })
                         }
-                        required
                       />
                     </div>
                     <div className="col-md-3">
@@ -560,7 +560,9 @@ export const Repair = () => {
                         maxLength="50"
                         className="form-control"
                         value={form.locality}
+                        pattern="^[a-zA-Z_ ]*$"
                         onChange={(e) =>
+                          e.target.validity.valid &&
                           setForm({ ...form, locality: e.target.value })
                         }
                       />
@@ -572,7 +574,9 @@ export const Repair = () => {
                         maxLength="50"
                         className="form-control"
                         value={form.city}
+                        pattern="^[a-zA-Z_ ]*$"
                         onChange={(e) =>
+                          e.target.validity.valid &&
                           setForm({ ...form, city: e.target.value })
                         }
                       />
@@ -582,9 +586,9 @@ export const Repair = () => {
                         type="text"
                         placeholder="Pincode"
                         className="form-control"
-                        pattern="[0-9]*"
                         maxLength="6"
                         value={form.pincode}
+                        pattern="[0-9]*"
                         onChange={(e) => {
                           e.target.validity.valid &&
                             setForm({

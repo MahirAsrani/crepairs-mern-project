@@ -51,6 +51,28 @@ router.get('/find/:id', async (req, res) => {
     });
 });
 
+router.post('/:id/markdone', async (req, res) => {
+  const id = req.params.id;
+
+  Booking.findByIdAndUpdate(
+    toID(id),
+
+    {
+      $set: {
+        'payment.Paid': true,
+        'payment.amount': req.body.newPrice,
+        completed: true,
+      },
+    },
+
+    (err, done) => {
+      if (err) res.send(err).status(400);
+      if (done) res.send('Marked Completed');
+      else res.send('booking not found').status(400);
+    }
+  );
+});
+
 router.post('/add', async (req, res) => {
   try {
     const id = toID(req.user.id);
@@ -85,6 +107,7 @@ router.post('/add', async (req, res) => {
           vehicle: {
             name: req.body.vehicle && req.body.vehicle,
             brand: req.body.vehicleBrand,
+            reg: req.body.reg && req.body.reg,
             vehicleType: req.body.vehicleType,
             model: req.body.vehicleModel && req.body.vehicleModel,
           },

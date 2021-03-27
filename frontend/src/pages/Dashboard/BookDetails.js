@@ -1,24 +1,49 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function BookDetails({ match }) {
   const id = match.params.id;
 
   const [bookings, setbookings] = useState();
+  const [refresh, setRefresh] = useState(true);
 
   useEffect(() => {
     axios
       .get(`/api/book/find/${id}`, { withCredentials: true })
       .then(({ data }) => setbookings(data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [refresh]);
 
-  console.log(bookings);
+  function handleComplete() {
+    let newPrice = bookings.payment.amount;
+    if (!newPrice) {
+      newPrice = prompt('Please Enter Full Amount Paid by Customer');
+    }
+    newPrice &&
+      axios
+        .post(
+          `/api/book/${id}/markdone`,
+          { newPrice },
+          { withCredentials: true }
+        )
+        .then(({ data }) => {
+          toast.success('Booking Completed');
+          setRefresh(!refresh);
+        })
+        .catch((err) => console.log(err));
+  }
 
   return (
     <div className="row">
       <div className="container">
         <h3>Booking Details</h3>
+        <h6>
+          {bookings &&
+            bookings.vehicle.reg &&
+            bookings.vehicle.reg.length > 9 &&
+            ` Vehicle Number :  ${bookings.vehicle.reg}`}
+        </h6>
         <div className="row">
           {bookings && (
             <>
@@ -55,7 +80,7 @@ function BookDetails({ match }) {
                 <div className="row">
                   <div className="col-12">
                     <div className="card shadow my-4 p-4">
-                      <h5>Plan Details</h5>
+                      <h5>Plan & Other Info</h5>
                       <div className="row details">
                         <div className="col-md-4">
                           <p>Plan Type</p>
@@ -66,8 +91,12 @@ function BookDetails({ match }) {
                           <h6> {bookings.service.plan}</h6>
                         </div>
                         <div className="col-md-4">
-                          <p>Vehicle Type</p>
-                          <h6>{bookings.vehicle.vehicleType}</h6>
+                          <p>Vehicle </p>
+                          <h6>
+                            {bookings.vehicle.vehicleType
+                              ? bookings.vehicle.vehicleType
+                              : bookings.vehicle.model}
+                          </h6>
                         </div>
                         <div className="col-md-6 mt-3">
                           <p>Date</p>
@@ -119,7 +148,11 @@ function BookDetails({ match }) {
                   </div>
                 </div>
                 <div className="sFoot mx-0">
-                  <button className="Continue">Mark As Completed</button>
+                  {!bookings.completed && (
+                    <button onClick={handleComplete} className="Continue">
+                      Mark As Completed
+                    </button>
+                  )}
                 </div>
               </div>
             </>
