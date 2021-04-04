@@ -1,12 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import DOMPurify from 'dompurify';
 
 function BookDetails({ match }) {
   const id = match.params.id;
 
   const [bookings, setbookings] = useState();
   const [refresh, setRefresh] = useState(true);
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
 
   useEffect(() => {
     axios
@@ -117,6 +124,22 @@ function BookDetails({ match }) {
                 <div className="row">
                   <div className="col-12">
                     <div className="card shadow p-4">
+                      {bookings.service.serviceType === 'Repair' &&
+                        bookings.descBox && (
+                          <div className="mb-3">
+                            <h5>Service Details</h5>
+                            <div className="row">
+                              <div className="col-12">
+                                <div
+                                  className="preview"
+                                  dangerouslySetInnerHTML={createMarkup(
+                                    JSON.parse(bookings.descBox)
+                                  )}
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       <h5>Payment Details</h5>
                       <div className="row details">
                         <div className="col-md-2">

@@ -247,6 +247,7 @@ const Dash = () => {
             <div className="ctext">
               <span>
                 {booking &&
+                  booking.length > 0 &&
                   booking
                     .map((i) => i.payment.Paid === true && i.payment.amount)
                     .reduce((prev, next) => prev + next)}
