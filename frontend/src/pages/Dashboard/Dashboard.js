@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Dbooking } from './Dbooking';
 import BookDetails from './BookDetails';
+import Items from './Items';
 
 function Dashboard() {
   let { path, url } = useRouteMatch();
@@ -75,6 +76,13 @@ function Dashboard() {
                   <li>
                     <i class="fal fa-user-shield"></i>
                     <span>Users</span>
+                  </li>
+                </NavLink>
+
+                <NavLink to={`${url}/products`} activeClassName="active">
+                  <li>
+                    <i class="fal fa-shopping-cart"></i>
+                    <span>Products</span>
                   </li>
                 </NavLink>
               </ul>
@@ -148,6 +156,7 @@ function Dashboard() {
               <Route exact path={`${path}/cars`} component={ManageCars} />
               <Route exact path={`${path}/cars/:id`} component={CarList} />
               <Route exact path={`${path}/users`} component={ManageUsers} />
+              <Route exact path={`${path}/products`} component={Items} />
             </Switch>
           </div>
         </div>

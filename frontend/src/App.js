@@ -21,6 +21,8 @@ import { Success } from './pages/Success';
 import User from './pages/User';
 import { Repair } from './pages/Repair';
 import Maintain from './pages/Maintain';
+import Shop from './pages/Shop/Shop';
+import Product from './pages/Shop/Product';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
@@ -32,6 +34,8 @@ function App(props) {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/shop" exact component={Shop} />
+          <Route path="/shop/product/:id" component={Product} />
           <Route path="/services/car-spa" component={Wash} />
           <Route path="/services/repair" component={Repair} />
           <Route path="/services/maintenance" component={Maintain} />
@@ -96,6 +100,9 @@ const Header = ({ user }) => {
               <Scroll.Link to="services" smooth duration={500}>
                 Services
               </Scroll.Link>
+            </li>
+            <li>
+              <Link to="shop">Shop </Link>
             </li>
           </ul>
           {user ? (

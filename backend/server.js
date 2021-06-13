@@ -70,6 +70,8 @@ app.use('/api/auth/', require('./routes/auth'));
 app.use('/api/user/', require('./routes/users'));
 app.use('/api/book/', require('./routes/bookings'));
 app.use('/api/cars/', require('./routes/cars'));
+app.use('/api/shop/category/', require('./routes/categories'));
+app.use('/api/shop/product/', require('./routes/products'));
 
 //----------------------------------------- END OF ROUTES---------------------------------------------------
 const PORT = process.env.PORT || 5000;

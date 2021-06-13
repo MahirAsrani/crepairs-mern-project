@@ -17,7 +17,7 @@ function Home() {
     <div className="">
       <section id="magic">
         <div className="container">
-          <div className="row banner">
+          <div className="row">
             <div className="col-md-6 banner_left">
               <h1>Hands that understand automobile very well..</h1>
               <p>
