@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-function Cater({ cat }) {
+function Cater({ cat, selected, setselect }) {
+  function select(id) {
+    if (selected === id) setselect(null);
+    else setselect(id);
+  }
   return (
     <div className="row categories">
       <div className="col-12">
@@ -8,7 +12,14 @@ function Cater({ cat }) {
       </div>
       {cat &&
         cat.map((c) => (
-          <div className="col card mb-4">
+          <div
+            className={
+              c._id === selected
+                ? 'col card mb-4 selected'
+                : 'col card cardhov mb-4'
+            }
+            onClick={() => select(c._id)}
+          >
             <img src={c.image} alt="" />
             <p>{c.name}</p>
           </div>

@@ -19,6 +19,20 @@ const isAdmin = (req, res, next) => {
   } else res.send('login required');
 };
 
+router.get('/:catID', async (req, res) => {
+  try {
+    const ID = req.params.catID;
+    Category.findById(toID(ID))
+      .populate('products')
+      .exec((err, doc) => {
+        if (err) res.status(400).send('categories not found');
+        if (doc) res.send(doc);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
     await Category.find({}, (err, doc) => {

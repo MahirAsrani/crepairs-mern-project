@@ -23,6 +23,7 @@ import { Repair } from './pages/Repair';
 import Maintain from './pages/Maintain';
 import Shop from './pages/Shop/Shop';
 import Product from './pages/Shop/Product';
+import Checkout from './pages/Shop/Comp/Checkout';
 
 function App(props) {
   const { user, auth, isheader } = useContext(myContext);
@@ -35,7 +36,8 @@ function App(props) {
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route path="/shop" exact component={Shop} />
-          <Route path="/shop/product/:id" component={Product} />
+          <Route path="/shop/checkout" exact component={Checkout} />
+          <Route path="/shop/product/:id" exact component={Product} />
           <Route path="/services/car-spa" component={Wash} />
           <Route path="/services/repair" component={Repair} />
           <Route path="/services/maintenance" component={Maintain} />

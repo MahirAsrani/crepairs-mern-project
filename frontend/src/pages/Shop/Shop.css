@@ -1,5 +1,5 @@
 .banner {
-  background: linear-gradient(#02092233 0%, #fff 50%);
+  background: linear-gradient(#10606c7a 0%, #fff 50%);
 }
 
 .bigBanner {
@@ -127,6 +127,13 @@
   box-shadow: 0 0 10px rgba(184, 184, 184, 0.4);
   border-color: transparent;
 }
+
+.categories .card.selected {
+  background: linear-gradient(#d0d0f8, #f4fdff);
+}
+.categories .card.cardhov:hover {
+  background: linear-gradient(#ededfb, #f4fdff);
+}
 .categories .card img {
   height: 70px;
   margin-bottom: 15px;
@@ -152,7 +159,7 @@
   box-shadow: 5px 5px 25px #0000001c;
 }
 .par {
-  background: #247cbb;
+  /* background: #247cbb; */
   background-size: cover;
   height: calc(100vh - 50px);
   justify-content: center;

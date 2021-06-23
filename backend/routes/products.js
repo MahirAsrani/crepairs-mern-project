@@ -2,10 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { nanoid } = require('nanoid');
 const Product = require('../models/product');
+const Category = require('../models/category');
 const router = express.Router();
 const User = require('../models/user');
 const toID = mongoose.Types.ObjectId;
 const path = require('path');
+const { findById } = require('../models/product');
 
 const isAdmin = (req, res, next) => {
   const { user } = req;
@@ -34,7 +36,7 @@ router.get('/:id', async (req, res) => {
   const id = req.params.id;
   try {
     await Product.findById(toID(id), (err, doc) => {
-      if (err) res.status(400).semd('not found');
+      if (err) res.status(400).send('not found');
       if (doc) res.send(doc);
     });
   } catch (error) {
@@ -44,26 +46,35 @@ router.get('/:id', async (req, res) => {
 
 router.post('/add', async (req, res) => {
   try {
-    const { name, price } = req.body;
-    let myFile;
-    req.files && (myFile = req.files.Image);
-    let newFile;
+    const { name, desc, category, price } = req.body;
 
-    if (myFile) {
-      const extName = path.extname(myFile.name);
-      const baseName = path.basename(myFile.name, extName);
-      // Use the mv() method to place the file somewhere on your server
-      newFile = baseName + nanoid(5) + extName;
-      myFile.mv('./uploads/media/products/' + newFile);
-    }
-    const c = new Product({
-      name: name,
-      price: price,
-      image: 'http://localhost:5000/uploads/media/products/' + newFile,
+    await Category.findById(toID(category), async (err, doc) => {
+      if (err) res.status(400).send('not found');
+      if (doc) {
+        let myFile;
+        req.files && (myFile = req.files.img);
+        let newFile;
+
+        if (myFile) {
+          const extName = path.extname(myFile.name);
+          const baseName = path.basename(myFile.name, extName);
+          // Use the mv() method to place the file somewhere on your server
+          newFile = baseName + nanoid(5) + extName;
+          myFile.mv('./uploads/media/products/' + newFile);
+        }
+        const c = new Product({
+          name: name,
+          price: price,
+          description: desc,
+          image: 'http://localhost:5000/uploads/media/products/' + newFile,
+        });
+        doc.products.push(c._id);
+        await c.save();
+        await doc.save();
+
+        res.send('Product Added');
+      }
     });
-
-    await c.save();
-    res.send('Product Added');
   } catch (error) {
     console.log(error);
   }

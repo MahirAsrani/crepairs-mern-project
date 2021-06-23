@@ -1,26 +1,41 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Category from './Comp/Cater';
+import Cart from './Comp/Cart';
 import './Shop.css';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { myContext } from '../../Context';
 
 function Shop() {
+  const { addcart } = useContext(myContext);
+
+  const [cat, setcat] = useState([]);
+  const [prod, setProd] = useState([]);
+  const [selected, setselect] = useState();
+
   useEffect(() => {
+    console.log('called');
     axios
       .get('/api/shop/category')
       .then((d) => setcat(d.data))
       .catch((err) => console.log(err));
-
-    axios
-      .get('/api/shop/product/')
-      .then((d) => setProd(d.data))
-      .catch((err) => console.log(err));
   }, []);
 
-  const [cat, setcat] = useState([]);
-  const [prod, setProd] = useState([]);
+  useEffect(() => {
+    if (!selected) {
+      axios
+        .get('/api/shop/product/')
+        .then((d) => setProd(d.data))
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .get(`/api/shop/category/${selected}`)
+        .then((s) => setProd(s.data.products))
+        .catch((err) => console.log(err));
+    }
+  }, [selected]);
 
   return (
     <div>
@@ -51,7 +66,8 @@ function Shop() {
         </div>
       </div>
       <div className="container">
-        <Category cat={cat} />
+        {selected}
+        <Category cat={cat} selected={selected} setselect={setselect} />
         <div className="row">
           <div className="col-12 my-3">
             <h2> </h2>
@@ -77,15 +93,19 @@ function Shop() {
                     >
                       <i class="far fa-eye"></i> View Product
                     </Link>
-                    <Link to="" className="btn btn-block btn-primary">
+                    <div
+                      onClick={() => addcart(p)}
+                      className="btn btn-block btn-primary"
+                    >
                       <i class="fal fa-cart-plus"></i> Add to cart
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
         </div>
       </div>
+      <Cart />
     </div>
   );
 }

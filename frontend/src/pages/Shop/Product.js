@@ -1,7 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import Cart from './Comp/Cart';
+import { myContext } from '../../Context';
 
 function Product({ match }) {
+  const { addcart } = useContext(myContext);
+
   const id = match.params.id;
   const [product, setproduct] = useState();
   useEffect(() => {
@@ -20,11 +24,7 @@ function Product({ match }) {
             <div className="col-6  justify-content-center d-flex flex-column">
               <h1>{product.name}</h1>
               <div className="row my-3">
-                <div className="col-12">
-                  Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem
-                  ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum
-                  dolor sit amet.
-                </div>
+                <div className="col-12">{product.description}</div>
               </div>
               <div className="row">
                 <div className="p-4">
@@ -43,7 +43,10 @@ function Product({ match }) {
                 </div>
               </div>
               <div className="">
-                <button className="Continue"> Add to Cart</button>
+                <button className="Continue" onClick={() => addcart(product)}>
+                  {' '}
+                  Add to Cart
+                </button>
               </div>
             </div>
             <div className="col-6 rightImg">
@@ -51,6 +54,7 @@ function Product({ match }) {
             </div>
           </div>
         </div>
+        <Cart />
       </div>
     );
 }

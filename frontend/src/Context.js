@@ -7,6 +7,15 @@ function Context(props) {
   const [user, setUser] = useState(null);
   const [auth, setAuth] = useState(false);
   const [isheader, setHeader] = useState(true);
+  const [cart, setcart] = useState([]);
+
+  function addcart(product) {
+    setcart((old) => [...old, product]);
+  }
+
+  function removecart(productID) {
+    setcart(cart.filter((c, i) => i !== productID));
+  }
 
   useEffect(() => {
     if (auth === false) setUser(null);
@@ -35,6 +44,10 @@ function Context(props) {
         setAuth,
         isheader,
         setHeader,
+        cart,
+        setcart,
+        addcart,
+        removecart,
       }}
     >
       {props.children}
