@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import { myContext } from '../Context';
 import './profile.css';
-import { convertToHTML } from 'draft-convert';
+// import { convertToHTML } from 'draft-convert';
 import DOMPurify from 'dompurify';
 
 function Booking() {
-  let { path, url } = useRouteMatch();
-  const { user, auth, setHeader, refresh } = useContext(myContext);
+  let { url } = useRouteMatch();
+  const { user, setHeader } = useContext(myContext);
   setHeader(true);
   const [data, setdata] = useState(null);
 
@@ -18,6 +18,7 @@ function Booking() {
       .get(`/api/book/${user._id}`, { withCredentials: true })
       .then((d) => setdata(d.data))
       .catch((e) => console.log(e));
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -89,6 +90,7 @@ export function ViewBooking({ match }) {
       .get(`/api/book/find/${match.params.id}`, { withCredentials: true })
       .then((d) => setdata(d.data))
       .catch((e) => console.log(e));
+    // eslint-disable-next-line
   }, []);
 
   const createMarkup = (html) => {

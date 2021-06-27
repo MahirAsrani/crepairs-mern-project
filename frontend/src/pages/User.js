@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  Link,
-  NavLink,
-  Redirect,
-  Route,
-  Switch,
-  useRouteMatch,
-} from 'react-router-dom';
+import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import Booking, { ViewBooking } from './Booking';
 import Profile, { Cpassword } from './Profile';
 import './profile.css';
 
 function User() {
-  let { path, url } = useRouteMatch();
+  let { path } = useRouteMatch();
 
   return (
     <div className="bg-light">

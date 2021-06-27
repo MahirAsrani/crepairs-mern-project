@@ -29,7 +29,7 @@ const Login = () => {
         .then(() => {
           setAuth(true);
           toast.success('Login Successful');
-          history.push('/');
+          history.goBack();
         })
         .catch((er) => toast.error('╳ Incorrect email or password'));
     }
@@ -80,7 +80,6 @@ const Login = () => {
 
 export const ForgotPassword = () => {
   const [email, setemail] = useState('');
-  const history = useHistory();
   const [isLoading, setLoading] = useState(false);
 
   const Submit = (e) => {

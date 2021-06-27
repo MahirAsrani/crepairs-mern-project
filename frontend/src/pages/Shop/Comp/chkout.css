@@ -1,0 +1,46 @@
+.light-left {
+  background-color: rgb(233, 242, 247);
+  min-height: calc(100vh - 50px);
+}
+
+.img-cont {
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #fff;
+  padding: 1px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.p_name {
+  font-size: 1rem;
+  color: rgb(68, 68, 68);
+}
+
+.cart-chekout {
+  max-height: 400px;
+  overflow: hidden;
+  overflow-y: scroll;
+  box-sizing: content-box;
+  padding-left: 15px;
+}
+
+.cart-chekout {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: thin; /* Firefox */
+}
+.cart-chekout::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.sigout-nt {
+  font-weight: 500;
+  cursor: pointer;
+}
+.sigout-nt:hover {
+  color: rgb(43, 86, 226);
+}

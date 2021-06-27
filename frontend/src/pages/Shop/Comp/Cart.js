@@ -4,7 +4,7 @@ import { myContext } from '../../../Context';
 import { useHistory } from 'react-router-dom';
 
 function Cart() {
-  const { cart, setcart, removecart } = useContext(myContext);
+  const { cart, removecart } = useContext(myContext);
   const [open, setopen] = useState(false);
   const history = useHistory();
 
@@ -28,7 +28,7 @@ function Cart() {
           {cart.map((c, idx) => (
             <div className="row my-3">
               <div className="col-4">
-                <img src={c.image} className="p_img" />
+                <img src={c.image} className="p_img" alt="" />
               </div>
               <div className="col-8">
                 <h6 className="p_name">{c.name} </h6>

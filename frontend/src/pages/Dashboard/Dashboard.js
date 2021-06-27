@@ -3,8 +3,7 @@ import React, { useContext } from 'react';
 import { myContext } from '../../Context';
 import { toast } from 'react-toastify';
 import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Wash from '../Wash';
+import { BrowserRouter as Switch, Route, Link } from 'react-router-dom';
 import './dash.css';
 import { ManageCars } from './ManageCars';
 import { ManageUsers } from './ManageUsers';
@@ -19,7 +18,7 @@ import Items from './Items';
 function Dashboard() {
   let { path, url } = useRouteMatch();
   const history = useHistory();
-  const { user, auth, setAuth, setHeader } = useContext(myContext);
+  const { user, setAuth, setHeader } = useContext(myContext);
   setHeader(false);
 
   function logout() {

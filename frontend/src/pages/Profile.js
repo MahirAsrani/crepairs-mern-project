@@ -1,12 +1,12 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { myContext } from '../Context';
 import './profile.css';
 
 function Profile() {
-  const { user, auth, setHeader, refresh } = useContext(myContext);
+  const { user, setHeader, refresh } = useContext(myContext);
   setHeader(true);
   function updateProfile() {
     axios
@@ -216,7 +216,7 @@ function Profile() {
 export default Profile;
 
 export const Cpassword = () => {
-  const { user, auth, setHeader, refresh, setAuth } = useContext(myContext);
+  const { setAuth } = useContext(myContext);
   const history = useHistory();
 
   const [pass, setpass] = useState({

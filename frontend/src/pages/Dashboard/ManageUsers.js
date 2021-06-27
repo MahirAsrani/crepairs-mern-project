@@ -5,19 +5,27 @@ import { myContext } from '../../Context';
 
 export const ManageUsers = () => {
   const [all, setall] = useState('');
-  const { user, setHeader } = useContext(myContext);
-  useEffect(() => {
+  const { user } = useContext(myContext);
+
+  function getuser() {
     axios
       .get('/api/user/all', { withCredentials: true })
       .then((d) => setall(d.data))
       .catch((err) => alert('error in getting users'));
-  }, [deleteuser]);
+  }
+
+  useEffect(() => {
+    getuser();
+  }, []);
 
   function deleteuser(id, email) {
     email !== user.email
       ? axios
           .post('/api/user/deleteuser', { id }, { withCredentials: true })
-          .then(() => toast.info('User deleted'))
+          .then(() => {
+            toast.info('User deleted');
+            getuser();
+          })
           .catch((err) => toast.error('error'))
       : toast.warning('You cannot delete your account');
   }

@@ -23,6 +23,16 @@ const isAdmin = (req, res, next) => {
   } else res.status(500).send('Login required');
 };
 
+router.get('/checkuser', async (req, res) => {
+  const email = req.body.email;
+  await User.find({ email }, (err, doc) => {
+    if (err) {
+      console.log('error');
+      res.send('can be made');
+    }
+  });
+});
+
 router.post('/deleteuser', isAdmin, async (req, res) => {
   const { id } = req.body;
   await User.findByIdAndDelete(id, (err) => {

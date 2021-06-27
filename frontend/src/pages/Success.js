@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { myContext } from '../Context';
 import Lottie from 'lottie-react';
 import tick from '../assets/success-indicator.json';
 
 export const Success = () => {
   const { setHeader } = useContext(myContext);
-  const history = useHistory();
+
   setHeader(true);
   const [done, setDone] = useState(false);
 

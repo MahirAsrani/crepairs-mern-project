@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { myContext } from '../../Context';
 import { Link, useRouteMatch } from 'react-router-dom';
 
 export const ManageCars = () => {
-  let { path, url } = useRouteMatch();
+  let { url } = useRouteMatch();
 
-  const { user } = useContext(myContext);
   const [modal, setmodal] = useState(false);
   const [brand, setbrand] = useState({
     name: null,

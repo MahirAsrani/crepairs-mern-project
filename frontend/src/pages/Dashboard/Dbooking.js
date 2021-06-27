@@ -7,7 +7,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { Link, useRouteMatch } from 'react-router-dom';
 
 export const Dbooking = () => {
-  let { path, url } = useRouteMatch();
+  let { url } = useRouteMatch();
   const [bookings, setbookings] = useState();
 
   useEffect(() => {

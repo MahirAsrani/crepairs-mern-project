@@ -13,7 +13,7 @@ function Product({ match }) {
       .get('/api/shop/product/' + id)
       .then((d) => setproduct(d.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [id]);
 
   if (!product) return <h1>laoding...</h1>;
   if (product)

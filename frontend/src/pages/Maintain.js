@@ -81,6 +81,7 @@ function Maintain() {
       })[0];
       console.log(i);
     }
+    // eslint-disable-next-line
   }, [form.vehicleModel]);
 
   useEffect(() => {
@@ -164,11 +165,8 @@ function Maintain() {
   }
 
   async function onlineCompleted(response) {
-    const {
-      razorpay_payment_id,
-      razorpay_order_id,
-      razorpay_signature,
-    } = response;
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+      response;
 
     axios
       .post(

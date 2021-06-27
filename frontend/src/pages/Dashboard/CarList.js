@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
 function CarList({ match }) {
   const id = match.params.id;
 
@@ -14,6 +13,7 @@ function CarList({ match }) {
 
   useEffect(() => {
     fetchcars();
+    // eslint-disable-next-line
   }, []);
 
   function fetchcars() {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import DOMPurify from 'dompurify';
@@ -20,7 +20,7 @@ function BookDetails({ match }) {
       .get(`/api/book/find/${id}`, { withCredentials: true })
       .then(({ data }) => setbookings(data))
       .catch((err) => console.log(err));
-  }, [refresh]);
+  }, [refresh, id]);
 
   function handleComplete() {
     let newPrice = bookings.payment.amount;
