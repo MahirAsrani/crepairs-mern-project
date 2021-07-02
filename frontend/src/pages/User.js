@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import Booking, { ViewBooking } from './Booking';
 import Profile, { Cpassword } from './Profile';
+import ViewOrders from './ViewOrders';
 import './profile.css';
 
 function User() {
@@ -20,6 +21,9 @@ function User() {
               <NavLink activeClassName="active" to={`${path}/booking`}>
                 <li>Bookings</li>
               </NavLink>
+              <NavLink activeClassName="active" to={`${path}/orders`}>
+                <li>Orders</li>
+              </NavLink>
               <NavLink activeClassName="active" to={`${path}/changepassword`}>
                 <li>Password</li>
               </NavLink>
@@ -31,6 +35,8 @@ function User() {
             <Route exact path={`${path}/profile`} component={Profile} />
             <Route exact path={`${path}/booking`} component={Booking} />
             <Route exact path={`${path}/booking/:id`} component={ViewBooking} />
+            <Route exact path={`${path}/orders`} component={ViewOrders} />
+            <Route exact path={`${path}/orders/:id`} />
             <Route
               exact
               path={`${path}/changepassword`}

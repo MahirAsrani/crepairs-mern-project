@@ -8,14 +8,27 @@ const toID = mongoose.Types.ObjectId;
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const product = require('../models/product');
+const nodemailer = require('nodemailer');
+const easyinvoice = require('easyinvoice');
+const fs = require('fs');
 
 // new order
 
-router.get('/new', async (req, res) => {
+router.post('/new', async (req, res) => {
   try {
-    const id = toID(req.user.id);
-
-    await User.findById(id, async (err, doc) => {
+    const {
+      email,
+      cart,
+      name,
+      phone,
+      address,
+      locality,
+      city,
+      pincode,
+      country,
+      paymentMethod,
+    } = req.body;
+    await User.find({ email }, async (err, doc) => {
       if (err) throw err;
       if (doc) {
         let isPaid = false;
@@ -27,15 +40,92 @@ router.get('/new', async (req, res) => {
               req.body.razorpay_order_id + '|' + req.body.razorpay_payment_id
             )
             .digest('hex');
-          console.log('sig' + req.body.razorpay_signature);
-          console.log('sig' + expectedSignature);
+          // console.log('sig' + req.body.razorpay_signature);
+          // console.log('sig' + expectedSignature);
 
           if (expectedSignature === req.body.razorpay_signature) isPaid = true;
           else res.status(400).send('Payment verification failed');
         }
 
-        const newOrder = new Order();
+        const newOrder = new Order({
+          products: cart,
+          name,
+          phone,
+          address: `${address}, ${locality}, ${city}, ${pincode}, ${country}`,
+          payment: {
+            amount: cart.reduce((total, { price }) => total + price, 0),
+            mode: paymentMethod,
+            Paid: isPaid ? true : false,
+          },
+          user_id: toID(doc._id),
+        });
         await newOrder.save();
+        const date = new Date();
+        const invociedata = {
+          currency: 'INR',
+          taxNotation: 'GST',
+          marginTop: 50,
+          marginRight: 50,
+          marginLeft: 50,
+          marginBottom: 25,
+          background: fs.readFileSync('./uploads/pdf-bg.png', 'base64'),
+          sender: {
+            company: 'crepairs',
+            address: 'Sample Street 123',
+            zip: '110091',
+            city: 'Delhi',
+            country: 'INDIA',
+          },
+          client: {
+            company: name,
+            address: `${address}, ${locality}`,
+            zip: pincode,
+            city: city,
+            country: country,
+          },
+          invoiceNumber: nanoid(10),
+          invoiceDate: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`,
+          products: cart.map((c) => {
+            return {
+              quantity: 1,
+              description: c.name,
+              tax: 18,
+              price: c.price,
+            };
+          }),
+          bottomNotice: 'Thank you for ordering with crepairs.',
+        };
+
+        const result = await easyinvoice.createInvoice(invociedata);
+
+        let mailer = nodemailer.createTransport({
+          service: 'hotmail',
+          auth: {
+            user: 'crepairs@hotmail.com',
+            pass: 'carMCA21',
+          },
+        });
+
+        mailer.sendMail(
+          {
+            from: 'crepairs@hotmail.com',
+            to: email,
+            subject: 'Your order has been placed',
+            html: `<h2>Hello ${name}, Your order has been placed, <br/> Please find the attached invoice pdf</h2>`,
+            attachments: [
+              {
+                filename: 'invoice.pdf',
+                content: result.pdf,
+                encoding: 'base64',
+              },
+            ],
+          },
+          (err, info) => {
+            if (err) console.log(err);
+            if (info) console.log(info);
+          }
+        );
+
         res.send('Order success');
       }
     });

@@ -11,6 +11,8 @@ function Checkout() {
   const history = useHistory();
   setHeader(true);
 
+  const [Loading, setLoading] = useState(false);
+
   if (cart.length === 0) {
     history.push('/shop');
   }
@@ -18,24 +20,38 @@ function Checkout() {
   const fireBuyAction = (e) => {
     e.preventDefault();
     if (!user) {
+      const name = billing.name;
+      const email = billing.email;
+      const password = billing.password;
       axios
-        .post('/api/user/checkuser', { email: '' })
-        .then(() => alert('new can be made' + e.target.email.value))
-        .catch((e) => alert(e));
-    }
-    if (e.target.pay.value === 'Online') {
-      displayRazorpay();
+        .post('/api/auth/register', { name, email, password })
+        .then(() => checkpayoption())
+        .catch((e) =>
+          alert('Account with this email already exists, please login')
+        );
+    } else checkpayoption();
+
+    function checkpayoption() {
+      setLoading(true);
+      if (e.target.pay.value === 'Online') {
+        displayRazorpay();
+      } else {
+        axios
+          .post(
+            '/api/shop/order/new',
+            { ...billing, paymentMethod: 'onDelivery' },
+            { withCredentials: true }
+          )
+          .then((e) => {
+            history.push('/success');
+          })
+          .catch((e) => console.log(e))
+          .finally(() => setLoading(false));
+      }
     }
   };
 
-  const [billing, setBilling] = useState({
-    razorpay: {
-      razorpay_payment_id: null,
-      razorpay_order_id: null,
-      razorpay_signature: null,
-      loading: true,
-    },
-  });
+  const [billing, setBilling] = useState({});
 
   function loadScript(src) {
     return new Promise((resolve) => {
@@ -57,19 +73,21 @@ function Checkout() {
 
     axios
       .post(
-        '/api/book/add',
+        '/api/shop/order/new',
         {
           ...billing,
           razorpay_payment_id,
           razorpay_order_id,
           razorpay_signature,
+          paymentMethod: 'Online',
         },
         { withCredentials: true }
       )
       .then((e) => {
         history.push('/success');
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e))
+      .finally(() => setLoading(false));
   }
 
   async function displayRazorpay() {
@@ -78,13 +96,15 @@ function Checkout() {
     );
     if (!res) {
       alert('Razorpay SDK Failed to load are you online ?');
+      setLoading(false);
       return;
     }
     const data = await axios
       .post('/api/shop/order/razorpay', {
         products: cart.map((c) => c._id),
       })
-      .then((d) => d.data);
+      .then((d) => d.data)
+      .finally(() => setLoading(false));
 
     const options = {
       key: keys.keyId,
@@ -108,6 +128,8 @@ function Checkout() {
   useEffect(() => {
     setBilling((pre) => ({
       ...pre,
+      cart,
+      email: user?.email,
       name: user?.name,
       phone: user?.phone,
       address: user?.address?.houseNo,
@@ -199,6 +221,7 @@ function Checkout() {
                         type="email"
                         className="form-control"
                         placeholder="Email"
+                        value={billing.email}
                         onChange={(e) =>
                           setBilling((pre) => ({
                             ...pre,
@@ -214,6 +237,7 @@ function Checkout() {
                         type="password"
                         className="form-control"
                         placeholder="Password"
+                        value={billing.password}
                         onChange={(e) =>
                           setBilling((pre) => ({
                             ...pre,
@@ -320,6 +344,7 @@ function Checkout() {
                     name="pay"
                     id="COD"
                     required
+                    defaultChecked
                   />
                   <label htmlFor="COD">Pay on delivery</label>
                 </div>
@@ -336,8 +361,17 @@ function Checkout() {
               </div>
 
               <div className="sFoot m-0 ">
-                <button type="submit" className="Continue m-0 px-5">
+                <button
+                  disabled={Loading}
+                  type="submit"
+                  className="Continue m-0 px-5"
+                >
                   Checkout Now
+                  {Loading && (
+                    <div className="spinner-border text-light " role="status">
+                      <span className="sr-only"></span>
+                    </div>
+                  )}
                 </button>
               </div>
             </form>
