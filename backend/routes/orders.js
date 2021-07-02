@@ -11,6 +11,32 @@ const product = require('../models/product');
 const nodemailer = require('nodemailer');
 const easyinvoice = require('easyinvoice');
 const fs = require('fs');
+const order = require('../models/order');
+
+//fetch orders
+router.get('/', async (req, res) => {
+  try {
+    order.find({}, (err, doc) => {
+      if (err) console.log(err);
+      if (doc) res.send(doc);
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    order.find({ user_id: toID(req.params.id) }, (err, doc) => {
+      if (err) console.log(err);
+      if (doc) {
+        res.send(doc);
+      }
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
 
 // new order
 
@@ -28,7 +54,7 @@ router.post('/new', async (req, res) => {
       country,
       paymentMethod,
     } = req.body;
-    await User.find({ email }, async (err, doc) => {
+    await User.findOne({ email }, async (err, doc) => {
       if (err) throw err;
       if (doc) {
         let isPaid = false;
@@ -57,7 +83,7 @@ router.post('/new', async (req, res) => {
             mode: paymentMethod,
             Paid: isPaid ? true : false,
           },
-          user_id: toID(doc._id),
+          user_id: doc._id,
         });
         await newOrder.save();
         const date = new Date();
