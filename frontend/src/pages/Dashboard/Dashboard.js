@@ -43,47 +43,47 @@ function Dashboard() {
 
             <div className="dashnav">
               <ul>
-                <NavLink to={`${url}`} exact activeClassName="active">
+                <a href={`${url}`} exact activeClassName="active">
                   <li>
                     <i class="fal fa-home"></i>
                     <span>Dashboard</span>
                   </li>
-                </NavLink>
+                </a>
 
-                <NavLink to={`${url}/bookings`} exact activeClassName="active">
+                <a href={`${url}/bookings`} exact activeClassName="active">
                   <li>
                     <i class="fal fa-calendar-alt"></i>
                     <span>Bookings</span>
                   </li>
-                </NavLink>
+                </a>
 
-                <NavLink to={`${url}/payments`} exact activeClassName="active">
+                <a href={`${url}/payments`} exact activeClassName="active">
                   <li>
                     <i class="fal fa-rupee-sign"></i>
                     <span>Payments</span>
                   </li>
-                </NavLink>
+                </a>
 
-                <NavLink to={`${url}/cars`} exact activeClassName="active">
+                <a href={`${url}/cars`} exact activeClassName="active">
                   <li>
                     <i class="fal fa-car "></i>
                     <span>Vehicles</span>
                   </li>
-                </NavLink>
+                </a>
 
-                <NavLink to={`${url}/users`} activeClassName="active">
+                <a href={`${url}/users`} activeClassName="active">
                   <li>
                     <i class="fal fa-user-shield"></i>
                     <span>Users</span>
                   </li>
-                </NavLink>
+                </a>
 
-                <NavLink to={`${url}/products`} activeClassName="active">
+                <a href={`${url}/products`} activeClassName="active">
                   <li>
                     <i class="fal fa-shopping-cart"></i>
                     <span>Products</span>
                   </li>
-                </NavLink>
+                </a>
               </ul>
             </div>
           </div>
@@ -203,8 +203,6 @@ const Dash = () => {
       settoday(today.length);
     }
   }, [booking]);
-
-  console.log(booking);
 
   return (
     <div className="dash-home container">

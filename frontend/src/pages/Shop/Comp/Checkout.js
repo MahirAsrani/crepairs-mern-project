@@ -138,6 +138,7 @@ function Checkout() {
       pincode: user?.address?.pincode,
       country: user?.address?.country,
     }));
+    //eslint-disable-next-line
   }, [user]);
 
   function logout() {

@@ -66,7 +66,6 @@ function Shop() {
         </div>
       </div>
       <div className="container">
-        {selected}
         <Category cat={cat} selected={selected} setselect={setselect} />
         <div className="row">
           <div className="col-12 my-3">
