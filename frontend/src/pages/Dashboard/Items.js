@@ -1,17 +1,72 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 function Items() {
   const [cat, setcat] = useState();
+  const [orders, setorders] = useState();
+  let { url } = useRouteMatch();
+
   useEffect(() => {
     axios
       .get('/api/shop/category')
       .then((d) => setcat(d.data))
       .catch((e) => console.log(e));
+
+    axios
+      .get('/api/shop/order', { withCredentials: true })
+      .then((e) => setorders(e.data))
+      .catch((err) => console.log(err));
   }, []);
 
   const [load, setload] = useState(false);
+
+  const style = {
+    padding: '5px 10px',
+    fontWeight: '500',
+  };
+
+  const columns = [
+    {
+      dataField: 'orderOn',
+      text: 'Order Date',
+      formatter: (cell) => new Date(cell).toDateString(),
+      sort: true,
+    },
+    {
+      dataField: 'name',
+      text: 'Customer',
+      sort: true,
+    },
+    {
+      dataField: 'products',
+      text: 'No of Products',
+      formatter: (cell) => `${cell.length}`,
+    },
+    {
+      dataField: 'payment.mode',
+      text: 'Pay Mode',
+      sort: true,
+    },
+    {
+      dataField: 'payment.amount',
+      text: 'Amount (Rs)',
+      formatter: (cell) => `Rs. ${cell}`,
+      sort: true,
+    },
+    {
+      dataField: '_id',
+      text: 'Options',
+      formatter: (d) => (
+        <Link to={`${url}/${d}`}>
+          <button className="btn buttonView">View</button>
+        </Link>
+      ),
+    },
+  ];
 
   function handleForm(e) {
     e.preventDefault();
@@ -113,6 +168,21 @@ function Items() {
             </form>
           </div>
         </div>
+
+        {orders && (
+          <div className="col-12">
+            <div className="card p-3 mt-3">
+              <h4 className="my-4">Orders Data</h4>
+              <BootstrapTable
+                bootstrap4
+                keyField="_id"
+                data={orders}
+                columns={columns}
+                pagination={paginationFactory()}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

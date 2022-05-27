@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Dbooking } from './Dbooking';
 import BookDetails from './BookDetails';
+import ProductDetails from './ProductDetails';
 import Items from './Items';
 
 function Dashboard() {
@@ -156,6 +157,11 @@ function Dashboard() {
               <Route exact path={`${path}/cars/:id`} component={CarList} />
               <Route exact path={`${path}/users`} component={ManageUsers} />
               <Route exact path={`${path}/products`} component={Items} />
+              <Route
+                exact
+                path={`${path}/products/:id`}
+                component={ProductDetails}
+              />
             </Switch>
           </div>
         </div>
@@ -185,13 +191,20 @@ function Dashboard() {
 
 const Dash = () => {
   const [booking, setbooking] = useState();
+  const [orders, setorders] = useState();
   const [today, settoday] = useState();
   useEffect(() => {
     axios
       .get('/api/book', { withCredentials: true })
       .then((e) => setbooking(e.data))
       .catch((err) => console.log(err));
+    axios
+      .get('/api/shop/order', { withCredentials: true })
+      .then((e) => setorders(e.data))
+      .catch((err) => console.log(err));
   }, []);
+
+  console.log(orders);
 
   useEffect(() => {
     if (booking) {
@@ -207,7 +220,7 @@ const Dash = () => {
   return (
     <div className="dash-home container">
       <div className="row topnotify">
-        <div className="col-md-3">
+        <div className="col-md-3 mb-3">
           <div className="card c1">
             <div className="cicon">
               <i class="fal fa-bell-plus fa-2x"></i>
@@ -219,7 +232,7 @@ const Dash = () => {
           </div>
         </div>
 
-        <div className="col-md-3">
+        <div className="col-md-3 mb-3">
           <div className="card c2">
             <div className="cicon">
               <i class="fal fa-conveyor-belt fa-2x"></i>
@@ -231,7 +244,7 @@ const Dash = () => {
           </div>
         </div>
 
-        <div className="col-md-3">
+        <div className="col-md-3 mb-3">
           <div className="card c4">
             <div className="cicon">
               <i class="fal fa-calendar-check fa-2x"></i>
@@ -245,20 +258,52 @@ const Dash = () => {
           </div>
         </div>
 
-        <div className="col-md-3">
+        <div className="col-md-3 mb-3">
           <div className="card c3">
             <div className="cicon">
               <i class="fal fa-rupee-sign fa-2x"></i>
             </div>
             <div className="ctext">
               <span>
-                {booking &&
+                {(booking &&
                   booking.length > 0 &&
                   booking
                     .map((i) => i.payment.Paid === true && i.payment.amount)
-                    .reduce((prev, next) => prev + next)}
+                    .reduce((prev, next) => prev + next)) ||
+                  0}
               </span>
-              <h6>Total Earnings</h6>
+              <h6>Bookings Earnings</h6>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-3 mb-3">
+          <div className="card c4">
+            <div className="cicon">
+              <i class="fal fa-conveyor-belt fa-2x"></i>
+            </div>
+            <div className="ctext">
+              <span>{orders && orders.length}</span>
+              <h6>Total Shop Orders</h6>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-3 mb-3">
+          <div className="card c1">
+            <div className="cicon">
+              <i class="fal fa-rupee-sign fa-2x"></i>
+            </div>
+            <div className="ctext">
+              <span>
+                {(orders &&
+                  orders.length > 0 &&
+                  orders
+                    .map((i) => i.payment.Paid === true && i.payment.amount)
+                    .reduce((prev, next) => prev + next)) ||
+                  0}
+              </span>
+              <h6>Orders Earnings</h6>
             </div>
           </div>
         </div>

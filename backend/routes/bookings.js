@@ -30,47 +30,61 @@ router.get('/', isAdmin, async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const id = req.params.id;
-  await Booking.find({ user_id: toID(id) })
-    .populate('user_id')
-    .sort({ bookedOn: -1 })
-    .exec((err, data) => {
-      if (err) throw err;
-      if (data) res.send(data);
-    });
+  try {
+    const id = req.params.id;
+    await Booking.find({ user_id: toID(id) })
+      .populate('user_id')
+      .sort({ bookedOn: -1 })
+      .exec((err, data) => {
+        if (err) throw err;
+        if (data) res.send(data);
+      });
+  } catch (e) {
+    res.send(e.message);
+    console.log(e.message);
+  }
 });
 
 router.get('/find/:id', async (req, res) => {
-  const id = req.params.id;
-  await Booking.findById(toID(id))
-    .populate('user_id')
-    .sort({ bookedOn: -1 })
-    .exec((err, data) => {
-      if (err) throw err;
-      if (data) res.send(data);
-    });
+  try {
+    const id = req.params.id;
+    await Booking.findById(toID(id))
+      .populate('user_id')
+      .sort({ bookedOn: -1 })
+      .exec((err, data) => {
+        if (err) throw err;
+        if (data) res.send(data);
+      });
+  } catch (e) {
+    res.send(e.message);
+    console.log(e.message);
+  }
 });
 
 router.post('/:id/markdone', async (req, res) => {
-  const id = req.params.id;
+  try {
+    const id = req.params.id;
+    Booking.findByIdAndUpdate(
+      toID(id),
 
-  Booking.findByIdAndUpdate(
-    toID(id),
-
-    {
-      $set: {
-        'payment.Paid': true,
-        'payment.amount': req.body.newPrice,
-        completed: true,
+      {
+        $set: {
+          'payment.Paid': true,
+          'payment.amount': req.body.newPrice,
+          completed: true,
+        },
       },
-    },
 
-    (err, done) => {
-      if (err) res.send(err).status(400);
-      if (done) res.send('Marked Completed');
-      else res.send('booking not found').status(400);
-    }
-  );
+      (err, done) => {
+        if (err) res.send(err).status(400);
+        if (done) res.send('Marked Completed');
+        else res.send('booking not found').status(400);
+      }
+    );
+  } catch (e) {
+    res.send(e.message);
+    console.log(e.message);
+  }
 });
 
 router.post('/add', async (req, res) => {

@@ -19,18 +19,28 @@ const isAdmin = (req, res, next) => {
 };
 
 router.get('/', async (req, res) => {
-  await Vehicle.find({}).exec((err, data) => {
-    if (err) throw err;
-    if (data) res.send(data);
-  });
+  try {
+    await Vehicle.find({}).exec((err, data) => {
+      if (err) throw err;
+      if (data) res.send(data);
+    });
+  } catch (e) {
+    res.send(e.message);
+    console.log(e.message);
+  }
 });
 
 router.get('/model/:id', async (req, res) => {
-  const id = toID(req.params.id);
-  await Vehicle.findById(id, (err, data) => {
-    if (err) throw err;
-    if (data) res.send(data);
-  });
+  try {
+    const id = toID(req.params.id);
+    await Vehicle.findById(id, (err, data) => {
+      if (err) throw err;
+      if (data) res.send(data);
+    });
+  } catch (e) {
+    res.send(e.message);
+    console.log(e.message);
+  }
 });
 
 router.post('/model/:id', async (req, res) => {

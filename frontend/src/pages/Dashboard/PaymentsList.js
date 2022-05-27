@@ -7,11 +7,16 @@ import axios from 'axios';
 
 function PaymentsList() {
   const [paymentsData, setPaymentsData] = useState(null);
+  const [orders, setorders] = useState();
 
   useEffect(() => {
     axios
       .get('/api/book/', { withCredentials: true })
       .then(({ data }) => setPaymentsData(data));
+    axios
+      .get('/api/shop/order', { withCredentials: true })
+      .then((e) => setorders(e.data))
+      .catch((err) => console.log(err));
   }, []);
 
   console.log(paymentsData);
@@ -32,6 +37,42 @@ function PaymentsList() {
       dataField: 'service.serviceType',
       text: 'Service',
       sort: true,
+    },
+    {
+      dataField: 'payment.mode',
+      text: 'Pay Mode',
+      sort: true,
+    },
+    {
+      dataField: 'payment.amount',
+      text: 'Amount (Rs)',
+      formatter: (cell) => `Rs. ${cell}`,
+      sort: true,
+    },
+    {
+      dataField: 'payment.Paid',
+      text: 'Payment Status',
+      formatter: priceFormatter,
+      sort: true,
+    },
+  ];
+
+  const columns4prod = [
+    {
+      dataField: 'orderOn',
+      text: 'Order Date',
+      formatter: (cell) => new Date(cell).toDateString(),
+      sort: true,
+    },
+    {
+      dataField: 'name',
+      text: 'Customer',
+      sort: true,
+    },
+    {
+      dataField: 'products',
+      text: 'No of Products',
+      formatter: (cell) => `${cell.length}`,
     },
     {
       dataField: 'payment.mode',
@@ -75,12 +116,24 @@ function PaymentsList() {
     <div>
       {paymentsData && (
         <div className="card px-3">
-          <h4 className="my-4">Payments Data</h4>
+          <h4 className="my-4">Payments Data of Bookings</h4>
           <BootstrapTable
             bootstrap4
             keyField="_id"
             data={paymentsData}
             columns={columns}
+            pagination={paginationFactory()}
+          />
+        </div>
+      )}
+      {orders && (
+        <div className="card px-3 mt-4">
+          <h4 className="my-4">Payments for Shop</h4>
+          <BootstrapTable
+            bootstrap4
+            keyField="_id"
+            data={orders}
+            columns={columns4prod}
             pagination={paginationFactory()}
           />
         </div>

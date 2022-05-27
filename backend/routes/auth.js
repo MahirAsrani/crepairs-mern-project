@@ -70,6 +70,7 @@ router.post('/forgot', (req, res) => {
     });
   } catch (error) {
     res.send('error');
+    console.log(error);
   }
 });
 
@@ -94,6 +95,7 @@ router.post('/reset/', (req, res) => {
     );
   } catch (error) {
     res.send(error);
+    console.log(error);
   }
 });
 module.exports = router;

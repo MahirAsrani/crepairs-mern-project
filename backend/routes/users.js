@@ -24,29 +24,43 @@ const isAdmin = (req, res, next) => {
 };
 
 router.get('/checkuser', async (req, res) => {
-  const email = req.body.email;
-  await User.find({ email }, (err, doc) => {
-    if (err) {
-      console.log('error');
-      res.send('can be made');
-    }
-  });
+  try {
+    const email = req.body.email;
+    await User.find({ email }, (err, doc) => {
+      if (err) {
+        console.log('error');
+        res.send('can be made');
+      }
+    });
+  } catch (e) {
+    res.send(e.message);
+    console.log(e.message);
+  }
 });
 
 router.post('/deleteuser', isAdmin, async (req, res) => {
-  const { id } = req.body;
-  await User.findByIdAndDelete(id, (err) => {
-    if (err) throw err;
-  });
-  res.send('success');
-  console.log('deleted!');
+  try {
+    const { id } = req.body;
+    await User.findByIdAndDelete(id, (err) => {
+      if (err) throw err;
+    });
+    res.send('success');
+  } catch (e) {
+    res.send(e.message);
+    console.log(e.message);
+  }
 });
 
 router.get('/all', isAdmin, async (req, res) => {
-  await User.find({}, (err, data) => {
-    if (err) throw err;
-    if (data) res.send(data);
-  });
+  try {
+    await User.find({}, (err, data) => {
+      if (err) throw err;
+      if (data) res.send(data);
+    });
+  } catch (e) {
+    res.send(e.message);
+    console.log(e.message);
+  }
 });
 
 // get own data
